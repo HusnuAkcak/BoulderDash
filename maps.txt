@@ -1,0 +1,199 @@
+Converted using Tim Stridmann's X2BDCFF converter.
+Last modified: 14 July 2018
+http://www.boulder-dash.nl/
+Date=September 2002
+Author=Arno Weber
+Edited by Husnu Akcak
+#do not overshoot 240 character for each line.
+
+[game]
+[cave]
+Name=Cave 1
+Dimension=40x22
+CaveTime=120
+DiamondsRequired=18
+DiamondValue=15 20
+
+[map]
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W..d...r.rdr.......... ..r. .......r..rW
+Wr....r... . ......r r....r... ... ....W
+W.r.. r..d.r. ...r... .r.... ..r. .. drW
+W. ... ..r.  ..... ....r....d..........W
+W...r....rr .r... . d.. ...rd..r..r... W
+W.r.... .....r ..r......  .... ..r.. r.W
+W...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
+W.... .r.... ....r.. .. ..r.... .......W
+W. .......r............r...drr..d.r.r..W
+WP..r.... r.rr.d.....r..r......r.r..drXW
+W..rr ....r.rr..r..r......... ..r......W
+W.....d......... ..... ..d...r.....r...W
+Wd....r.r..r.......r.... ...  r.... ...W
+W. .wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
+W.... . ...r...r.... .. .r......... ..rW
+W.......r .......r....... ..r...r ...rrW
+W .d...r .....r. rr.....d..............W
+Wr... .. .. ...r....r.r...r..r.r......rW
+Wr..r. ...dd. ........ ...r.....r... d W
+W..rr..dr.........r...rr.... ...r ....rW
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+[cave]
+Name=Cave 2
+Dimension=40x22
+CaveTime=100
+DiamondsRequired=8
+DiamondValue=35 40
+
+[map]
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WXP. ...... rr.r......r ..r.. ..rr..r..W
+W.....rr......  r.r. .r...r......r.....W
+W...r..........r .....r ....r.r.r... . W
+W......r...............r..r....r.......W
+Wrr.........rr rrr..... ..rr....r......W
+W....r..r ..r.r...rr....r..........r ..W
+W. ....r...r.rrr.r....... ........ .r..W
+W.... ....rr...r.r....r..r..r...r....r.W
+W....r.... .........r.....r...r....rr.rW
+W..... ..................r..r....... ..W
+W.... .............r.. r....r.....r....W
+W.................. .... r.r....r......W
+W.rr......r.....r........r....M....r...W
+W.r....rr. ...r...rr...r........ ......W
+W.... ........ r... .rr.........rr....rW
+W...r.r..... .............r....r.......W
+W...............rrr. .......r.....r...rW
+W.........r...r......r.... r......r....W
+W..r.....r.........r..........r.r...r. W
+W....... r.......................rr....W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+[cave]
+Name=Cave 3
+Dimension=40x22
+CaveTime=180
+DiamondsRequired=25
+DiamondValue=10 12
+
+[map]
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W...r..dr.....rrr. .r..r...r.....rr..rrX
+W.r.r..d..................r.....r.....rW
+Wr. P..dr...r......r..  ..... .r.r...rrW
+Wr.....d.r.......rrr... ....r.r ...r...W
+W..r ..d..r....rr. .rr.r....r ..rrr.r rW
+W...r.rd.. rr..r..rr..r.. .r. r.rrr....W
+W..rr..d..rrrrd.......r......r r.r.....W
+W......d.rr r.d.rr........r.... r..r...W
+Wr..r. d.r....d...........r...r.r.....rW
+W... ..d...rrrd..r...rr.r..r......r..r.W
+W. r...d.rrrr.d.r....r.....r..... r.r..W
+W..rr..d..rrr.d r..........r........r..W
+W....r.d.r..r.dr.rr....rr.... r...r ...W
+W....r.d.r....dr...rr.r....r...rrr.r.r.W
+Wr......... ..d.r.r ...................W
+Wrr. . .rr....d......r.rr........r.r...W
+W.r. r...rr...dr.......r...r.....r.r..rW
+W. ... ....r..d..r....r.. .r...........W
+W.... .r..r...d.  ...r...rr.r.. .......W
+W........r..r.drr........r.r...rr.r....W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+
+[cave]
+Name=Cave 4
+Dimension=40x22
+CaveTime=200
+DiamondsRequired=80
+DiamondValue=4 5
+
+[map]
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WdrrrdrdddddrrdrdrdddrrdrrdrrrrdrddrrdrW
+Wwwwwwwdddddrd..drddrrrdrddddrdrrrdddrrW
+WwX   wrdrdrddddr.rdrddrrdddddddrdrrrdrW
+Ww    .rrdddrrdddddddrdddddddddrdddddrdW
+Ww    wdddddddrdrrddddrdddrrddrdrdrrrddW
+Ww    wddddddrddddddddddrrrrdrdddrdrrdrW
+Www.wwwddrdddddddrddrrdrdrddrrr.rrdrdddW
+WddrdddrdddrrrddddddrddrrrrddddddrrdrrrW
+Wrddrrdddrdrrdddddrddrddrddwwwww.wwwwrrW
+Wrrddddddddddddrrdrdrdddrrrw        wrrW
+Wdddddddrdrdrrrdddrdrd.rdrdw        wddW
+Wdrdrwwwwww.wwwwwwdddddrdrrw        wrrW
+Wddddw           wrdddrdrdrw        wrdW
+Wrrddw           wddddddrrdw        wrdW
+Wdddd.           .drddddrddw        wrdW
+Wddrrw           wddddddddrw        wrrW
+Wrdrrw           wrrdrdddrdw    P   wrrW
+Wdrdrw           wddrdddrdrwwwwwwwwwwrrW
+Wrrrdwwwwwwwwwwwww.drdrdrdrdrdrrrddr.drW
+Wrrrrddrdrdrdrddrrdr.rrrddrdrrdrdddr.rdW
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+[cave]
+Name=Cave 5
+Dimension=40x22
+CaveTime=200
+DiamondsRequired=28
+DiamondValue=18 90
+
+[map]
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W.......w.d........r.r...r.w...........W
+W.rrrrr.w...............d..w.......d...W
+W.rrrrr.w...........w .w...w....r.....wW
+W.......ww.....d...w  w....w.d.......w.W
+W.MMMMM.w.w.r.....w  w.....w........w..W
+W.     .wr.w.....w  w......w.......w...W
+W.     .w...w...w  w.......w.....rw...rW
+Wwwwwwwww....w.w  w.....r..w.....w.....W
+W..d..........w  w.r.......w..w.w..r...W
+W.........r..w  w..........w...M......PW
+W...........w  ww.....r.......w.w......W
+Wr.........w  w..w......d....w...wd....W
+W.........w  w..r.w.........w.....w....W
+W....r....w w......w...............w..rW
+W.......d.w w.....d.w...........r...w..W
+W.........w w.d......w...............w.W
+W.........w w.........w...............wW
+W..r......w w.r........w.............d.W
+W.....d...wMw.....r.....w.r....d....r..W
+WX......... w.........d..w.............W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+[cave]
+Name=Cave 6
+Dimension=12x20
+CaveTime=20
+DiamondsRequired=36
+DiamondValue=14
+
+[map]
+WWWWWWWWWWWWWWWWWWWW
+X..................W
+WddddddddddddddddddW
+WrrrrrrrrrrrrrrrrrrW
+W..................W
+W..................W
+WddddddddddddddddddW
+WrrrrrrrrrrrrrrrrrrW
+W..................W
+W..................W
+W.................PW
+WWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+[/game]
