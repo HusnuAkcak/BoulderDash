@@ -1,18 +1,27 @@
-Converted using Tim Stridmann's X2BDCFF converter.
-Last modified: 14 July 2018
-http://www.boulder-dash.nl/
-Date=September 2002
-Author=Arno Weber
-Edited by Husnu Akcak
-#do not overshoot 240 character for each line.
+#Converted using Tim Stridmann's X2BDCFF converter.
+#Last modified: 14 July 2018
+#http://www.boulder-dash.nl/
+#Date=September 2002
+#Author=Arno Weber
+#Edited by Husnu Akcak
+
+#while editing this file,do not overshoot 240 character for each line.
+
+#cave inormation sequance is shown below :
+
+# [Name]
+# [Dimension]
+# [CaveTime]
+# [DiamondsRequired]
+# [DiamondValue]
 
 [game]
 [cave]
-Name=Cave 1
-Dimension=40x22
-CaveTime=120
-DiamondsRequired=18
-DiamondValue=15 20
+Cave 1
+40x22
+120
+18
+15 20
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -41,11 +50,11 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-Name=Cave 2
-Dimension=40x22
-CaveTime=100
-DiamondsRequired=8
-DiamondValue=35 40
+Cave 2
+40x22
+100
+8
+35 40
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -74,11 +83,11 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-Name=Cave 3
-Dimension=40x22
-CaveTime=180
-DiamondsRequired=25
-DiamondValue=10 12
+Cave 3
+40x22
+180
+25
+10 12
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -108,11 +117,11 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
 [cave]
-Name=Cave 4
-Dimension=40x22
-CaveTime=200
-DiamondsRequired=80
-DiamondValue=4 5
+Cave 4
+40x22
+200
+80
+4 5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -141,11 +150,11 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-Name=Cave 5
-Dimension=40x22
-CaveTime=200
-DiamondsRequired=28
-DiamondValue=18 90
+Cave 5
+40x22
+200
+28
+18 90
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -174,11 +183,11 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-Name=Cave 6
-Dimension=12x20
-CaveTime=20
-DiamondsRequired=36
-DiamondValue=14
+Cave 6
+20x12
+20
+36
+14
 
 [map]
 WWWWWWWWWWWWWWWWWWWW
