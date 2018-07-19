@@ -1,4 +1,5 @@
 #include"allegro5/allegro.h"
+#include"allegro5/allegro_image.h"
 #ifndef _BASE_H_
 #define _BASE_H_
 
@@ -27,6 +28,6 @@ typedef struct Game
 
 
 void import_caves(Game *game,char *map_file);
-void free_cave(Cave *head_cave);
+void free_caves(Cave *head_cave);
 
 #endif

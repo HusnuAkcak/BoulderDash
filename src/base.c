@@ -1,11 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "allegro5/allegro.h"
-#include "base.h"
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include"allegro5/allegro.h"
+#include"allegro5/allegro_image.h"
+#include"allegro5/allegro_native_dialog.h"
+#include"base.h"
 
-#define LINE_SIZE 240 /*when it is changes, update 'README' and 'maps.txt'
+#define LINE_SIZE 240   /*when it is changes, update 'README' and 'maps.txt'
                     file to specify the line size requirement.              */
+
 
 void
 import_caves(Game *game,char *map_file)
@@ -82,9 +85,8 @@ import_caves(Game *game,char *map_file)
 
 }
 
-
 void
-free_cave(Cave *head_cave)
+free_caves(Cave *head_cave)
 {
     Cave *curr_cave,*temp_cave;
     int i;
@@ -92,15 +94,19 @@ free_cave(Cave *head_cave)
     curr_cave=head_cave;
     while(curr_cave!=NULL)
     {
-        /*the array that keeps content of the map                           */
-        for(i=0;i>(curr_cave->dim_col);++i)
+        /*the char array that keeps content of the map                      */
+        if(curr_cave->content!=NULL)
         {
-            free(curr_cave->content[i]);
+            for(i=0;i>(curr_cave->dim_col);++i)
+            {
+                free(curr_cave->content[i]);
+            }
+            free(curr_cave->content);
         }
-        free(curr_cave->content);
 
         temp_cave=curr_cave;
         curr_cave=curr_cave->next;
         free(temp_cave);
+
     }
 }

@@ -79,6 +79,8 @@ main()
     */
 
     start_game(display,disp_data.width,disp_data.height);
+    //arrange_bitmap_cells(display,&game);
+    display_game(display,&game);
 
     if(display)
         al_destroy_display(display);
@@ -87,6 +89,6 @@ main()
     if(event_queue)
         al_destroy_event_queue(event_queue);
 
-    free_cave(game.head_cave);
+    free_caves(game.head_cave);
     return 0;
 }
