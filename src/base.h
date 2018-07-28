@@ -1,9 +1,35 @@
-#include"allegro5/allegro.h"
-#include"allegro5/allegro_image.h"
+#include "allegro5/allegro.h"
+#include "allegro5/allegro_ttf.h"
 #ifndef _BASE_H_
 #define _BASE_H_
 
-#define NAME_LENGTH 15
+#define NAME_LENGTH 15                              /*cave name             */
+#define MAP_FILE "../data/maps.txt"                    /*cave maps             */
+#define FONT_SIZE 13                                /*game font size        */
+#define FONT_FILE "../data/font/boulder_dash.ttf"   /*game font type        */
+#define CELL_SIZE 32                                /*icon pixel            */
+#define FPS 60                                      /*display frequency     */
+
+/*PATHS..                                                                   */
+#define AUDIO_PATH "../data/audio"
+#define IMG_PATH "../data/img"
+
+/*CAVE SYMBOLS MEANIG.                                                      */
+#define EX_WALL 'W'
+#define IN_WALL 'w'
+#define SOIL '.'
+#define DIAMOND 'd'
+#define ROCK 'r'
+#define MINER 'P'
+#define GATE 'X'
+#define SNAKE 'S'
+#define WATER 'l'
+#define MONSTER 'M'
+
+ALLEGRO_DISPLAY         *display;
+ALLEGRO_EVENT_QUEUE     *event_queue;
+ALLEGRO_TIMER           *timer;
+ALLEGRO_FONT            *font;
 
 typedef struct Cave
 {
@@ -17,7 +43,8 @@ typedef struct Cave
 typedef struct Miner
 {
     int score;
-    int live;
+    int coord_r,coord_c;
+    int life;
 }Miner;
 
 typedef struct Game

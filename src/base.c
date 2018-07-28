@@ -18,14 +18,8 @@ import_caves(Game *game,char *map_file)
     Cave *curr_cave;
     int i,j;
 
-    inp=fopen("../maps.txt","r");
-
-
-    if(game->head_cave==NULL)
-    {
-        game->head_cave=(Cave*)malloc(sizeof(Cave));
-        curr_cave=game->head_cave;
-    }
+    inp=fopen(MAP_FILE,"r");
+    curr_cave=NULL;
 
     /*the lines are ignored, until the first [cave] is read.            */
     while(strcmp(line,"[cave]\n")!=0)
@@ -35,6 +29,19 @@ import_caves(Game *game,char *map_file)
     /*until the game finishes...*/
     while((inp!=NULL)&&(strcmp(line,"[/game]\n")!=0))
     {
+        if(game->head_cave==NULL)
+        {
+            game->head_cave=(Cave*)malloc(sizeof(Cave));
+            curr_cave=game->head_cave;
+            curr_cave->next=NULL;
+        }
+        else
+        {
+            curr_cave->next=(Cave*)malloc(sizeof(Cave));
+            curr_cave=curr_cave->next;
+            curr_cave->next=NULL;
+        }
+
         fgets(line,LINE_SIZE,inp);
         strcpy(curr_cave->cave_name,line);
         fgets(line,LINE_SIZE,inp);
@@ -78,9 +85,6 @@ import_caves(Game *game,char *map_file)
         {
             fgets(line,LINE_SIZE,inp);
         }
-
-        curr_cave->next=(Cave*)malloc(sizeof(Cave));
-        curr_cave=curr_cave->next;
     }
 
 }
@@ -103,10 +107,8 @@ free_caves(Cave *head_cave)
             }
             free(curr_cave->content);
         }
-
         temp_cave=curr_cave;
         curr_cave=curr_cave->next;
         free(temp_cave);
-
     }
 }

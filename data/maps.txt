@@ -1,0 +1,43 @@
+#Converted using Tim Stridmann's X2BDCFF converter.
+#Last modified: 14 July 2018
+#http://www.boulder-dash.nl/
+#Date=September 2002
+#Author=Arno Weber
+#Edited by Husnu Akcak
+
+#while editing this file,do not overshoot 240 character for each line.
+
+#cave inormation sequance is shown below :
+
+# [Name]
+# [Dimension]
+# [CaveTime]
+# [DiamondsRequired]
+# [DiamondValue]
+
+[game]
+[cave]
+Cave 6
+20x12
+20
+36
+14
+
+[map]
+WWWWWWWWWWWWWWWWWWWW
+X..................W
+WddddddddddddddddddW
+WrrrrrrrrrrrrrrrrrrW
+W..................W
+W..................W
+WddddddddddddddddddW
+WrrrrrrrrrrrrrrrrrrW
+W..................W
+W..................W
+W.................PW
+WWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+
+[/game]
