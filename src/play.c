@@ -7,7 +7,7 @@
 #include"allegro5/allegro_image.h"
 #include"allegro5/allegro_native_dialog.h"
 
-
+//this comment is in the eatsoil branch
 void
 start_game(Game *game,int scr_width,int scr_height)
 {
@@ -20,8 +20,8 @@ start_game(Game *game,int scr_width,int scr_height)
     sample=al_load_sample(AUDIO_PATH"/Music.wav");
     al_play_sample(sample,1.0,0.0,1.0,ALLEGRO_PLAYMODE_LOOP,NULL);
 
-    image1=al_load_bitmap(IMG_PATH"/boulder_dash.jpg");    
-    al_draw_bitmap(image1,scr_width/3,scr_height/3,0);    
+    image1=al_load_bitmap(IMG_PATH"/boulder_dash.jpg");
+    al_draw_bitmap(image1,scr_width/3,scr_height/3,0);
     al_flip_display();
     al_rest(0.5);
     al_clear_to_color(al_map_rgb(0,0,0));
