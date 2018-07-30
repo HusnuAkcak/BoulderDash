@@ -14,33 +14,31 @@
 #define AUDIO_PATH "../data/audio"
 #define IMG_PATH "../data/img"
 
-/*CAVE SYMBOLS MEANIG.                                                      */
-#define EX_WALL 'W'
-#define IN_WALL 'w'
-#define SOIL '.'
-#define DIAMOND 'd'
-#define ROCK 'r'
-#define MINER 'P'
-#define GATE 'X'
-#define SNAKE 'S'
-#define WATER 'l'
-#define MONSTER 'M'
-
 ALLEGRO_DISPLAY         *display;
 ALLEGRO_EVENT_QUEUE     *event_queue;
 ALLEGRO_TIMER           *timer;
 ALLEGRO_FONT            *font;
+
+/*Cave symbols meaning.                                                     */
+typedef enum{EX_WALL='W',IN_WALL='w',SOIL='.',DIAMOND='d',ROCK='r',GATE='X',
+            SPIDER='S',MINER='P',WATER='l',MONSTER='M',EMPTY_CELL=' '}Content;
+typedef enum{UP, RIGHT, DOWN, LEFT}Direction;
+typedef struct Point
+{
+    int x,y;
+    struct Point*next;
+}Point;
 
 typedef struct Cave
 {
     char cave_name[NAME_LENGTH];
     int dim_row,dim_col;    /*dimension_x and dimension_y       */
     int max_time,dia_req,dia_val,ex_dia_val;    /*dia =diamond  */
-    char **content;
+    Content **content;
     struct Cave *next;
 }Cave;
 
-typedef struct Miner
+typedef struct
 {
     int score;
     int coord_r,coord_c;

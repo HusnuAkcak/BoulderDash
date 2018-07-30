@@ -60,10 +60,10 @@ import_caves(Game *game,char *map_file)
         }
         /*the content of the map is receiving until [/map] is read         */
         /*the 'content' array is allocated.                                */
-        curr_cave->content=(char**)calloc((curr_cave->dim_row),sizeof(char*));
+        curr_cave->content=(Content**)calloc((curr_cave->dim_row),sizeof(Content*));
         for(i=0;i<(curr_cave->dim_row);++i)
         {
-            curr_cave->content[i]=(char*)calloc((curr_cave->dim_col),sizeof(char));
+            curr_cave->content[i]=(Content*)calloc((curr_cave->dim_col),sizeof(Content));
         }
 
         /*content of the map is read according to the dimension info.       */
