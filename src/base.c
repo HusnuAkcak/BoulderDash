@@ -100,7 +100,6 @@ free_caves(Cave *head_cave){
     Cave *curr_cave,*temp_cave;
     int i;
     curr_cave=head_cave;
-    fprintf(stderr,"Before free\n");
     while(curr_cave!=NULL){
         if(curr_cave->content!=NULL){
             for(i=0;i<(curr_cave->dim_row);++i){

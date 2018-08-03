@@ -7,7 +7,6 @@
 #include"allegro5/allegro_image.h"
 #include"allegro5/allegro_native_dialog.h"
 
-
 void
 start_game(Game *game,int scr_width,int scr_height){
     ALLEGRO_BITMAP          *image1;
