@@ -17,7 +17,23 @@
 
 [game]
 [cave]
-Cave 6
+Cave 1
+20x5
+20
+36
+14
+
+[map]
+WWWWWWWWWWWWWWWWWWWW
+WXdddrdddddddddddMdW
+Wrrrdddrrrrr...rrrrW
+Wllllll...........PW
+WWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+[cave]
+Cave 2
 20x12
 20
 36

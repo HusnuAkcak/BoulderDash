@@ -15,10 +15,10 @@ main()
 
     display=NULL;
     event_queue=NULL;
-    game.head_cave=NULL;
 
-    import_caves(&game,MAP_FILE);
-    //test_import(&game);//could be called when it is wanted to see if the maps are correcty imported or not.
+    import_caves(&game);
+    /*test_import(&game);//could be called when it is wanted to see if the maps are correcty imported or not.
+    */
 
     /*initialisations                                                   */
     al_init();
@@ -41,7 +41,7 @@ main()
     al_register_event_source(event_queue,al_get_keyboard_event_source());
 
     start_game(&game,disp_data.width,disp_data.height);
-    
+
     /*free operations                                                       */
     al_destroy_event_queue(event_queue);
     al_destroy_display(display);

@@ -7,7 +7,7 @@
 #include"allegro5/allegro_image.h"
 #include"allegro5/allegro_native_dialog.h"
 
-//this comment is in the eatsoil branch
+
 void
 start_game(Game *game,int scr_width,int scr_height){
     ALLEGRO_BITMAP          *image1;
@@ -102,7 +102,7 @@ move(Cave * curr_cave,Miner *m,Direction dir){
     }
 
     /*it is controlled and if the move possible player's choice is applied. */
-    if(target!=IN_WALL && target !=EX_WALL && target!=ROCK){
+    if(target!=IN_WALL && target !=EX_WALL && target!=ROCK && target!=WATER){
         curr_cave->content[m->coord_r][m->coord_c]=EMPTY_CELL;
         display_cell(m->coord_r, m->coord_c,EMPTY_CELL);
 
@@ -121,9 +121,11 @@ move(Cave * curr_cave,Miner *m,Direction dir){
         }
 
         if(curr_cave->content[m->coord_r][m->coord_c]==GATE){
+            // curr_cave->content[m->coord_r][m->coord_c]=MINER;
+            display_cell(m->coord_r, m->coord_c, MINER);
             if(curr_cave->dia_req<=0 && curr_cave->next!=NULL){
                 curr_cave=curr_cave->next;
-                /*For new level, the miner's location is found.                 */
+                /*For new level, the miner's location is found.             */
                 for(r=0;r<curr_cave->dim_row;++r){
                     for(c=0;c<curr_cave->dim_col;++c){
                         if(curr_cave->content[r][c]==MINER){
@@ -140,9 +142,21 @@ move(Cave * curr_cave,Miner *m,Direction dir){
         else if(curr_cave->content[m->coord_r][m->coord_c]==SOIL ||
                     curr_cave->content[m->coord_r][m->coord_c]==' '){
             curr_cave->content[m->coord_r][m->coord_c]=MINER;
+            display_cell(m->coord_r, m->coord_c, EMPTY_CELL);
+            display_cell(m->coord_r, m->coord_c, MINER);
+        }else if(curr_cave->content[m->coord_r][m->coord_c]==DIAMOND){
+            if(curr_cave->dia_req>0){
+                --curr_cave->dia_req;
+                m->score+=curr_cave->dia_val;
+            }else{
+                m->score+=curr_cave->ex_dia_val;
+            }
+            /*Board view is adjusted.                                       */
+            curr_cave->content[m->coord_r][m->coord_c]=MINER;
             display_cell(m->coord_r, m->coord_c,EMPTY_CELL);
             display_cell(m->coord_r, m->coord_c, MINER);
         }
+
     }
 
     return cont;

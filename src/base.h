@@ -52,7 +52,12 @@ typedef struct Game
 }Game;
 
 
-void import_caves(Game *game,char *map_file);
+void import_caves(Game *game);
 void free_caves(Cave *head_cave);
+
+/*---------------------------------------------------------------------------
+    retrun 0 :if two string is equal.
+---------------------------------------------------------------------------*/
+int string_cmp(const char * str1, const char *str2);
 
 #endif
