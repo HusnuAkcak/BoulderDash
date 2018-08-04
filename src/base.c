@@ -9,7 +9,8 @@
 #define LINE_SIZE 240   /*when it is changes, update 'README' and 'maps.txt'
                     file to specify the line size requirement.              */
 
-int string_cmp(const char * str1, const char *str2){
+int
+string_cmp(const char * str1, const char *str2){
     int status; /*if strings are equal, status will be 0.                */
     int i;      /*loop variable                                          */
 
@@ -26,6 +27,7 @@ int string_cmp(const char * str1, const char *str2){
 
     return status;
 }
+
 void
 import_caves(Game *game){
     FILE *inp;
@@ -92,7 +94,6 @@ import_caves(Game *game){
             fgets(line,LINE_SIZE,inp);
         }
     }
-
 }
 
 void
@@ -112,4 +113,33 @@ free_caves(Cave *head_cave){
         free(temp_cave);
     }
     return;
+}
+
+void
+load_cave_bitmaps(){
+    in_wall=al_load_bitmap(IMG_PATH"/in_wall.png");
+    ex_wall=al_load_bitmap(IMG_PATH"/ex_wall.png");
+    soil=al_load_bitmap(IMG_PATH"/soil.png");
+    diamond=al_load_bitmap(IMG_PATH"/diamond.png");
+    rock=al_load_bitmap(IMG_PATH"/rock.png");
+    gate=al_load_bitmap(IMG_PATH"/gate.png");
+    spider=al_load_bitmap(IMG_PATH"/spider.png");
+    miner=al_load_bitmap(IMG_PATH"/miner.png");
+    water=al_load_bitmap(IMG_PATH"/water.png");
+    monster=al_load_bitmap(IMG_PATH"/monster.png");
+    empty_cell=al_load_bitmap(IMG_PATH"/empty_cell.png");
+}
+
+void destroy_cave_bitmaps(){
+    al_destroy_bitmap(in_wall);
+    al_destroy_bitmap(ex_wall);
+    al_destroy_bitmap(soil);
+    al_destroy_bitmap(diamond);
+    al_destroy_bitmap(rock);
+    al_destroy_bitmap(gate);
+    al_destroy_bitmap(spider);
+    al_destroy_bitmap(miner);
+    al_destroy_bitmap(water);
+    al_destroy_bitmap(monster);
+    al_destroy_bitmap(empty_cell);
 }

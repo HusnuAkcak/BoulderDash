@@ -9,6 +9,7 @@
 
 void
 start_game(Game *game,int scr_width,int scr_height){
+
     ALLEGRO_BITMAP          *image1;
     ALLEGRO_BITMAP          *image2;
     ALLEGRO_SAMPLE          *sample;
@@ -37,52 +38,116 @@ start_game(Game *game,int scr_width,int scr_height){
 }
 
 void
+display_game(Game * g){
+
+    Cave *curr_cave;
+    ALLEGRO_EVENT ev;
+    int i,j;
+    bool cont;  /*continue                                                */
+
+    curr_cave=g->head_cave;
+    cont=true;
+    /*Miner's location is found.                                          */
+    for(i=0;i<curr_cave->dim_row;++i){
+        for(j=0;j<curr_cave->dim_col;++j){
+            if(curr_cave->content[i][j]==MINER){
+                g->miner.coord_r=i;
+                g->miner.coord_c=j;
+            }
+        }
+    }
+
+    display_curr_cave(curr_cave);
+    while(cont){
+        al_wait_for_event(event_queue,&ev);
+        if(ev.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
+            cont=false;
+        }
+        else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
+            if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE){
+                cont=false;
+            }
+            else if(ev.keyboard.keycode==ALLEGRO_KEY_DOWN){
+                cont=move(curr_cave,&(g->miner),DOWN);
+            }
+            else if(ev.keyboard.keycode==ALLEGRO_KEY_UP){
+                cont=move(curr_cave,&(g->miner),UP);
+            }
+            else if(ev.keyboard.keycode==ALLEGRO_KEY_LEFT){
+                cont=move(curr_cave,&(g->miner),LEFT);
+            }
+            else if(ev.keyboard.keycode==ALLEGRO_KEY_RIGHT){
+                cont=move(curr_cave,&(g->miner),RIGHT);
+            }
+        }
+    }
+    return;
+}
+
+void
+display_curr_cave(Cave * cave){
+
+    int row,col;
+
+    if(!al_init_image_addon()){
+        al_show_native_message_box(display,"Error","Error",
+        "Failed to initialize al_init_image_addon",NULL,ALLEGRO_MESSAGEBOX_ERROR);
+        return;
+    }
+
+    al_clear_to_color(al_map_rgb(0,0,0));
+    for(row=0;row<cave->dim_row;++row){
+        for(col=0;col<cave->dim_col;++col){
+            display_cell(row, col, cave->content[row][col]);
+        }
+    }
+    al_flip_display();
+    return;
+}
+
+void
 display_cell(int row, int col,Content content){
-    ALLEGRO_BITMAP *bitmap;
 
     switch(content){
         case EX_WALL:
-            bitmap=al_load_bitmap(IMG_PATH"/WALL.png");
+            al_draw_bitmap(ex_wall, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case IN_WALL:
-            bitmap=al_load_bitmap(IMG_PATH"/wall.png");
+            al_draw_bitmap(in_wall, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case SOIL:
-            bitmap=al_load_bitmap(IMG_PATH"/soil.png");
+            al_draw_bitmap(soil, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case DIAMOND:
-            bitmap=al_load_bitmap(IMG_PATH"/diamond.png");
+            al_draw_bitmap(diamond, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case ROCK:
-            bitmap=al_load_bitmap(IMG_PATH"/rock.png");
+            al_draw_bitmap(rock, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case MINER:
-            bitmap=al_load_bitmap(IMG_PATH"/miner.png");
+            al_draw_bitmap(miner, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case MONSTER:
-            bitmap=al_load_bitmap(IMG_PATH"/monster.png");
+            al_draw_bitmap(monster, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case GATE:
-            bitmap=al_load_bitmap(IMG_PATH"/gate.png");
+            al_draw_bitmap(gate, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case SPIDER:
-            bitmap=al_load_bitmap(IMG_PATH"/spider.png");
+            al_draw_bitmap(spider, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case WATER:
-            bitmap=al_load_bitmap(IMG_PATH"/water.png");
+            al_draw_bitmap(water, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         case EMPTY_CELL:
-            bitmap=al_load_bitmap(IMG_PATH"/empty_cell.png");
+            al_draw_bitmap(empty_cell, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
             break;
         }
-
-        al_draw_bitmap(bitmap, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
-        al_flip_display();
-        al_destroy_bitmap(bitmap);
 }
 
 bool
 move(Cave * curr_cave,Miner *m,Direction dir){
+
     char target;/*target cell               ]                               */
     int r,c;    /*row and column                                            */
     bool cont;  /*continue                                                  */
@@ -154,75 +219,13 @@ move(Cave * curr_cave,Miner *m,Direction dir){
             curr_cave->content[m->coord_r][m->coord_c]=MINER;
             display_cell(m->coord_r, m->coord_c,EMPTY_CELL);
             display_cell(m->coord_r, m->coord_c, MINER);
+        }else if(curr_cave->content[m->coord_r][m->coord_c]==MONSTER ||
+                    curr_cave->content[m->coord_r][m->coord_c]==SPIDER){
+            display_cell(m->coord_r, m->coord_c, MINER);
+            //restart_cave(curr_cave, m);    
         }
 
     }
-
+    al_flip_display();
     return cont;
-}
-
-void
-display_game(Game * g)
-{
-    Cave *curr_cave;
-    ALLEGRO_EVENT ev;
-    int i,j;
-    bool cont;  /*continue                                                */
-
-    curr_cave=g->head_cave;
-    cont=true;
-    /*Miner's location is found.                                          */
-    for(i=0;i<curr_cave->dim_row;++i){
-        for(j=0;j<curr_cave->dim_col;++j){
-            if(curr_cave->content[i][j]==MINER){
-                g->miner.coord_r=i;
-                g->miner.coord_c=j;
-            }
-        }
-    }
-
-    display_curr_cave(curr_cave);
-    while(cont){
-        al_wait_for_event(event_queue,&ev);
-        if(ev.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
-            cont=false;
-        }
-        else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
-            if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE){
-                cont=false;
-            }
-            else if(ev.keyboard.keycode==ALLEGRO_KEY_DOWN){
-                cont=move(curr_cave,&(g->miner),DOWN);
-            }
-            else if(ev.keyboard.keycode==ALLEGRO_KEY_UP){
-                cont=move(curr_cave,&(g->miner),UP);
-            }
-            else if(ev.keyboard.keycode==ALLEGRO_KEY_LEFT){
-                cont=move(curr_cave,&(g->miner),LEFT);
-            }
-            else if(ev.keyboard.keycode==ALLEGRO_KEY_RIGHT){
-                cont=move(curr_cave,&(g->miner),RIGHT);
-            }
-        }
-    }
-    return;
-}
-
-void
-display_curr_cave(Cave * cave){
-    int row,col;
-
-    if(!al_init_image_addon()){
-        al_show_native_message_box(display,"Error","Error",
-        "Failed to initialize al_init_image_addon",NULL,ALLEGRO_MESSAGEBOX_ERROR);
-        return;
-    }
-
-    al_clear_to_color(al_map_rgb(0,0,0));
-    for(row=0;row<cave->dim_row;++row){
-        for(col=0;col<cave->dim_col;++col){
-            display_cell(row, col, cave->content[row][col]);
-        }
-    }
-    return;
 }
