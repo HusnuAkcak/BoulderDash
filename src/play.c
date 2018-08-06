@@ -42,20 +42,11 @@ display_game(Game * g){
 
     Cave *curr_cave;
     ALLEGRO_EVENT ev;
-    int i,j;
     bool cont;  /*continue                                                */
 
     curr_cave=g->head_cave;
     cont=true;
-    /*Miner's location is found.                                          */
-    for(i=0;i<curr_cave->dim_row;++i){
-        for(j=0;j<curr_cave->dim_col;++j){
-            if(curr_cave->content[i][j]==MINER){
-                g->miner.coord_r=i;
-                g->miner.coord_c=j;
-            }
-        }
-    }
+    find_miner_loc(curr_cave, &(g->miner));    /*Miner's location is found. */
 
     display_curr_cave(curr_cave);
     while(cont){
@@ -222,10 +213,26 @@ move(Cave * curr_cave,Miner *m,Direction dir){
         }else if(curr_cave->content[m->coord_r][m->coord_c]==MONSTER ||
                     curr_cave->content[m->coord_r][m->coord_c]==SPIDER){
             display_cell(m->coord_r, m->coord_c, MINER);
-            //restart_cave(curr_cave, m);    
+            //restart_cave(curr_cave, m);
         }
 
     }
     al_flip_display();
     return cont;
+}
+
+void
+find_miner_loc(Cave *curr_cave, Miner *m){
+
+    int r,c;
+
+    for(r=0;r<curr_cave->dim_row;++r){
+        for(c=0;c<curr_cave->dim_col;++c){
+            if(curr_cave->content[r][c]==MINER){
+                m->coord_r=r;
+                m->coord_c=c;
+            }
+        }
+    }
+    return;
 }
