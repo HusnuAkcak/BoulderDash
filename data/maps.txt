@@ -26,8 +26,8 @@ Cave 1
 [map]
 WWWWWWWWWWWWWWWWWWWW
 WXdddrdddddddddddMdW
-Wrrrdddrrrrr...rrrrW
-Wllllll...........PW
+Wrrrdddrrrrr...rrr.W
+Wllllll...S.......PW
 WWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]

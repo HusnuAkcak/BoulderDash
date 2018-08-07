@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-//#include<string.h>
 #include"allegro5/allegro.h"
 #include"allegro5/allegro_image.h"
 #include"allegro5/allegro_native_dialog.h"
@@ -8,6 +7,18 @@
 
 #define LINE_SIZE 240   /*when it is changes, update 'README' and 'maps.txt'
                     file to specify the line size requirement.              */
+
+void
+string_cpy(char *dest, const char *src){
+
+    int i;
+
+    for(i=0;src[i]!=0;++i){
+        dest[i]=src[i];
+    }
+    dest[i]=0;
+    return;
+}
 
 int
 string_cmp(const char * str1, const char *str2){

@@ -59,7 +59,7 @@ main()
     al_destroy_display(display);
     al_destroy_font(font);
     al_destroy_timer(timer);
-    
+
     destroy_cave_bitmaps();
     free_caves(game.head_cave);
     return 0;

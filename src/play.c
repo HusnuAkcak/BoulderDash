@@ -10,14 +10,14 @@
 void
 start_game(Game *game,int scr_width,int scr_height){
 
-    ALLEGRO_BITMAP          *image1;
-    ALLEGRO_BITMAP          *image2;
-    ALLEGRO_SAMPLE          *sample;
+    ALLEGRO_BITMAP      *image1;
+    ALLEGRO_BITMAP      *image2;
+    ALLEGRO_SAMPLE      *sample;
 
     /*intro music                                                      */
     al_reserve_samples(1);
     sample=al_load_sample(AUDIO_PATH"/Music.wav");
-    al_play_sample(sample,1.0,0.0,1.0,ALLEGRO_PLAYMODE_LOOP,NULL);
+    al_play_sample(sample,1.0,0.0,1.0,ALLEGRO_PLAYMODE_ONCE,NULL);
 
     image1=al_load_bitmap(IMG_PATH"/boulder_dash.jpg");
     al_draw_bitmap(image1,scr_width/3,scr_height/3,0);
@@ -30,6 +30,9 @@ start_game(Game *game,int scr_width,int scr_height){
     al_rest(0.5);
     al_clear_to_color(al_map_rgb(0,0,0));
 
+    game->miner.life=MINER_LIFE;
+    game->miner.score=0;
+    game->miner.curr_cave_score=0;
     display_game(game);
 
     al_destroy_bitmap(image1);
@@ -38,37 +41,90 @@ start_game(Game *game,int scr_width,int scr_height){
 }
 
 void
+copy_cave(Cave *dest, Cave* src){
+    int r,c;
+
+    for(r=0;r<dest->dim_row;++r){
+        free(dest->content[r]);
+    }
+    if(dest->content!=0){
+        free(dest->content);
+    }
+
+    string_cpy(dest->cave_name, src->cave_name);
+    dest->dim_row=src->dim_row;
+    dest->dim_col=src->dim_col;
+    dest->max_time=src->max_time;
+    dest->dia_req=src->dia_req;
+    dest->dia_val=src->dia_val;
+    dest->ex_dia_val=src->ex_dia_val;
+
+    dest->content=(Content**)calloc(dest->dim_row, sizeof(Content*));
+    for(r=0;r<dest->dim_row; ++r){
+        dest->content[r]=(Content*)calloc(dest->dim_col, sizeof(Content));
+    }
+    for(r=0;r<dest->dim_row;++r){
+        for(c=0;c<dest->dim_col;++c){
+            dest->content[r][c]=src->content[r][c];
+        }
+    }
+    return;
+}
+
+void
+restart_cave(Game *g,Cave *curr_cave){
+
+    Cave *temp_cave;
+
+    for(    temp_cave=g->head_cave;
+            string_cmp(temp_cave->cave_name, curr_cave->cave_name)!=0;
+            temp_cave=temp_cave->next
+        );
+
+    copy_cave(curr_cave, temp_cave);
+    find_miner_loc(curr_cave, &(g->miner));
+    g->miner.score=(g->miner.score)-(g->miner.curr_cave_score);
+    g->miner.curr_cave_score=0;
+    display_curr_cave(curr_cave);
+    return;
+}
+
+void
 display_game(Game * g){
 
-    Cave *curr_cave;
+    Cave curr_cave;
     ALLEGRO_EVENT ev;
-    bool cont;  /*continue                                                */
+    Status status;  /*status of the game(continue ,restart, end)            */
 
-    curr_cave=g->head_cave;
-    cont=true;
-    find_miner_loc(curr_cave, &(g->miner));    /*Miner's location is found. */
-
-    display_curr_cave(curr_cave);
-    while(cont){
+    status=CONTINUE;
+    curr_cave.content=NULL;
+    curr_cave.dim_row=0;
+    curr_cave.dim_col=0;
+    copy_cave(&curr_cave, g->head_cave);
+    find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
+    display_curr_cave(&curr_cave);
+    while(status!=END){
         al_wait_for_event(event_queue,&ev);
         if(ev.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
-            cont=false;
-        }
-        else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
+            status=END;
+        }else if(status==RESTART){
+            restart_cave(g, &curr_cave);
+            status=CONTINUE;
+        }else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
             if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE){
-                cont=false;
+                status=END;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_DOWN){
-                cont=move(curr_cave,&(g->miner),DOWN);
+                status=move(&curr_cave,&(g->miner),DOWN);
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_UP){
-                cont=move(curr_cave,&(g->miner),UP);
+                status=move(&curr_cave,&(g->miner),UP);
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_LEFT){
-                cont=move(curr_cave,&(g->miner),LEFT);
+                status=move(&curr_cave,&(g->miner),LEFT);
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_RIGHT){
-                cont=move(curr_cave,&(g->miner),RIGHT);
+                status=move(&curr_cave,&(g->miner),RIGHT);
             }
         }
     }
@@ -85,7 +141,6 @@ display_curr_cave(Cave * cave){
         "Failed to initialize al_init_image_addon",NULL,ALLEGRO_MESSAGEBOX_ERROR);
         return;
     }
-
     al_clear_to_color(al_map_rgb(0,0,0));
     for(row=0;row<cave->dim_row;++row){
         for(col=0;col<cave->dim_col;++col){
@@ -136,14 +191,14 @@ display_cell(int row, int col,Content content){
         }
 }
 
-bool
+Status
 move(Cave * curr_cave,Miner *m,Direction dir){
 
-    char target;/*target cell               ]                               */
-    int r,c;    /*row and column                                            */
-    bool cont;  /*continue                                                  */
+    char target;    /*target cell                                           */
+    int r,c;        /*row and column                                        */
+    Status status;  /*status of the game(restart, continue, end)            */
 
-    cont=true;
+    status=CONTINUE;
 
     /*target is determined                                                  */
     if(dir==UP){
@@ -162,20 +217,25 @@ move(Cave * curr_cave,Miner *m,Direction dir){
         display_cell(m->coord_r, m->coord_c,EMPTY_CELL);
 
         if(dir==UP){
-            //curr_cave->content[m->coord_r-1][m->coord_c]=MINER;
             m->coord_r=m->coord_r-1;
         }else if(dir==RIGHT){
-            //curr_cave->content[m->coord_r][m->coord_c+1]=MINER;
             m->coord_c=m->coord_c+1;
         }else if(dir==DOWN){
-            //curr_cave->content[m->coord_r+1][m->coord_c]=MINER;
             m->coord_r=m->coord_r+1;
         }else if(dir==LEFT){
-            //curr_cave->content[m->coord_r][m->coord_c-1]=MINER;
             m->coord_c=m->coord_c-1;
         }
 
-        if(curr_cave->content[m->coord_r][m->coord_c]==GATE){
+        if(is_miner_dead(curr_cave, m)==true){
+
+            --m->life;
+            display_cell(m->coord_r, m->coord_c, MINER);
+
+            if(m->life>0)
+                status=RESTART;
+            else
+                status=END;
+        }else if(curr_cave->content[m->coord_r][m->coord_c]==GATE){
             // curr_cave->content[m->coord_r][m->coord_c]=MINER;
             display_cell(m->coord_r, m->coord_c, MINER);
             if(curr_cave->dia_req<=0 && curr_cave->next!=NULL){
@@ -191,7 +251,7 @@ move(Cave * curr_cave,Miner *m,Direction dir){
                 }
             }
             else if(curr_cave->dia_req<=0 && curr_cave->next==NULL){
-                cont=false;
+                status=END;
             }
         }
         else if(curr_cave->content[m->coord_r][m->coord_c]==SOIL ||
@@ -202,23 +262,39 @@ move(Cave * curr_cave,Miner *m,Direction dir){
         }else if(curr_cave->content[m->coord_r][m->coord_c]==DIAMOND){
             if(curr_cave->dia_req>0){
                 --curr_cave->dia_req;
+                m->curr_cave_score+=curr_cave->dia_val;
                 m->score+=curr_cave->dia_val;
             }else{
+                m->curr_cave_score+=curr_cave->ex_dia_val;
                 m->score+=curr_cave->ex_dia_val;
             }
             /*Board view is adjusted.                                       */
             curr_cave->content[m->coord_r][m->coord_c]=MINER;
             display_cell(m->coord_r, m->coord_c,EMPTY_CELL);
             display_cell(m->coord_r, m->coord_c, MINER);
-        }else if(curr_cave->content[m->coord_r][m->coord_c]==MONSTER ||
-                    curr_cave->content[m->coord_r][m->coord_c]==SPIDER){
-            display_cell(m->coord_r, m->coord_c, MINER);
-            //restart_cave(curr_cave, m);
         }
 
     }
     al_flip_display();
-    return cont;
+    return status;
+}
+
+bool is_miner_dead(Cave *curr_cave, Miner *m){
+    bool dead;
+
+    dead=false;
+    if( curr_cave->content[m->coord_r-1][m->coord_c]==MONSTER
+        || curr_cave->content[m->coord_r+1][m->coord_c]==MONSTER
+        || curr_cave->content[m->coord_r][m->coord_c-1]==MONSTER
+        || curr_cave->content[m->coord_r][m->coord_c+1]==MONSTER
+        || curr_cave->content[m->coord_r+1][m->coord_c]==SPIDER
+        || curr_cave->content[m->coord_r-1][m->coord_c]==SPIDER
+        || curr_cave->content[m->coord_r][m->coord_c-1]==SPIDER
+        || curr_cave->content[m->coord_r][m->coord_c+1]==SPIDER
+    ){
+        dead=true;
+    }
+    return dead;
 }
 
 void
