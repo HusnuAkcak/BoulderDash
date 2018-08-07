@@ -3,18 +3,27 @@
 #ifndef _BASE_H_
 #define _BASE_H_
 
+/*###########################################################################
+                                CONSTANTS
+###########################################################################*/
 #define NAME_LENGTH 15                              /*cave name             */
 #define MAP_FILE "../data/maps.txt"                 /*cave maps             */
-#define FONT_SIZE 13                                /*game font size        */
-#define FONT_FILE "../data/font/boulder_dash.ttf"   /*game font type        */
+#define FONT_SIZE 25                                /*game font size        */
+#define FONT_FILE "../data/font/commodore.ttf"      /*game font type        */
 #define CELL_SIZE 32                                /*icon pixel            */
 #define MINER_LIFE 3
-#define FPS 60                                      /*display frequence     */                        
+#define FPS 60                                      /*display frequence     */
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
 #define IMG_PATH "../data/img"
+/*###########################################################################
+                            END OF CONSTANTS
+###########################################################################*/
 
+/*###########################################################################
+                            GLOBAL VARIABLES
+###########################################################################*/
 /*Allegro components.                                                       */
 ALLEGRO_DISPLAY         *display;
 ALLEGRO_EVENT_QUEUE     *event_queue;
@@ -26,6 +35,7 @@ ALLEGRO_BITMAP *ex_wall;
 ALLEGRO_BITMAP *in_wall;
 ALLEGRO_BITMAP *soil;
 ALLEGRO_BITMAP *diamond;
+ALLEGRO_BITMAP *small_diamond;
 ALLEGRO_BITMAP *rock;
 ALLEGRO_BITMAP *gate;
 ALLEGRO_BITMAP *spider;
@@ -35,6 +45,10 @@ ALLEGRO_BITMAP *monster;
 ALLEGRO_BITMAP *empty_cell;
 
 /*###########################################################################
+                        END OF GLOBAL VARIABLES
+###########################################################################*/
+
+/*###########################################################################
                                 ENUM TYPES
 ###########################################################################*/
 /*Cave symbols meaning.                                                     */
@@ -42,6 +56,9 @@ typedef enum{EX_WALL='W',IN_WALL='w',SOIL='.',DIAMOND='d',ROCK='r',GATE='X',
             SPIDER='S',MINER='P',WATER='l',MONSTER='M',EMPTY_CELL=' '}Content;
 typedef enum{UP, RIGHT, DOWN, LEFT}Direction;   /*movement directions       */
 typedef enum{RESTART, END, CONTINUE}Status;     /*status of the game        */
+/*###########################################################################
+                            END OF ENUM TYPES
+###########################################################################*/
 
 /*###########################################################################
                                 STRUCT TYPES
@@ -63,7 +80,7 @@ typedef struct Cave
 
 typedef struct
 {
-    int score, curr_cave_score;
+    int score, curr_cave_score, collected_dia;/*current lvl collected diamond*/
     int coord_r,coord_c;
     int life;
 }Miner;
@@ -73,7 +90,9 @@ typedef struct Game
     Miner miner;
     Cave *head_cave;
 }Game;
-
+/*###########################################################################
+                            END OF STRUCT TYPES
+###########################################################################*/
 
 /*###########################################################################
                             FUNCTION PROTOTYPES
@@ -110,4 +129,22 @@ int string_cmp(const char * str1, const char *str2);
 ----------------------------------------------------------------------------*/
 void string_cpy(char *dest, const char *src);
 
+/*-- void int_to_str(...) ---------------------------------------------------
+    Converts int to char array, then assign it to dest.
+---------------------------------------------------------------------------*/
+void int_to_str(char *dest, int src);
+
+/*-- void reverse_str(...) -------------------------------------------------
+    Reverses given char array.
+--------------------------------------------------------------------------*/
+void reverse_str(char *str);
+
+/*-- void string_cat(...) --------------------------------------------------
+    merges two char arrays.
+---------------------------------------------------------------------------*/
+void string_cat(char* first, char *sec);
+
+/*###########################################################################
+                        END OF FUNCTION PROTOTYPES
+###########################################################################*/
 #endif

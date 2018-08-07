@@ -42,10 +42,15 @@ void display_cell(int row, int column,Content content);
 ----------------------------------------------------------------------------*/
 Status move(Cave *curr_cave,Miner *m,Direction dir);
 
-/*-- bool is_miner_dead(...) ------------------------------------------------------
+/*-- bool is_miner_dead(...) ------------------------------------------------
     Tells, if miner is died or not in this cell.
 ---------------------------------------------------------------------------*/
 bool is_miner_dead(Cave *curr_cave, Miner *m);
+
+/*-- void display_score_panel(Cave *curr_cave, Miner *m) --------------------
+    Display the current score, time, and pause button at top of the screen.
+---------------------------------------------------------------------------*/
+void display_score_panel(Cave *curr_cave, Miner *m);
 
 /*-- void find_miner_loc(...) -----------------------------------------------
     When cave start or restart, finds miner's location from the current cave.

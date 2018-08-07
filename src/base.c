@@ -105,6 +105,83 @@ import_caves(Game *game){
             fgets(line,LINE_SIZE,inp);
         }
     }
+    return;
+}
+
+void
+int_to_str(char *dest, int src){
+    int i;
+    if(src/10==0){
+        for(i=0;dest[i]!=0;++i);
+        dest[i]='0'+(src%10);
+        dest[i+1]='\0';
+        reverse_str(dest);
+    }else{
+        for(i=0;dest[i]!=0;++i);
+        dest[i]='0'+(src%10);
+        dest[i+1]='\0';
+        int_to_str(dest, src/10);
+    }
+    return;
+}
+
+void
+reverse_str(char *str){
+    int i,str_len;
+    char temp;
+
+    for(str_len=0;str[str_len]!=0;++str_len);
+
+    for(i=0; i<str_len/2; ++i){
+        temp=str[i];
+        str[i]=str[str_len-i-1];/*-1 comes from null character,at the end.*/
+        str[str_len-i-1]=temp;
+    }
+    return;
+}
+
+void
+string_cat(char* first, char *sec){
+    int i;
+
+    for(i=0;first[i]!=0;++i);
+    first[i+1]=sec[0];
+
+    return;
+}
+void
+load_cave_bitmaps(){
+    in_wall=al_load_bitmap(IMG_PATH"/in_wall.png");
+    ex_wall=al_load_bitmap(IMG_PATH"/ex_wall.png");
+    soil=al_load_bitmap(IMG_PATH"/soil.png");
+    diamond=al_load_bitmap(IMG_PATH"/diamond.png");
+    small_diamond=al_load_bitmap(IMG_PATH"/small_diamond.png");
+    rock=al_load_bitmap(IMG_PATH"/rock.png");
+    gate=al_load_bitmap(IMG_PATH"/gate.png");
+    spider=al_load_bitmap(IMG_PATH"/spider.png");
+    miner=al_load_bitmap(IMG_PATH"/miner.png");
+    water=al_load_bitmap(IMG_PATH"/water.png");
+    monster=al_load_bitmap(IMG_PATH"/monster.png");
+    empty_cell=al_load_bitmap(IMG_PATH"/empty_cell.png");
+
+    return;
+}
+
+void destroy_cave_bitmaps(){
+    al_destroy_bitmap(in_wall);
+    al_destroy_bitmap(ex_wall);
+    al_destroy_bitmap(soil);
+    al_destroy_bitmap(diamond);
+    al_destroy_bitmap(small_diamond);
+    al_destroy_bitmap(rock);
+    al_destroy_bitmap(gate);
+    al_destroy_bitmap(spider);
+    al_destroy_bitmap(miner);
+    al_destroy_bitmap(water);
+    al_destroy_bitmap(monster);
+    al_destroy_bitmap(empty_cell);
+
+    return;
 }
 
 void
@@ -124,33 +201,4 @@ free_caves(Cave *head_cave){
         free(temp_cave);
     }
     return;
-}
-
-void
-load_cave_bitmaps(){
-    in_wall=al_load_bitmap(IMG_PATH"/in_wall.png");
-    ex_wall=al_load_bitmap(IMG_PATH"/ex_wall.png");
-    soil=al_load_bitmap(IMG_PATH"/soil.png");
-    diamond=al_load_bitmap(IMG_PATH"/diamond.png");
-    rock=al_load_bitmap(IMG_PATH"/rock.png");
-    gate=al_load_bitmap(IMG_PATH"/gate.png");
-    spider=al_load_bitmap(IMG_PATH"/spider.png");
-    miner=al_load_bitmap(IMG_PATH"/miner.png");
-    water=al_load_bitmap(IMG_PATH"/water.png");
-    monster=al_load_bitmap(IMG_PATH"/monster.png");
-    empty_cell=al_load_bitmap(IMG_PATH"/empty_cell.png");
-}
-
-void destroy_cave_bitmaps(){
-    al_destroy_bitmap(in_wall);
-    al_destroy_bitmap(ex_wall);
-    al_destroy_bitmap(soil);
-    al_destroy_bitmap(diamond);
-    al_destroy_bitmap(rock);
-    al_destroy_bitmap(gate);
-    al_destroy_bitmap(spider);
-    al_destroy_bitmap(miner);
-    al_destroy_bitmap(water);
-    al_destroy_bitmap(monster);
-    al_destroy_bitmap(empty_cell);
 }
