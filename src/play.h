@@ -52,6 +52,13 @@ bool is_miner_dead(Cave *curr_cave, Miner *m);
 ---------------------------------------------------------------------------*/
 void display_score_panel(Cave *curr_cave, Miner *m);
 
+/*-- void control_falling(...) ----------------------------------------------
+    After each move it, current cave may be changed. According to the rules of
+    the game if there is an empty_cell under a diamond or a rock, the object
+    must be falled.
+---------------------------------------------------------------------------*/
+void control_falling(Cave *curr_cave, int r, int c);
+
 /*-- void find_miner_loc(...) -----------------------------------------------
     When cave start or restart, finds miner's location from the current cave.
 ---------------------------------------------------------------------------*/

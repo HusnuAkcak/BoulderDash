@@ -86,6 +86,7 @@ restart_cave(Game *g,Cave *curr_cave){
     find_miner_loc(curr_cave, &(g->miner));
     g->miner.score=(g->miner.score)-(g->miner.curr_cave_score);
     g->miner.curr_cave_score=0;
+    g->miner.collected_dia=0;
     display_curr_cave(curr_cave);
     display_score_panel(curr_cave, &(g->miner));
     al_flip_display();
@@ -146,7 +147,7 @@ display_curr_cave(Cave * cave){
         "Failed to initialize al_init_image_addon",NULL,ALLEGRO_MESSAGEBOX_ERROR);
         return;
     }
-    al_clear_to_color(al_map_rgb(0,0,0));
+    al_clear_to_color(al_map_rgb(128, 153, 51));
     for(row=0;row<cave->dim_row;++row){
         for(col=0;col<cave->dim_col;++col){
             display_cell(row, col, cave->content[row][col]);
@@ -157,6 +158,9 @@ display_curr_cave(Cave * cave){
 
 void
 display_cell(int row, int col,Content content){
+
+    /*Firstly, target cell is cleared.                                      */
+    al_draw_bitmap(empty_cell, col*CELL_SIZE, CELL_SIZE+(row*CELL_SIZE), 0);
 
     switch(content){
         case EX_WALL:
@@ -198,69 +202,99 @@ display_cell(int row, int col,Content content){
 Status
 move(Cave * curr_cave,Miner *m,Direction dir){
 
-    char target;    /*target cell                                           */
-    int r,c;        /*row and column                                        */
-    Status status;  /*status of the game(restart, continue, end)            */
+    char target;        /*target cell                                       */
+    char after_target;  /*comes after target cell(in the same direction)    */
+    Status status;      /*status of the game(restart, continue, end)        */
 
     status=CONTINUE;
 
     /*target is determined                                                  */
     if(dir==UP){
         target=curr_cave->content[m->coord_r-1][m->coord_c];
+        if((m->coord_r-2)>=0)
+            after_target=curr_cave->content[m->coord_r-2][m->coord_c];
+        else
+            after_target=EX_WALL;
     }else if(dir==RIGHT){
         target=curr_cave->content[m->coord_r][m->coord_c+1];
+        if((m->coord_c+2)<(curr_cave->dim_col))
+            after_target=curr_cave->content[m->coord_r][m->coord_c+2];
+        else
+            after_target=EX_WALL;
     }else if(dir==DOWN){
         target=curr_cave->content[m->coord_r+1][m->coord_c];
+        if((m->coord_r+2)<(curr_cave->dim_row))
+            after_target=curr_cave->content[m->coord_r+2][m->coord_c];
+        else
+            after_target=EX_WALL;
     }else if(dir==LEFT){
         target=curr_cave->content[m->coord_r][m->coord_c-1];
+        if((m->coord_c-2)>=0)
+            after_target=curr_cave->content[m->coord_r][m->coord_c-2];
+        else
+            after_target=EX_WALL;
     }
-
+    //fprintf(stderr, "%c, ",target);
     /*it is controlled and if the move possible player's choice is applied. */
-    if(target!=IN_WALL && target !=EX_WALL && target!=ROCK && target!=WATER){
+    if(target!=IN_WALL && target !=EX_WALL && target!=WATER &&
+                                !(target==ROCK && after_target!=EMPTY_CELL)  ){
+        /*previous location is changed as EMPTY_CELL                        */
         curr_cave->content[m->coord_r][m->coord_c]=EMPTY_CELL;
-        display_cell(m->coord_r, m->coord_c,EMPTY_CELL);
+        display_cell(m->coord_r, m->coord_c ,curr_cave->content[m->coord_r][m->coord_c]);
 
         if(dir==UP){
+            curr_cave->content[m->coord_r-1][m->coord_c]=MINER;
+            display_cell(m->coord_r, m->coord_c,curr_cave->content[m->coord_r][m->coord_c]);
             m->coord_r=m->coord_r-1;
         }else if(dir==RIGHT){
+            curr_cave->content[m->coord_r][m->coord_c+1]=MINER;
+            display_cell(m->coord_r, m->coord_c,curr_cave->content[m->coord_r][m->coord_c]);
+            control_falling(curr_cave, m->coord_r, m->coord_c);
             m->coord_c=m->coord_c+1;
         }else if(dir==DOWN){
+            curr_cave->content[m->coord_r+1][m->coord_c]=MINER;
+            display_cell(m->coord_r, m->coord_c,curr_cave->content[m->coord_r][m->coord_c]);
+            control_falling(curr_cave, m->coord_r, m->coord_c);
             m->coord_r=m->coord_r+1;
         }else if(dir==LEFT){
+            curr_cave->content[m->coord_r][m->coord_c-1]=MINER;
+            display_cell(m->coord_r, m->coord_c,curr_cave->content[m->coord_r][m->coord_c]);
+            control_falling(curr_cave, m->coord_r, m->coord_c);
             m->coord_c=m->coord_c-1;
         }
 
+        //fprintf(stderr,"3:17;%c\n", curr_cave->content[3][17]);
+        //al_flip_display();
+        //fprintf(stderr, "(6,18):%c \n",curr_cave->content[6][8]);
+        //fprintf(stderr, "%d,%d\n",m->coord_r,m->coord_c);
+
+        //fprintf(stderr,"3:17;%c\n", curr_cave->content[3][17]);
+
+        //fprintf(stderr, "%c \n",target);
         if(is_miner_dead(curr_cave, m)==true){
             --m->life;
+            find_miner_loc(curr_cave, m);
+            //fprintf(stderr, "%d,%d :%c\n", m->coord_r, m->coord_c, curr_cave->content[m->coord_r][m->coord_c]);
             display_cell(m->coord_r, m->coord_c, MINER);
             if(m->life>0)
                 status=RESTART;
             else
                 status=END;
-        }else if(curr_cave->content[m->coord_r][m->coord_c]==GATE){
+        }else if(curr_cave->content[m->coord_r][m->coord_c]==GATE){/*this function is adjusted then.*/
             display_cell(m->coord_r, m->coord_c, MINER);
             if(curr_cave->dia_req<=0 && curr_cave->next!=NULL){
                 curr_cave=curr_cave->next;
-                /*For new level, the miner's location is found.             */
-                for(r=0;r<curr_cave->dim_row;++r){
-                    for(c=0;c<curr_cave->dim_col;++c){
-                        if(curr_cave->content[r][c]==MINER){
-                            m->coord_r=r;
-                            m->coord_c=c;
-                        }
-                    }
-                }
-            }
-            else if(curr_cave->dia_req<=0 && curr_cave->next==NULL){
+                find_miner_loc(curr_cave, m);
+            }else if(curr_cave->dia_req<=0 && curr_cave->next==NULL){
                 status=END;
             }
         }
-        else if(curr_cave->content[m->coord_r][m->coord_c]==SOIL ||
-                    curr_cave->content[m->coord_r][m->coord_c]==' '){
+        else if(target==SOIL || target==EMPTY_CELL){
+            //fprintf(stderr, "The cell is empty\n");
             curr_cave->content[m->coord_r][m->coord_c]=MINER;
-            display_cell(m->coord_r, m->coord_c, EMPTY_CELL);
             display_cell(m->coord_r, m->coord_c, MINER);
-        }else if(curr_cave->content[m->coord_r][m->coord_c]==DIAMOND){
+        }else if(target==DIAMOND){
+            //fprintf(stderr,"I collect a diamond!\n");
             ++m->collected_dia;
             if(curr_cave->dia_req>0){
                 --curr_cave->dia_req;
@@ -271,11 +305,36 @@ move(Cave * curr_cave,Miner *m,Direction dir){
                 m->score+=curr_cave->ex_dia_val;
             }
             /*Board view is adjusted.                                       */
+            //fprintf(stderr, "eat diamond %d,%d :%c\n",m->coord_r, m->coord_c, curr_cave->content[m->coord_r][m->coord_c]);
             curr_cave->content[m->coord_r][m->coord_c]=MINER;
-            display_cell(m->coord_r, m->coord_c,EMPTY_CELL);
             display_cell(m->coord_r, m->coord_c, MINER);
+        }else if(target==ROCK && after_target==EMPTY_CELL){
+            // fprintf(stderr, "I am carrying rocks!\n");
+            curr_cave->content[m->coord_r][m->coord_c]=MINER;
+            display_cell(m->coord_r, m->coord_c, MINER);
+            switch(dir){
+                case UP:
+                    curr_cave->content[m->coord_r-1][m->coord_c]=ROCK;
+                    display_cell(m->coord_r-1, m->coord_c, ROCK);
+                    control_falling(curr_cave, m->coord_r-1, m->coord_c);
+                    break;
+                case DOWN:
+                    curr_cave->content[m->coord_r+1][m->coord_c]=ROCK;
+                    display_cell(m->coord_r+1, m->coord_c, ROCK);
+                    control_falling(curr_cave, m->coord_r+1, m->coord_c);
+                    break;
+                case RIGHT:
+                    curr_cave->content[m->coord_r][m->coord_c+1]=ROCK;
+                    display_cell(m->coord_r, m->coord_c+1, ROCK);
+                    control_falling(curr_cave, m->coord_r, m->coord_c+1);
+                    break;
+                case LEFT:
+                    curr_cave->content[m->coord_r][m->coord_c-1]=ROCK;
+                    display_cell(m->coord_r, m->coord_c-1, ROCK);
+                    control_falling(curr_cave, m->coord_r, m->coord_c-1);
+                    break;
+            }
         }
-
     }
     display_score_panel(curr_cave, m);
     al_flip_display();
@@ -284,6 +343,55 @@ move(Cave * curr_cave,Miner *m,Direction dir){
         al_rest(0.5);
 
     return status;
+}
+
+void
+control_falling(Cave *cave, int r, int c){
+    //int i,j;
+    //fprintf(stderr, "Falling objects are being contrelled.\n");
+    //fprintf(stderr, "coord:(%d,%d) %c \n", r, c, cave->content[r][c]);
+    if((cave->content[r-1][c]==DIAMOND || cave->content[r-1][c]==ROCK) && cave->content[r][c]==EMPTY_CELL) {
+        cave->content[r][c]=cave->content[r-1][c];
+        cave->content[r-1][c]=EMPTY_CELL;
+        /*related bitmaps are being updated.                                */
+        display_cell(r, c , cave->content[r][c]);
+        //fprintf(stderr,"%d %d:%c, ",r, c, cave->content[r][c]);
+        display_cell(r-1, c , cave->content[r-1][c]);
+        //fprintf(stderr,"%d %d:%c\n",r-1, c, cave->content[r-1][c]);
+        //al_flip_display();
+
+        //fprintf(stderr,"3:17;%c\n",cave->content[3][17]);
+        //fprintf(stderr, "%d,%d:%c\n",r,c,cave->content[r][c]);
+        //fprintf(stderr, "%d,%d:%c\n",r-1,c,cave->content[r-1][c]);
+        //fprintf(stderr, "Somethings are being falled.\n");
+    }
+    //fprintf(stderr, "next row:%d\n",r+1);
+    /*if there is somethings upperside                                      */
+    if((r-2)>=0 && (cave->content[r-2][c]==ROCK || cave->content[r-2][c]== DIAMOND)){
+        //fprintf(stderr,"control upper side.\n");
+        control_falling(cave, r-2, c);
+    }
+    /*if the object is still falling.                                       */
+    if((r+1)<(cave->dim_row) && cave->content[r+1][c]==EMPTY_CELL){
+        // fprintf(stderr, "%d,%d- ",r+1,c);
+
+        control_falling(cave, r+1, c);
+        // for(i=0;i<cave->dim_row;++i){
+        //     for(j=0;j<cave->dim_col;++j){
+        //         //if(cave->content[i][j]==MINER)
+        //         //    fprintf(stderr,"Miner's location is [%d,%d]\n",i,j);
+        //         fprintf(stderr,"%c",cave->content[i][j]);
+        //     }
+        //     fprintf(stderr,"\n");
+        // }
+        // fprintf(stderr,"\n\n");
+    }
+
+
+    //al_update_display_region(r, c, CELL_SIZE, CELL_SIZE);
+    //al_update_display_region(r-1, c, CELL_SIZE, CELL_SIZE);
+
+    return;
 }
 
 bool is_miner_dead(Cave *curr_cave, Miner *m){
@@ -370,5 +478,6 @@ find_miner_loc(Cave *curr_cave, Miner *m){
             }
         }
     }
+    //fprintf(stderr ,"in miner :%d,%d\n",r,c);
     return;
 }

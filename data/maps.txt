@@ -18,16 +18,23 @@
 [game]
 [cave]
 Cave 1
-20x5
+20x12
 20
 6
 14 25
 
 [map]
 WWWWWWWWWWWWWWWWWWWW
-WXdddrdddddddddddMdW
-Wrrrdddrrrrr...rrr.W
-Wllllll...S.......PW
+WdXddrdddddddddddMdW
+Wdrrdddddddr...rrr.W
+Wdlllllddddr...ddr.W
+Wddddddddrrr...rrr.W
+Wdrrdddddddd...rr..W
+WddddrdddddddddddMdW
+Wdrrdddddddr...rrr.W
+Wddddddddddr...ddr.W
+Wddddddddrrr...rrr.W
+WP.................W
 WWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
