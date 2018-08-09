@@ -204,36 +204,74 @@ move(Cave * curr_cave,Miner *m,Direction dir){
 
     char target;        /*target cell                                       */
     char after_target;  /*comes after target cell(in the same direction)    */
+    Point tp, atp;    /* tp=target point, atp=after target point          */
     Status status;      /*status of the game(restart, continue, end)        */
 
     status=CONTINUE;
 
-    /*target is determined                                                  */
+    /*target and after target are determined                                */
     if(dir==UP){
+        tp.c=m->coord_c;
+        tp.r=m->coord_r-1;
+        atp.c=tp.c;
+        if(((tp.r)-1)>=0){
+            atp.r=(tp.r)-1;
+        }else{
+            atp.r=tp.r;
+        }
+
         target=curr_cave->content[m->coord_r-1][m->coord_c];
         if((m->coord_r-2)>=0)
             after_target=curr_cave->content[m->coord_r-2][m->coord_c];
         else
             after_target=EX_WALL;
     }else if(dir==RIGHT){
+        tp.r=m->coord_r;
+        tp.c=m->coord_c+1;
+        atp.r=tp.r;
+        if( ((tp.c)+1)<(curr_cave->dim_col) ){
+            atp.c=(tp.c)+1;
+        }else{
+            atp.c=tp.c;
+        }
+
         target=curr_cave->content[m->coord_r][m->coord_c+1];
         if((m->coord_c+2)<(curr_cave->dim_col))
             after_target=curr_cave->content[m->coord_r][m->coord_c+2];
         else
             after_target=EX_WALL;
     }else if(dir==DOWN){
+        tp.c=m->coord_c;
+        tp.r=m->coord_r+1;
+        atp.c=tp.c;
+        if( ((tp.r)+1)<(curr_cave->dim_row) ){
+            atp.r=(tp.r)+1;
+        }else{
+            atp.r=tp.r;
+        }
+
         target=curr_cave->content[m->coord_r+1][m->coord_c];
         if((m->coord_r+2)<(curr_cave->dim_row))
             after_target=curr_cave->content[m->coord_r+2][m->coord_c];
         else
             after_target=EX_WALL;
     }else if(dir==LEFT){
+        tp.r=m->coord_r;
+        tp.c=m->coord_c-1;
+        atp.r=tp.r;
+        if(((tp.c)-1)>=0){
+            atp.c=(tp.c)-1;
+        }else{
+            atp.c=tp.c;
+        }
+
         target=curr_cave->content[m->coord_r][m->coord_c-1];
         if((m->coord_c-2)>=0)
             after_target=curr_cave->content[m->coord_r][m->coord_c-2];
         else
             after_target=EX_WALL;
     }
+
     //fprintf(stderr, "%c, ",target);
     /*it is controlled and if the move possible player's choice is applied. */
     if(target!=IN_WALL && target !=EX_WALL && target!=WATER &&

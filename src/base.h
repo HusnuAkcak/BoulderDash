@@ -65,7 +65,7 @@ typedef enum{RESTART, END, CONTINUE}Status;     /*status of the game        */
 ###########################################################################*/
 typedef struct Point
 {
-    int x,y;
+    int r,c;
     struct Point*next;
 }Point;
 
