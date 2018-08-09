@@ -16,6 +16,7 @@
 # [DiamondValue]
 
 [game]
+
 [cave]
 Cave 1
 20x12

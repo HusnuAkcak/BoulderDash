@@ -53,7 +53,8 @@ main()
     load_cave_bitmaps();/*Cave bitmaps are loaded.                          */
 
     /*The game structure is started.                                        */
-    start_game(&game,disp_data.width,disp_data.height);
+    intro_game(&game,disp_data.width,disp_data.height);
+    play_game(&game);
 
     /*free operations                                                       */
     al_destroy_event_queue(event_queue);

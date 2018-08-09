@@ -63,14 +63,11 @@ typedef enum{RESTART, END, CONTINUE}Status;     /*status of the game        */
 /*###########################################################################
                                 STRUCT TYPES
 ###########################################################################*/
-typedef struct Point
-{
+typedef struct Point{
     int r,c;
-    struct Point*next;
 }Point;
 
-typedef struct Cave
-{
+typedef struct Cave{
     char cave_name[NAME_LENGTH];
     int dim_row,dim_col;    /*dimension_x and dimension_y       */
     int max_time,dia_req,dia_val,ex_dia_val;    /*dia =diamond  */
@@ -78,15 +75,13 @@ typedef struct Cave
     struct Cave *next;
 }Cave;
 
-typedef struct
-{
+typedef struct Miner{
     int score, curr_cave_score, collected_dia;/*current lvl collected diamond*/
-    int coord_r,coord_c;
+    Point pos;
     int life;
 }Miner;
 
-typedef struct Game
-{
+typedef struct Game{
     Miner miner;
     Cave *head_cave;
 }Game;
