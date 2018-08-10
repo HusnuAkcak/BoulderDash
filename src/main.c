@@ -28,14 +28,14 @@ main()
     al_init_acodec_addon();
     al_init_image_addon();
 
-    /*Mouse and keyboard options are installed.*/
+    /*Mouse and keyboard options are installed.                             */
     al_install_mouse();
     al_install_keyboard();
 
     /*Screen width and height informations are recieved with 'disp_data'    */
     al_get_display_mode(0, &disp_data);
 
-    timer=al_create_timer(1/FPS);       /*Timer is created                  */
+    timer=al_create_timer(1.0/FPS);     /*Timer is created                  */
     event_queue=al_create_event_queue();/*Event queue is created.           */
 
     /*The font is loaded.                                                   */
@@ -49,6 +49,7 @@ main()
     al_register_event_source(event_queue,al_get_timer_event_source(timer));
     al_register_event_source(event_queue,al_get_mouse_event_source());
     al_register_event_source(event_queue,al_get_keyboard_event_source());
+    al_start_timer(timer);
 
     load_cave_bitmaps();/*Cave bitmaps are loaded.                          */
 
@@ -61,8 +62,8 @@ main()
     al_destroy_display(display);
     al_destroy_font(font);
     al_destroy_timer(timer);
-
     destroy_cave_bitmaps();
     free_caves(game.head_cave);
+
     return 0;
 }

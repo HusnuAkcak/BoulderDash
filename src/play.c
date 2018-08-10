@@ -48,7 +48,10 @@ play_game(Game * g){
     Cave curr_cave;
     ALLEGRO_EVENT ev;
     Status status;  /*status of the game(continue ,restart, end)            */
+    bool display;
+    int curr_time;
 
+    display=true;
     status=CONTINUE;
     curr_cave.content=NULL;
     curr_cave.dim_row=0;
@@ -56,15 +59,37 @@ play_game(Game * g){
     copy_cave(&curr_cave, g->head_cave);
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
     display_curr_cave(&curr_cave);
-    display_score_panel(&curr_cave, &(g->miner));
-    al_flip_display();
     while(status!=END){
+        if(display && al_is_event_queue_empty(event_queue)){
+            curr_time=(100*al_get_time());
+
+            if(curr_time%FPS==0){/*time is decreased.                       */
+                --curr_cave.max_time;
+            }
+            display_score_panel(&curr_cave, &(g->miner));
+
+            if(curr_time%FALLING_FREQ==0)
+                control_falling(&curr_cave);
+
+            al_flip_display();
+
+            if(is_miner_dead(&curr_cave, &(g->miner))){
+                --(g->miner.life);
+                if((g->miner.life)>0){
+                    al_rest(0.5);
+                    restart_cave(g, &curr_cave);
+                }else{
+                    al_rest(0.5);
+                    status=END;
+                }
+            }
+
+            display=false;
+        }
+
         al_wait_for_event(event_queue,&ev);
         if(ev.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
             status=END;
-        }else if(status==RESTART){
-            restart_cave(g, &curr_cave);
-            status=CONTINUE;
         }else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
             if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE){
                 status=END;
@@ -81,7 +106,10 @@ play_game(Game * g){
             else if(ev.keyboard.keycode==ALLEGRO_KEY_RIGHT){
                 status=move(&curr_cave,&(g->miner),RIGHT);
             }
+        }else if(ev.type==ALLEGRO_EVENT_TIMER){
+            display=true;
         }
+
     }
     return;
 }
@@ -110,19 +138,7 @@ move(Cave * cave,Miner *m,Direction dir){
         cave->content[pre_pos.r][pre_pos.c]=EMPTY_CELL;
         display_cell(pre_pos, cave);
 
-        if(dir!=UP){
-            /*if any rock or diamond(objects that can be falled) is being falled.   */
-            control_falling(cave, pre_pos);/*miner's old position is sent.          */
-        }
-
-        if(is_miner_dead(cave, m)==true){
-            --m->life;
-            if(m->life>0)
-                status=RESTART;
-            else
-                status=END;
-        }
-        else if(cave->content[tp.r][tp.c]==GATE){/*this function will be adjusted then.*/
+        if(cave->content[tp.r][tp.c]==GATE){/*this function will be adjusted then.*/
             if(cave->dia_req<=0 && cave->next!=NULL){
                 cave=cave->next;
             }
@@ -145,18 +161,12 @@ move(Cave * cave,Miner *m,Direction dir){
         else if(target==ROCK && after_target==EMPTY_CELL){
             if(dir!=UP){
                 cave->content[atp.r][atp.c]=ROCK;
-                control_falling(cave, atp);/*if the rock is falled its new loc. */
             }
         }
     }
 
     display_cell(tp, cave);
     display_cell(atp, cave);
-    display_score_panel(cave, m);
-    al_flip_display();
-    /*if miner is died, screen is freezed for a while.                      */
-    if(status!=CONTINUE)
-        al_rest(0.5);
 
     return status;
 }

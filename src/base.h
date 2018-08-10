@@ -8,11 +8,12 @@
 ###########################################################################*/
 #define NAME_LENGTH 15                              /*cave name             */
 #define MAP_FILE "../data/maps.txt"                 /*cave maps             */
-#define FONT_SIZE 25                                /*game font size        */
 #define FONT_FILE "../data/font/commodore.ttf"      /*game font type        */
+#define FONT_SIZE 25                                /*game font size        */
 #define CELL_SIZE 32                                /*icon pixel            */
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
+#define FALLING_FREQ FPS/30                          /*falling frequence.    */
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
