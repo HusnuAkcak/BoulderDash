@@ -13,7 +13,7 @@
 #define CELL_SIZE 32                                /*icon pixel            */
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
-#define FALLING_FREQ FPS/30                          /*falling frequence.    */
+#define FALL_PS 5                                   /*falling frequence.    */
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -28,7 +28,7 @@
 /*Allegro components.                                                       */
 ALLEGRO_DISPLAY         *display;
 ALLEGRO_EVENT_QUEUE     *event_queue;
-ALLEGRO_TIMER           *timer;
+ALLEGRO_TIMER           *main_timer, *panel_timer, *falling_timer;
 ALLEGRO_FONT            *font;
 
 /*CAVE BITMAPS                                                              */

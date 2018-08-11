@@ -9,28 +9,57 @@
 
 void
 control_falling(Cave *cave){
-    Point underside;
+    /*Since display cell required a Point parameter and for clarification,
+    Point types are used. */
+    Point target;
     Point pos;
+    bool falling;
     int r,c;
 
+    falling=false;
     /*border is not controlled.                                             */
-    for(r=1;r<(cave->dim_row)-1;++r){
-        for(c=1;c<(cave->dim_col)-1;++c){
-
+    for(r=(cave->dim_row)-1;r>0;--r){
+        for(c=(cave->dim_col)-1;c>0;--c){
+            /*underside control         */
             if( (cave->content[r][c]==DIAMOND || cave->content[r][c]==ROCK) &&
                                             cave->content[r+1][c]==EMPTY_CELL ){
-                cave->content[r+1][c]=cave->content[r][c];
-                cave->content[r][c]=EMPTY_CELL;
-
-                /*related bitmaps are being updated.                        */
+                falling=true;
                 pos.r=r;
                 pos.c=c;
-                underside.r=r+1;
-                underside.c=c;
-                display_cell(pos , cave);
-                display_cell(underside, cave);
+                target.r=r+1;
+                target.c=c;
+            }
+            /*left diagonal control    */
+            else if(
+                     (cave->content[r][c]==DIAMOND || cave->content[r][c]==ROCK) &&
+                     (cave->content[r+1][c]==DIAMOND || cave->content[r+1][c]==ROCK) &&
+                     cave->content[r][c-1]==EMPTY_CELL && cave->content[r+1][c-1]==EMPTY_CELL ){
+                falling=true;
+                pos.r=r;
+                pos.c=c;
+                target.r=r+1;
+                target.c=c-1;
+            }
+            /*right diagonal control   */
+            else if(
+                     (cave->content[r][c]==DIAMOND || cave->content[r][c]==ROCK) &&
+                     (cave->content[r+1][c]==DIAMOND || cave->content[r+1][c]==ROCK) &&
+                     cave->content[r][c+1]==EMPTY_CELL && cave->content[r+1][c+1]==EMPTY_CELL ){
+                falling=true;
+                pos.r=r;
+                pos.c=c;
+                target.r=r+1;
+                target.c=c+1;
             }
 
+            if(falling){
+                cave->content[target.r][target.c]=cave->content[pos.r][pos.c];
+                cave->content[pos.r][pos.c]=EMPTY_CELL;
+                /*related bitmaps are being updated.                        */
+                display_cell(pos , cave);
+                display_cell(target, cave);
+                falling=false;
+            }
         }
     }
     return;

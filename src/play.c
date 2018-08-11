@@ -49,7 +49,6 @@ play_game(Game * g){
     ALLEGRO_EVENT ev;
     Status status;  /*status of the game(continue ,restart, end)            */
     bool display;
-    int curr_time;
 
     display=true;
     status=CONTINUE;
@@ -61,15 +60,8 @@ play_game(Game * g){
     display_curr_cave(&curr_cave);
     while(status!=END){
         if(display && al_is_event_queue_empty(event_queue)){
-            curr_time=(100*al_get_time());
 
-            if(curr_time%FPS==0){/*time is decreased.                       */
-                --curr_cave.max_time;
-            }
             display_score_panel(&curr_cave, &(g->miner));
-
-            if(curr_time%FALLING_FREQ==0)
-                control_falling(&curr_cave);
 
             al_flip_display();
 
@@ -106,10 +98,18 @@ play_game(Game * g){
             else if(ev.keyboard.keycode==ALLEGRO_KEY_RIGHT){
                 status=move(&curr_cave,&(g->miner),RIGHT);
             }
-        }else if(ev.type==ALLEGRO_EVENT_TIMER){
-            display=true;
         }
-
+        else if(ev.type==ALLEGRO_EVENT_TIMER){
+            if(ev.timer.source==main_timer){
+                display=true;
+            }
+            if(ev.timer.source==panel_timer){
+                --curr_cave.max_time;
+            }
+            if(ev.timer.source==falling_timer){
+                control_falling(&curr_cave);
+            }
+        }
     }
     return;
 }
@@ -128,7 +128,7 @@ move(Cave * cave,Miner *m,Direction dir){
 
     /*it is controlled and if the move possible player's choice is applied. */
     if(target!=IN_WALL && target !=EX_WALL && target!=WATER &&
-                                !(target==ROCK && after_target!=EMPTY_CELL)  ){
+     !(target==ROCK && dir==UP) && !(target==ROCK && after_target!=EMPTY_CELL)){
 
         pre_pos=m->pos;
         m->pos=tp;      /*miner goes to target position(tp)                 */

@@ -16,28 +16,6 @@
 # [DiamondValue]
 
 [game]
-[cave]
-Cave 0
-20x12
-20
-6
-14 25
-
-[map]
-WWWWWWWWWWWWWWWWWWWW
-WdXddrdddddddddddMdW
-Wdrrdddddddr...rrr.W
-Wdlllllddddr...ddr.W
-Wddddddddrrr...rrr.W
-Wdrrdddddddd...rr..W
-WddddrdddddddddddMdW
-Wdrrdddddddr...rrr.W
-WMdddddddddr...ddr.W
-Wddddddddrrr...rrr.W
-WP.................W
-WWWWWWWWWWWWWWWWWWWW
-[/map]
-[/cave]
 
 [cave]
 Cave 1
@@ -50,9 +28,9 @@ Cave 1
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W..d...r.rdr.......... ..r. .......r..rW
 Wr....r... . ......r r....r... ... ....W
-W.r.. r..d.r. ...r... .r.... ..r. .. drW
-W. ... ..r.  ..... ....r....d..........W
-W...r....rr .r... . d.. ...rd..r..r... W
+W.r.. r..d.r. ...r.....r.... ..r. .. drW
+W........r.. ..... ....r....d..........W
+W...r....rr .r... . d......rd..r..r... W
 W.r.... .....r ..r......  .... ..r.. r.W
 W...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
 W.... .r.... ....r.. .. ..r.... .......W
@@ -60,11 +38,11 @@ W. .......r............r...drr..d.r.r..W
 WP..r.... r.rr.d.....r..r......r.r..drXW
 W..rr ....r.rr..r..r......... ..r......W
 W.....d......... ..... ..d...r.....r...W
-Wd....r.r..r.......r.... ...  r.... ...W
+Wd....r.r..r.......r.... ... .r........W
 W. .wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
 W.... . ...r...r.... .. .r......... ..rW
 W.......r .......r....... ..r...r ...rrW
-W .d...r .....r. rr.....d..............W
+W .d...r......r. rr.....d..............W
 Wr... .. .. ...r....r.r...r..r.r......rW
 Wr..r. ...dd. ........ ...r.....r... d W
 W..rr..dr.........r...rr.... ...r ....rW
@@ -227,5 +205,29 @@ W.................PW
 WWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
+
+[cave]
+Cave 7
+20x12
+20
+6
+14 25
+
+[map]
+WWWWWWWWWWWWWWWWWWWW
+WdXddrdddddddddddMdW
+Wdrrdddddddr...rrr.W
+Wdlllllddddr...ddr.W
+Wddddddddrrr...rrr.W
+Wdrrdddddddd...rr..W
+WddddrdddddddddddMdW
+Wdrrdddddddr...rrr.W
+WMdddddddddr...ddr.W
+Wddddddddrrr...rrr.W
+WP.................W
+WWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
 
 [/game]

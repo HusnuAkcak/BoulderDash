@@ -35,7 +35,9 @@ main()
     /*Screen width and height informations are recieved with 'disp_data'    */
     al_get_display_mode(0, &disp_data);
 
-    timer=al_create_timer(1.0/FPS);     /*Timer is created                  */
+    main_timer=al_create_timer(1.0/FPS);/*timer for game operations         */
+    panel_timer=al_create_timer(1.0);/*timer for score panel                */
+    falling_timer=al_create_timer(1.0/FALL_PS);/*timer for falling obj.     */
     event_queue=al_create_event_queue();/*Event queue is created.           */
 
     /*The font is loaded.                                                   */
@@ -46,10 +48,15 @@ main()
 
     /*The components are introduced to the event queue                      */
     al_register_event_source(event_queue,al_get_display_event_source(display));
-    al_register_event_source(event_queue,al_get_timer_event_source(timer));
+    al_register_event_source(event_queue,al_get_timer_event_source(main_timer));
+    al_register_event_source(event_queue,al_get_timer_event_source(panel_timer));
+    al_register_event_source(event_queue,al_get_timer_event_source(falling_timer));
     al_register_event_source(event_queue,al_get_mouse_event_source());
     al_register_event_source(event_queue,al_get_keyboard_event_source());
-    al_start_timer(timer);
+
+    al_start_timer(main_timer);
+    al_start_timer(panel_timer);
+    al_start_timer(falling_timer);
 
     load_cave_bitmaps();/*Cave bitmaps are loaded.                          */
 
@@ -61,7 +68,7 @@ main()
     al_destroy_event_queue(event_queue);
     al_destroy_display(display);
     al_destroy_font(font);
-    al_destroy_timer(timer);
+    al_destroy_timer(main_timer);
     destroy_cave_bitmaps();
     free_caves(game.head_cave);
 
