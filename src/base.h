@@ -14,6 +14,7 @@
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
 #define FALL_PS 5                                   /*falling frequence.    */
+#define MPS 10                                      /*miner's speed freq.   */
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -28,7 +29,7 @@
 /*Allegro components.                                                       */
 ALLEGRO_DISPLAY         *display;
 ALLEGRO_EVENT_QUEUE     *event_queue;
-ALLEGRO_TIMER           *main_timer, *panel_timer, *falling_timer;
+ALLEGRO_TIMER           *main_timer, *panel_timer, *falling_timer, *miner_timer;
 ALLEGRO_FONT            *font;
 
 /*CAVE BITMAPS                                                              */
@@ -52,11 +53,11 @@ ALLEGRO_BITMAP *empty_cell;
 /*###########################################################################
                                 ENUM TYPES
 ###########################################################################*/
-/*Cave symbols meaning.                                                     */
+/*Cave symbols meaning.                                                    */
 typedef enum{EX_WALL='W',IN_WALL='w',SOIL='.',DIAMOND='d',ROCK='r',GATE='X',
             SPIDER='S',MINER='P',WATER='l',MONSTER='M',EMPTY_CELL=' '}Content;
-typedef enum{UP, RIGHT, DOWN, LEFT}Direction;   /*movement directions       */
-typedef enum{RESTART, END, CONTINUE}Status;     /*status of the game        */
+typedef enum{UP, RIGHT, DOWN, LEFT, NONE}Direction; /*movement directions  */
+typedef enum{RESTART, END, CONTINUE}Status;         /*status of the game   */
 /*###########################################################################
                             END OF ENUM TYPES
 ###########################################################################*/

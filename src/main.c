@@ -38,6 +38,7 @@ main()
     main_timer=al_create_timer(1.0/FPS);/*timer for game operations         */
     panel_timer=al_create_timer(1.0);/*timer for score panel                */
     falling_timer=al_create_timer(1.0/FALL_PS);/*timer for falling obj.     */
+    miner_timer=al_create_timer(1.0/MPS);
     event_queue=al_create_event_queue();/*Event queue is created.           */
 
     /*The font is loaded.                                                   */
@@ -51,12 +52,14 @@ main()
     al_register_event_source(event_queue,al_get_timer_event_source(main_timer));
     al_register_event_source(event_queue,al_get_timer_event_source(panel_timer));
     al_register_event_source(event_queue,al_get_timer_event_source(falling_timer));
+    al_register_event_source(event_queue,al_get_timer_event_source(miner_timer));
     al_register_event_source(event_queue,al_get_mouse_event_source());
     al_register_event_source(event_queue,al_get_keyboard_event_source());
 
     al_start_timer(main_timer);
     al_start_timer(panel_timer);
     al_start_timer(falling_timer);
+    al_start_timer(miner_timer);
 
     load_cave_bitmaps();/*Cave bitmaps are loaded.                          */
 

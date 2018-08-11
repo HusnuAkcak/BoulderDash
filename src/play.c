@@ -47,11 +47,13 @@ play_game(Game * g){
 
     Cave curr_cave;
     ALLEGRO_EVENT ev;
+    Direction dir;
     Status status;  /*status of the game(continue ,restart, end)            */
     bool display;
 
     display=true;
     status=CONTINUE;
+    dir=NONE;
     curr_cave.content=NULL;
     curr_cave.dim_row=0;
     curr_cave.dim_col=0;
@@ -82,22 +84,26 @@ play_game(Game * g){
         al_wait_for_event(event_queue,&ev);
         if(ev.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
             status=END;
-        }else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
+        }
+        else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
             if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE){
                 status=END;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_DOWN){
-                status=move(&curr_cave,&(g->miner),DOWN);
+                dir=DOWN;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_UP){
-                status=move(&curr_cave,&(g->miner),UP);
+                dir=UP;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_LEFT){
-                status=move(&curr_cave,&(g->miner),LEFT);
+                dir=LEFT;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_RIGHT){
-                status=move(&curr_cave,&(g->miner),RIGHT);
+                dir=RIGHT;
             }
+        }
+        else if(ev.type==ALLEGRO_EVENT_KEY_UP){
+            dir=NONE;
         }
         else if(ev.type==ALLEGRO_EVENT_TIMER){
             if(ev.timer.source==main_timer){
@@ -108,6 +114,9 @@ play_game(Game * g){
             }
             if(ev.timer.source==falling_timer){
                 control_falling(&curr_cave);
+            }
+            if(ev.timer.source==miner_timer && dir!=NONE && status!=END){
+                status=move(&curr_cave, &(g->miner),dir);
             }
         }
     }
