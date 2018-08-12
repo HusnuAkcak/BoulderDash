@@ -66,8 +66,7 @@ control_falling(Cave *cave){
 }
 
 void
-detect_target(Direction dir, Cave *cave, Miner *m,
-    char *target, char *after_target, Point *tp,Point *atp){
+detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_target, Point *tp,Point *atp){
 
     /*We can reach target and after target from tp and atp but for convinience,
     we keep the two kind of data.*/
@@ -155,31 +154,31 @@ find_miner_loc(Cave *curr_cave, Miner *m){
 
 void
 set_camera(Game *g, Cave *curr_cave){
-    double screen_height, screen_width, cave_height, cave_width;
-    Point camera_pos;
+    Point camera_pos, screen_dim, cave_dim;
 
-    screen_height=al_get_display_height(display);
-    screen_width=al_get_display_width(display);
-    cave_height=(curr_cave->dim_row+1)*CELL_SIZE;/* '+1' from score panel   */
-    cave_width=(curr_cave->dim_col)*CELL_SIZE;
+    screen_dim.r=al_get_display_height(display);
+    screen_dim.c=al_get_display_width(display);
+    cave_dim.r=(curr_cave->dim_row)*CELL_SIZE;
+    cave_dim.c=(curr_cave->dim_col)*CELL_SIZE;
 
-    /*Rest of the function is quite standart process for camera operations  */
+    /*Miner is kept center of the screen                                    */
+    camera_pos.r=(g->miner.pos.r*CELL_SIZE)-(screen_dim.r/2);
+    camera_pos.c=(g->miner.pos.c*CELL_SIZE)-(screen_dim.c/2);
 
-    /*It is desired to keep miner center of the screen                      */
-    camera_pos.r=(g->miner.pos.r*CELL_SIZE)-(screen_height/2);
-    camera_pos.c=(g->miner.pos.c*CELL_SIZE)-(screen_width/2);
-
+    // fprintf(stderr, "cave_dim:%d,%d\n",cave_dim.r, cave_dim.c);
+    // fprintf(stderr, "screen_dim:%d,%d\n",screen_dim.r/2, screen_dim.c/2);
+    // fprintf(stderr, "miner's pos:%d,%d\n",g->miner.pos.r, g->miner.pos.c);
     /*if camera is not in cave border it is adjusted                        */
     if(camera_pos.r<0)
         camera_pos.r=0;
-    else if(camera_pos.r>(cave_height-screen_height))
-        camera_pos.r=cave_height-screen_height+CELL_SIZE;
+    else if(camera_pos.r>(cave_dim.r-screen_dim.r))
+        camera_pos.r=cave_dim.r-screen_dim.r+CELL_SIZE;
 
     /*if camera is not in cave border it is adjusted                        */
     if(camera_pos.c<0)
         camera_pos.c=0;
-    else if(camera_pos.c>(cave_width-screen_width))
-        camera_pos.c=cave_width-screen_width+CELL_SIZE;
+    else if(camera_pos.c>(cave_dim.c-screen_dim.c))
+        camera_pos.c=cave_dim.c-screen_dim.c+CELL_SIZE;
 
     g->cam_pos=camera_pos;
     return;

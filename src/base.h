@@ -14,7 +14,7 @@
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
 #define FALL_PS 5                                   /*falling frequence.    */
-#define MPS 7                                      /*miner's speed freq.   */
+#define MPS 10                                       /*miner's speed freq.   */
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -67,13 +67,13 @@ typedef enum{RESTART, END, CONTINUE}Status;         /*status of the game   */
                                 STRUCT TYPES
 ###########################################################################*/
 typedef struct Point{
-    int r,c;
+    int c,r;/*column(c) is in place of x, row(r) is in place of y.  */
 }Point;
 
 typedef struct Cave{
     char cave_name[NAME_LENGTH];
-    int dim_row,dim_col;    /*dimension_x and dimension_y       */
-    int max_time,dia_req,dia_val,ex_dia_val;    /*dia =diamond  */
+    int dim_row,dim_col;    /*dimension_x and dimension_y           */
+    int max_time,dia_req,dia_val,ex_dia_val;    /*dia =diamond      */
     Content **content;
     struct Cave *next;
 }Cave;

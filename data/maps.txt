@@ -1,4 +1,4 @@
-#Converted using Tim Stridmann's X2BDCFF converter.
+d#Converted using Tim Stridmann's X2BDCFF converter.
 #Last modified: 14 July 2018
 #http://www.boulder-dash.nl/
 #Date=September 2002
@@ -26,8 +26,8 @@ Cave 1
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W.Pd...r.rdr.......... ..r. .......r..rW
-Wrd...r... . ......r r....r... ... ....W
+W.Pd..Md.ddd.......... ..d. .......d..dW
+Wdd...r... . ......r r....r... ... ....W
 W.d.. r..d.r. ...r.....r.... ..r. .. drW
 W.d......r.. ..... ....r....d..........W
 W.d.r....rr .r... . d......rd..r..r... W
@@ -44,8 +44,8 @@ Wddd. . ...r...r.... .. .r......... ..rW
 Wddd....r .......r....... ..r...r ...rrW
 Wddd...r......r. rr.....d..............W
 Wddd. .. .. ...r....r.r...r..r.r......rW
-Wdddr. ...dd. ........ ...r.....r... d W
-Wdddr..dr.........r...rr.... ...r ....rW
+Wdddr. ...dd. ............r.....r... d W
+W.dd...d.ddd.......... ..d. .......d..dW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]

@@ -48,9 +48,10 @@ play_game(Game * g){
     ALLEGRO_EVENT ev;
     Direction dir;
     Status status;  /*status of the game(continue ,restart, end)            */
-    bool play;
+    bool play, moving;
 
     play=true;
+    moving=true;
     status=CONTINUE;
     dir=NONE;
     curr_cave.content=NULL;
@@ -58,19 +59,22 @@ play_game(Game * g){
     curr_cave.dim_col=0;
     copy_cave(&curr_cave, g->head_cave);
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
-    // display_curr_cave(&curr_cave);
     while(status!=END){
         if(play && al_is_event_queue_empty(event_queue)){
-            al_clear_to_color(al_map_rgb(0,0,0));
-            display_curr_cave(&curr_cave);
-            al_identity_transform(&camera);
-            set_camera(g, &curr_cave);
-            al_translate_transform(&camera, -(g->cam_pos.c), -(g->cam_pos.r) );
-            al_use_transform(&camera);
-            display_score_panel(&curr_cave, g->cam_pos, &(g->miner));
 
+            if(moving){
+                al_clear_to_color(al_map_rgb(0,0,0));
+                al_identity_transform(&camera);
+                set_camera(g, &curr_cave);
+                al_translate_transform(&camera, -(g->cam_pos.c), -(g->cam_pos.r));
+                al_use_transform(&camera);
+                moving=false;
+            }
+            display_curr_screen(&curr_cave, g);
             al_flip_display();
 
+            /*this control is performed after al_flip_display, because if miner
+             is dead, we freeze the screen for a while.                      */
             if(is_miner_dead(&curr_cave, &(g->miner))){
                 --(g->miner.life);
                 if((g->miner.life)>0){
@@ -81,7 +85,6 @@ play_game(Game * g){
                     status=END;
                 }
             }
-
             play=false;
         }
 
@@ -110,6 +113,7 @@ play_game(Game * g){
             dir=NONE;
         }
         else if(ev.type==ALLEGRO_EVENT_TIMER){
+
             if(ev.timer.source==main_timer){
                 play=true;
             }
@@ -121,6 +125,7 @@ play_game(Game * g){
             }
             if(ev.timer.source==miner_timer && dir!=NONE && status!=END){
                 status=move(&curr_cave, &(g->miner),dir);
+                moving=true;
             }
         }
     }
@@ -176,9 +181,9 @@ move(Cave * cave,Miner *m,Direction dir){
             }
         }
 
-        // display_cell(pre_pos, cave);
-        // display_cell(tp, cave);
-        // display_cell(atp, cave);
+        display_cell(pre_pos, cave);
+        display_cell(tp, cave);
+        display_cell(atp, cave);
     }
 
 
