@@ -27,7 +27,7 @@ bool is_miner_dead(Cave *curr_cave, Miner *m);
 void find_miner_loc(Cave *curr_cave, Miner *miner);
 
 
-/*-- void set_monitor(...) *-------------------------------------------------
+/*-- void set_monitor(...) --------------------------------------------------
     Screen view is set, according to miner's location.
 ---------------------------------------------------------------------------*/
 void set_camera(Game *g, Cave* curr_cave);

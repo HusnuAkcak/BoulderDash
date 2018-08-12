@@ -26,7 +26,7 @@ Cave 1
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W.Pd..Md.ddd.......... ..d. .......d..dW
+W.Pd..MMM.dd..........S..d.S.......d..dW
 Wdd...r... . ......r r....r... ... ....W
 W.d.. r..d.r. ...r.....r.... ..r. .. drW
 W.d......r.. ..... ....r....d..........W

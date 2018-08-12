@@ -47,19 +47,19 @@ play_game(Game * g){
     Cave curr_cave;
     ALLEGRO_EVENT ev;
     Direction dir;
-    Status status;  /*status of the game(continue ,restart, end)            */
-    bool play, moving;
+    Point mouse_pos;
+    bool play, moving;/*play :display screen, moving: miner moves.          */
 
     play=true;
     moving=true;
-    status=CONTINUE;
+    g->status=CONTINUE;
     dir=NONE;
     curr_cave.content=NULL;
     curr_cave.dim_row=0;
     curr_cave.dim_col=0;
     copy_cave(&curr_cave, g->head_cave);
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
-    while(status!=END){
+    while(g->status!=END){
         if(play && al_is_event_queue_empty(event_queue)){
 
             if(moving){
@@ -73,16 +73,16 @@ play_game(Game * g){
             display_curr_screen(&curr_cave, g);
             al_flip_display();
 
+
             /*this control is performed after al_flip_display, because if miner
              is dead, we freeze the screen for a while.                      */
             if(is_miner_dead(&curr_cave, &(g->miner))){
                 --(g->miner.life);
                 if((g->miner.life)>0){
-                    al_rest(0.5);
                     restart_cave(g, &curr_cave);
+                    moving=true;
                 }else{
-                    al_rest(0.5);
-                    status=END;
+                    g->status=END;
                 }
             }
             play=false;
@@ -90,11 +90,11 @@ play_game(Game * g){
 
         al_wait_for_event(event_queue,&ev);
         if(ev.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
-            status=END;
+            g->status=END;
         }
         else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
             if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE){
-                status=END;
+                g->status=END;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_DOWN){
                 dir=DOWN;
@@ -112,19 +112,34 @@ play_game(Game * g){
         else if(ev.type==ALLEGRO_EVENT_KEY_UP){
             dir=NONE;
         }
+        else if(ev.type==ALLEGRO_EVENT_MOUSE_AXES){
+            mouse_pos.c=ev.mouse.x;
+            mouse_pos.r=ev.mouse.y;
+        }
+        else if(ev.type==ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
+            if(mouse_pos.r>0 && mouse_pos.r<CELL_SIZE &&
+                mouse_pos.c>(19*CELL_SIZE) &&
+                mouse_pos.c<(20*CELL_SIZE)
+            ){
+                if(g->status==CONTINUE)
+                    g->status=PAUSE;
+                else if(g->status==PAUSE)
+                    g->status=CONTINUE;
+            }
+        }
         else if(ev.type==ALLEGRO_EVENT_TIMER){
 
             if(ev.timer.source==main_timer){
                 play=true;
             }
-            if(ev.timer.source==panel_timer){
+            if(ev.timer.source==panel_timer && g->status==CONTINUE){
                 --curr_cave.max_time;
             }
-            if(ev.timer.source==falling_timer){
+            if(ev.timer.source==falling_timer && g->status==CONTINUE){
                 control_falling(&curr_cave);
             }
-            if(ev.timer.source==miner_timer && dir!=NONE && status!=END){
-                status=move(&curr_cave, &(g->miner),dir);
+            if(ev.timer.source==miner_timer && dir!=NONE && g->status==CONTINUE){
+                g->status=move(&curr_cave, &(g->miner),dir);
                 moving=true;
             }
         }
@@ -135,7 +150,7 @@ play_game(Game * g){
 Status
 move(Cave * cave,Miner *m,Direction dir){
 
-    Status status;      /*status of the game(restart, continue, end)        */
+    Status status;      /*status of the game                                */
     char target;        /*target cell                                       */
     char after_target;  /*comes after target cell(in the same direction)    */
     Point tp, atp;      /*tp=target point, atp=after target point           */
@@ -156,17 +171,16 @@ move(Cave * cave,Miner *m,Direction dir){
         cave->content[pre_pos.r][pre_pos.c]=EMPTY_CELL;
 
         if(cave->content[tp.r][tp.c]==GATE){/*this function will be adjusted then.*/
-            if(cave->dia_req<=0 && cave->next!=NULL){
+            if((cave->dia_req)-(m->collected_dia)<=0 && cave->next!=NULL){
                 cave=cave->next;
             }
-            else if(cave->dia_req<=0 && cave->next==NULL){
+            else if((cave->dia_req)-(m->collected_dia)<=0 && cave->next==NULL){
                 status=END;
             }
         }
         else if(target==DIAMOND){
             ++m->collected_dia;
-            if(cave->dia_req>0){
-                --cave->dia_req;
+            if((cave->dia_req)-(m->collected_dia)>0){
                 m->curr_cave_score+=cave->dia_val;
                 m->score+=cave->dia_val;    /*general score                 */
             }

@@ -121,6 +121,7 @@ display_score_panel(Cave *curr_cave, Game *g){
     char str_collected_dia[NAME_LENGTH];
     char str_max_time[NAME_LENGTH];
     char str_score[NAME_LENGTH];
+    char str_life[NAME_LENGTH];
 
     str_dia_req[0]=0;
     str_dia_val[0]=0;
@@ -128,34 +129,46 @@ display_score_panel(Cave *curr_cave, Game *g){
     str_collected_dia[0]=0;
     str_max_time[0]=0;
     str_score[0]=0;
+    str_life[0]=0;
 
     /*Score panel is cleared.*/
     for(i=0;i<curr_cave->dim_col;++i){
         al_draw_bitmap(empty_cell, g->cam_pos.c+(i*CELL_SIZE), g->cam_pos.r, 0);
     }
 
-    if(curr_cave->dia_req>0){
+    if( ((curr_cave->dia_req)-(g->miner.collected_dia)) >0){
         int_to_str(str_dia_req, curr_cave->dia_req);
         int_to_str(str_dia_val, curr_cave->dia_val);
 
         al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(2*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_req);
         al_draw_bitmap(small_diamond, g->cam_pos.c+(3*CELL_SIZE), g->cam_pos.r , 0);
-        al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE+4), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_val);
+        al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_val);
 
-    }else if(curr_cave->dia_req<=0){
+    }else if( ((curr_cave->dia_req)-(g->miner.collected_dia))<=0 ){
         int_to_str(str_ex_dia_val, curr_cave->ex_dia_val);
 
         al_draw_bitmap(small_diamond, g->cam_pos.c+(1*CELL_SIZE), g->cam_pos.r , 0);
         al_draw_bitmap(small_diamond, g->cam_pos.c+(2*CELL_SIZE), g->cam_pos.r , 0);
         al_draw_bitmap(small_diamond, g->cam_pos.c+(3*CELL_SIZE), g->cam_pos.r , 0);
-        al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE+4), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_ex_dia_val);
+        al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_ex_dia_val);
     }
     int_to_str(str_collected_dia, g->miner.collected_dia);
     int_to_str(str_max_time, curr_cave->max_time);
     int_to_str(str_score, g->miner.score);
-    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(9*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_collected_dia);
-    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(12*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_max_time);
-    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(15*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);
+    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(8*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_collected_dia);
+    al_draw_bitmap(time_icon, g->cam_pos.c+(9*CELL_SIZE), g->cam_pos.r, 0);
+    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_max_time);
+    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(14*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);
+
+    int_to_str(str_life, g->miner.life);
+    al_draw_bitmap(miner_symbol, g->cam_pos.c+(16*CELL_SIZE), g->cam_pos.r, 0);
+    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(18*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_life);
+
+    if(g->status==CONTINUE)
+        al_draw_bitmap(pause_button, g->cam_pos.c+(19*CELL_SIZE), g->cam_pos.r, 0);
+    else if(g->status==PAUSE)
+        al_draw_bitmap(play_button, g->cam_pos.c+(19*CELL_SIZE), g->cam_pos.r, 0);
+
     return;
 }
 

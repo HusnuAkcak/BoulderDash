@@ -160,10 +160,13 @@ load_cave_bitmaps(){
     gate=al_load_bitmap(IMG_PATH"/gate.png");
     spider=al_load_bitmap(IMG_PATH"/spider.png");
     miner=al_load_bitmap(IMG_PATH"/miner.png");
+    miner_symbol=al_load_bitmap(IMG_PATH"/miner_symbol.png");
     water=al_load_bitmap(IMG_PATH"/water.png");
     monster=al_load_bitmap(IMG_PATH"/monster.png");
     empty_cell=al_load_bitmap(IMG_PATH"/empty_cell.png");
-
+    pause_button=al_load_bitmap(IMG_PATH"/pause.png");
+    play_button=al_load_bitmap(IMG_PATH"/play.png");
+    time_icon=al_load_bitmap(IMG_PATH"/time.png");
     return;
 }
 
@@ -177,9 +180,13 @@ void destroy_cave_bitmaps(){
     al_destroy_bitmap(gate);
     al_destroy_bitmap(spider);
     al_destroy_bitmap(miner);
+    al_destroy_bitmap(miner_symbol);
     al_destroy_bitmap(water);
     al_destroy_bitmap(monster);
     al_destroy_bitmap(empty_cell);
+    al_destroy_bitmap(pause_button);
+    al_destroy_bitmap(play_button);
+    al_destroy_bitmap(time_icon);
 
     return;
 }

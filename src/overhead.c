@@ -8,7 +8,7 @@
 #include"allegro5/allegro_native_dialog.h"
 
 void
-control_falling(Cave *cave){
+control_falling(Cave *cave) {
     /*Since display cell required a Point parameter and for clarification,
     Point types are used. */
     Point target;
@@ -66,7 +66,7 @@ control_falling(Cave *cave){
 }
 
 void
-detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_target, Point *tp,Point *atp){
+detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_target, Point *tp,Point *atp) {
 
     /*We can reach target and after target from tp and atp but for convinience,
     we keep the two kind of data.*/
@@ -117,7 +117,7 @@ detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_targ
 }
 
 bool
-is_miner_dead(Cave *curr_cave, Miner *m){
+is_miner_dead(Cave *curr_cave, Miner *m) {
     bool dead;
 
     dead=false;
@@ -137,7 +137,7 @@ is_miner_dead(Cave *curr_cave, Miner *m){
 }
 
 void
-find_miner_loc(Cave *curr_cave, Miner *m){
+find_miner_loc(Cave *curr_cave, Miner *m) {
 
     int r,c;
 
@@ -153,7 +153,7 @@ find_miner_loc(Cave *curr_cave, Miner *m){
 }
 
 void
-set_camera(Game *g, Cave *curr_cave){
+set_camera(Game *g, Cave *curr_cave) {
     Point camera_pos, screen_dim, cave_dim;
 
     screen_dim.r=al_get_display_height(display);

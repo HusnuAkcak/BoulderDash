@@ -14,7 +14,7 @@
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
 #define FALL_PS 5                                   /*falling frequence.    */
-#define MPS 10                                       /*miner's speed freq.   */
+#define MPS 7                                       /*miner's speed freq.   */
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -43,9 +43,13 @@ ALLEGRO_BITMAP *rock;
 ALLEGRO_BITMAP *gate;
 ALLEGRO_BITMAP *spider;
 ALLEGRO_BITMAP *miner;
+ALLEGRO_BITMAP *miner_symbol;
 ALLEGRO_BITMAP *water;
 ALLEGRO_BITMAP *monster;
 ALLEGRO_BITMAP *empty_cell;
+ALLEGRO_BITMAP *pause_button;
+ALLEGRO_BITMAP *play_button;
+ALLEGRO_BITMAP *time_icon;
 
 /*###########################################################################
                         END OF GLOBAL VARIABLES
@@ -58,7 +62,7 @@ ALLEGRO_BITMAP *empty_cell;
 typedef enum{EX_WALL='W',IN_WALL='w',SOIL='.',DIAMOND='d',ROCK='r',GATE='X',
             SPIDER='S',MINER='P',WATER='l',MONSTER='M',EMPTY_CELL=' '}Content;
 typedef enum{UP, RIGHT, DOWN, LEFT, NONE}Direction; /*movement directions  */
-typedef enum{RESTART, END, CONTINUE}Status;         /*status of the game   */
+typedef enum{PAUSE, RESTART, END, CONTINUE}Status;  /*status of the game   */
 /*###########################################################################
                             END OF ENUM TYPES
 ###########################################################################*/
@@ -88,6 +92,7 @@ typedef struct Game{
     Miner miner;
     Cave *head_cave;
     Point cam_pos;
+    Status status;
 }Game;
 /*###########################################################################
                             END OF STRUCT TYPES
