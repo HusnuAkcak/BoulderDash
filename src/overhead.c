@@ -117,7 +117,8 @@ detect_target(Direction dir, Cave *cave, Miner *m,
     return;
 }
 
-bool is_miner_dead(Cave *curr_cave, Miner *m){
+bool
+is_miner_dead(Cave *curr_cave, Miner *m){
     bool dead;
 
     dead=false;
@@ -136,8 +137,6 @@ bool is_miner_dead(Cave *curr_cave, Miner *m){
     return dead;
 }
 
-
-
 void
 find_miner_loc(Cave *curr_cave, Miner *m){
 
@@ -151,5 +150,37 @@ find_miner_loc(Cave *curr_cave, Miner *m){
             }
         }
     }
+    return;
+}
+
+void
+set_camera(Game *g, Cave *curr_cave){
+    double screen_height, screen_width, cave_height, cave_width;
+    Point camera_pos;
+
+    screen_height=al_get_display_height(display);
+    screen_width=al_get_display_width(display);
+    cave_height=(curr_cave->dim_row+1)*CELL_SIZE;/* '+1' from score panel   */
+    cave_width=(curr_cave->dim_col)*CELL_SIZE;
+
+    /*Rest of the function is quite standart process for camera operations  */
+
+    /*It is desired to keep miner center of the screen                      */
+    camera_pos.r=(g->miner.pos.r*CELL_SIZE)-(screen_height/2);
+    camera_pos.c=(g->miner.pos.c*CELL_SIZE)-(screen_width/2);
+
+    /*if camera is not in cave border it is adjusted                        */
+    if(camera_pos.r<0)
+        camera_pos.r=0;
+    else if(camera_pos.r>(cave_height-screen_height))
+        camera_pos.r=cave_height-screen_height+CELL_SIZE;
+
+    /*if camera is not in cave border it is adjusted                        */
+    if(camera_pos.c<0)
+        camera_pos.c=0;
+    else if(camera_pos.c>(cave_width-screen_width))
+        camera_pos.c=cave_width-screen_width+CELL_SIZE;
+
+    g->cam_pos=camera_pos;
     return;
 }

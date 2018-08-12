@@ -22,7 +22,7 @@ void display_cell(Point pos, Cave* cave);
 /*-- void display_score_panel(Cave *curr_cave, Miner *m) --------------------
     Display the current score, time, and pause button at top of the screen.
 ---------------------------------------------------------------------------*/
-void display_score_panel(Cave *curr_cave, Miner *m);
+void display_score_panel(Cave *curr_cave, Point cam_pos, Miner *m);
 
 /*-- void restart_cave(...) --------------------------------------------------
     When miner dies, if he has enought life to play, current cave is restarted.

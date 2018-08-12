@@ -26,26 +26,26 @@ Cave 1
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W..d...r.rdr.......... ..r. .......r..rW
-Wr....r... . ......r r....r... ... ....W
-W.r.. r..d.r. ...r.....r.... ..r. .. drW
-W........r.. ..... ....r....d..........W
-W...r....rr .r... . d......rd..r..r... W
-W.r.... .....r ..r......  .... ..r.. r.W
-W...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
-W.... .r.... ....r.. .. ..r.... .......W
-W. .......r............r...drr..d.r.r..W
-WP..r.... r.rr.d.....r..r......r.r..drXW
-W..rr ....r.rr..r..r......... ..r......W
-W.....d......... ..... ..d...r.....r...W
-Wd....r.r..r.......r.... ... .r........W
-W. .wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
-W.... . ...r...r.... .. .r......... ..rW
-W.......r .......r....... ..r...r ...rrW
-W .d...r......r. rr.....d..............W
-Wr... .. .. ...r....r.r...r..r.r......rW
-Wr..r. ...dd. ........ ...r.....r... d W
-W..rr..dr.........r...rr.... ...r ....rW
+W.Pd...r.rdr.......... ..r. .......r..rW
+Wrd...r... . ......r r....r... ... ....W
+W.d.. r..d.r. ...r.....r.... ..r. .. drW
+W.d......r.. ..... ....r....d..........W
+W.d.r....rr .r... . d......rd..r..r... W
+W.d.... .....r ..r......  .... ..r.. r.W
+W.d.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
+W.d.. .r.... ....r.. .. ..r.... .......W
+W.d.......r............r...drr..d.r.r..W
+W.d.r.... r.rr.d.....r..r......r.r..drXW
+W.drr ....r.rr..r..r......... ..r......W
+Wdd...d......... ..... ..d...r.....r...W
+Wdd...r.r..r.......r.... ... .r........W
+Wdddwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
+Wddd. . ...r...r.... .. .r......... ..rW
+Wddd....r .......r....... ..r...r ...rrW
+Wddd...r......r. rr.....d..............W
+Wddd. .. .. ...r....r.r...r..r.r......rW
+Wdddr. ...dd. ........ ...r.....r... d W
+Wdddr..dr.........r...rr.... ...r ....rW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]

@@ -44,14 +44,13 @@ intro_game(Game *game,int scr_width,int scr_height){
 
 void
 play_game(Game * g){
-
     Cave curr_cave;
     ALLEGRO_EVENT ev;
     Direction dir;
     Status status;  /*status of the game(continue ,restart, end)            */
-    bool display;
+    bool play;
 
-    display=true;
+    play=true;
     status=CONTINUE;
     dir=NONE;
     curr_cave.content=NULL;
@@ -59,11 +58,16 @@ play_game(Game * g){
     curr_cave.dim_col=0;
     copy_cave(&curr_cave, g->head_cave);
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
-    display_curr_cave(&curr_cave);
+    // display_curr_cave(&curr_cave);
     while(status!=END){
-        if(display && al_is_event_queue_empty(event_queue)){
-
-            display_score_panel(&curr_cave, &(g->miner));
+        if(play && al_is_event_queue_empty(event_queue)){
+            al_clear_to_color(al_map_rgb(0,0,0));
+            display_curr_cave(&curr_cave);
+            al_identity_transform(&camera);
+            set_camera(g, &curr_cave);
+            al_translate_transform(&camera, -(g->cam_pos.c), -(g->cam_pos.r) );
+            al_use_transform(&camera);
+            display_score_panel(&curr_cave, g->cam_pos, &(g->miner));
 
             al_flip_display();
 
@@ -78,7 +82,7 @@ play_game(Game * g){
                 }
             }
 
-            display=false;
+            play=false;
         }
 
         al_wait_for_event(event_queue,&ev);
@@ -107,7 +111,7 @@ play_game(Game * g){
         }
         else if(ev.type==ALLEGRO_EVENT_TIMER){
             if(ev.timer.source==main_timer){
-                display=true;
+                play=true;
             }
             if(ev.timer.source==panel_timer){
                 --curr_cave.max_time;
@@ -145,7 +149,6 @@ move(Cave * cave,Miner *m,Direction dir){
 
         /*previous location(miner's old pos) is changed as EMPTY_CELL       */
         cave->content[pre_pos.r][pre_pos.c]=EMPTY_CELL;
-        display_cell(pre_pos, cave);
 
         if(cave->content[tp.r][tp.c]==GATE){/*this function will be adjusted then.*/
             if(cave->dia_req<=0 && cave->next!=NULL){
@@ -172,10 +175,12 @@ move(Cave * cave,Miner *m,Direction dir){
                 cave->content[atp.r][atp.c]=ROCK;
             }
         }
+
+        // display_cell(pre_pos, cave);
+        // display_cell(tp, cave);
+        // display_cell(atp, cave);
     }
 
-    display_cell(tp, cave);
-    display_cell(atp, cave);
 
     return status;
 }

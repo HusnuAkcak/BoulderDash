@@ -9,12 +9,12 @@
 #define NAME_LENGTH 15                              /*cave name             */
 #define MAP_FILE "../data/maps.txt"                 /*cave maps             */
 #define FONT_FILE "../data/font/commodore.ttf"      /*game font type        */
-#define FONT_SIZE 25                                /*game font size        */
-#define CELL_SIZE 32                                /*icon pixel            */
+#define FONT_SIZE 50                                /*game font size        */
+#define CELL_SIZE 64                                /*icon pixel            */
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
 #define FALL_PS 5                                   /*falling frequence.    */
-#define MPS 10                                      /*miner's speed freq.   */
+#define MPS 7                                      /*miner's speed freq.   */
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -31,6 +31,7 @@ ALLEGRO_DISPLAY         *display;
 ALLEGRO_EVENT_QUEUE     *event_queue;
 ALLEGRO_TIMER           *main_timer, *panel_timer, *falling_timer, *miner_timer;
 ALLEGRO_FONT            *font;
+ALLEGRO_TRANSFORM       camera;
 
 /*CAVE BITMAPS                                                              */
 ALLEGRO_BITMAP *ex_wall;
@@ -86,6 +87,7 @@ typedef struct Miner{
 typedef struct Game{
     Miner miner;
     Cave *head_cave;
+    Point cam_pos;
 }Game;
 /*###########################################################################
                             END OF STRUCT TYPES

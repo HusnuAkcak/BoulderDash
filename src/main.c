@@ -28,9 +28,11 @@ main()
     al_init_acodec_addon();
     al_init_image_addon();
 
+
     /*Mouse and keyboard options are installed.                             */
     al_install_mouse();
     al_install_keyboard();
+
 
     /*Screen width and height informations are recieved with 'disp_data'    */
     al_get_display_mode(0, &disp_data);
