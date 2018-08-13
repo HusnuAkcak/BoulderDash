@@ -13,7 +13,7 @@
 #define CELL_SIZE 64                                /*icon pixel            */
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
-#define FALL_PS 5                                   /*falling frequence.    */
+#define FALL_PS 4                                   /*falling frequence.    */
 #define MPS 7                                       /*miner's speed freq.   */
 
 /*PATHS..                                                                   */
@@ -72,13 +72,29 @@ typedef enum{PAUSE, RESTART, END, CONTINUE}Status;  /*status of the game   */
 ###########################################################################*/
 typedef struct Point{
     int c,r;/*column(c) is in place of x, row(r) is in place of y.  */
+    struct Point *next;
 }Point;
+
+typedef struct Monster{
+    Point pos;
+    Point *route_head;
+    struct Monster *next;
+}Monster;
+
+typedef struct Spider{
+    Point pos;
+    Point next_pos;
+    struct Spider *next;
+    Direction move_dir;/*current movement direction                         */
+}Spider;
 
 typedef struct Cave{
     char cave_name[NAME_LENGTH];
     int dim_row,dim_col;    /*dimension_x and dimension_y                   */
     int max_time,dia_req,collected_dia,dia_val,ex_dia_val;/*dia =diamond    */
     Content **content;
+    Monster *head_monster;
+    Spider  *head_spider;
     struct Cave *next;
 }Cave;
 

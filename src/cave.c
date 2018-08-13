@@ -36,6 +36,7 @@ copy_cave(Cave *dest, Cave* src){
             dest->content[r][c]=src->content[r][c];
         }
     }
+    find_insects(dest);
     return;
 }
 

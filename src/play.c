@@ -24,12 +24,12 @@ intro_game(Game *game,int scr_width,int scr_height){
     image1=al_load_bitmap(IMG_PATH"/boulder_dash.jpg");
     al_draw_bitmap(image1,scr_width/3,scr_height/3,0);
     al_flip_display();
-    al_rest(0.5);
+    al_rest(0.1);
     al_clear_to_color(al_map_rgb(0,0,0));
     image2=al_load_bitmap(IMG_PATH"/title_screen.png");
     al_draw_bitmap(image2,scr_width/3,scr_height/3,0);
     al_flip_display();
-    al_rest(0.5);
+    al_rest(0.1);
     al_clear_to_color(al_map_rgb(0,0,0));
 
     game->miner.life=MINER_LIFE;
@@ -55,10 +55,13 @@ play_game(Game * g){
     g->status=CONTINUE;
     dir=NONE;
     curr_cave.content=NULL;
+    curr_cave.head_monster=NULL;
+    curr_cave.head_spider=NULL;
     curr_cave.dim_row=0;
     curr_cave.dim_col=0;
     copy_cave(&curr_cave, g->head_cave);
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
+
     while(g->status!=END){
         if(play && al_is_event_queue_empty(event_queue)){
 
@@ -136,6 +139,7 @@ play_game(Game * g){
                 --curr_cave.max_time;
             }
             if(ev.timer.source==falling_timer && g->status==CONTINUE){
+                move_insects(&curr_cave);
                 control_falling(&curr_cave);
             }
             if(ev.timer.source==miner_timer && dir!=NONE && g->status==CONTINUE){

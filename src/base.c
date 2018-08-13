@@ -149,6 +149,7 @@ string_cat(char* first, char *sec){
 
     return;
 }
+
 void
 load_cave_bitmaps(){
     in_wall=al_load_bitmap(IMG_PATH"/in_wall.png");
@@ -205,6 +206,7 @@ free_caves(Cave *head_cave){
         }
         temp_cave=curr_cave;
         curr_cave=curr_cave->next;
+        temp_cave=NULL;
         free(temp_cave);
     }
     return;
