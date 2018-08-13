@@ -4,6 +4,7 @@
 #include"allegro5/allegro_acodec.h"
 #include"allegro5/allegro_ttf.h"
 #include"base.h"
+#include"cave.h"
 #include"play.h"
 #include"test.h"
 

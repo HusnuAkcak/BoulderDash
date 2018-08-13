@@ -2,6 +2,12 @@
 #define _CAVE_H_
 #include "base.h"
 
+/*-- import_caves(...) ------------------------------------------------------
+    The game's maps are recieving from a txt file, and saving related field
+    of the structure of the game.
+---------------------------------------------------------------------------*/
+void import_caves(Game *game);
+
 /*-- void copy_cave(...) -----------------------------------------------------
     Copies current cave from main essential record.
     This operation is performed since current cave will be manipulated during
@@ -28,4 +34,10 @@ void display_score_panel(Cave *curr_cave, Game *g);
     When miner dies, if he has enought life to play, current cave is restarted.
 ----------------------------------------------------------------------------*/
 void restart_cave(Game *game,Cave *curr_cave);
+
+/*--free_caves(...) ---------------------------------------------------------
+    The caves are freed.
+---------------------------------------------------------------------------*/
+void free_caves(Cave *head_cave);
+
 #endif

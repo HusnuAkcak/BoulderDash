@@ -15,6 +15,8 @@
 #define FPS 60                                      /*display frequence     */
 #define FALL_PS 4                                   /*falling frequence.    */
 #define MPS 7                                       /*miner's speed freq.   */
+#define LINE_SIZE 240   /*when it is changes, update 'README' and 'maps.txt'
+                            file to specify the line size requirement.      */
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -117,17 +119,6 @@ typedef struct Game{
 /*###########################################################################
                             FUNCTION PROTOTYPES
 ###########################################################################*/
-
-/*-- import_caves(...) ------------------------------------------------------
-    The game's maps are recieving from a txt file, and saving related field
-    of the structure of the game.
----------------------------------------------------------------------------*/
-void import_caves(Game *game);
-
-/*--free_caves(...) ---------------------------------------------------------
-    The caves are freed.
----------------------------------------------------------------------------*/
-void free_caves(Cave *head_cave);
 
 /*--  void load_cave_bitmaps(...)  ------------------------------------------
     Cave icons are loaded.

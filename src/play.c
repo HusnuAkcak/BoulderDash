@@ -4,6 +4,7 @@
 #include"play.h"
 #include"cave.h"
 #include"overhead.h"
+#include"insect.h"
 #include"allegro5/allegro.h"
 #include"allegro5/allegro_acodec.h"
 #include"allegro5/allegro_image.h"
