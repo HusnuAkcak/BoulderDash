@@ -76,8 +76,8 @@ typedef struct Point{
 
 typedef struct Cave{
     char cave_name[NAME_LENGTH];
-    int dim_row,dim_col;    /*dimension_x and dimension_y           */
-    int max_time,dia_req,dia_val,ex_dia_val;    /*dia =diamond      */
+    int dim_row,dim_col;    /*dimension_x and dimension_y                   */
+    int max_time,dia_req,collected_dia,dia_val,ex_dia_val;/*dia =diamond    */
     Content **content;
     struct Cave *next;
 }Cave;

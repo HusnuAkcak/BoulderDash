@@ -171,16 +171,17 @@ move(Cave * cave,Miner *m,Direction dir){
         cave->content[pre_pos.r][pre_pos.c]=EMPTY_CELL;
 
         if(cave->content[tp.r][tp.c]==GATE){/*this function will be adjusted then.*/
-            if((cave->dia_req)-(m->collected_dia)<=0 && cave->next!=NULL){
+            if((cave->dia_req)-(cave->collected_dia)<=0 && cave->next!=NULL){
                 cave=cave->next;
             }
-            else if((cave->dia_req)-(m->collected_dia)<=0 && cave->next==NULL){
+            else if((cave->dia_req)-(cave->collected_dia)<=0 && cave->next==NULL){
                 status=END;
             }
         }
         else if(target==DIAMOND){
             ++m->collected_dia;
-            if((cave->dia_req)-(m->collected_dia)>0){
+            ++cave->collected_dia;
+            if((cave->dia_req)-(cave->collected_dia)>0){
                 m->curr_cave_score+=cave->dia_val;
                 m->score+=cave->dia_val;    /*general score                 */
             }
@@ -194,10 +195,6 @@ move(Cave * cave,Miner *m,Direction dir){
                 cave->content[atp.r][atp.c]=ROCK;
             }
         }
-
-        display_cell(pre_pos, cave);
-        display_cell(tp, cave);
-        display_cell(atp, cave);
     }
 
 

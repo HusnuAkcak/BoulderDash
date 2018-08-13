@@ -25,6 +25,7 @@ copy_cave(Cave *dest, Cave* src){
     dest->dia_req=src->dia_req;
     dest->dia_val=src->dia_val;
     dest->ex_dia_val=src->ex_dia_val;
+    dest->collected_dia=0;
 
     dest->content=(Content**)calloc(dest->dim_row, sizeof(Content*));
     for(r=0;r<dest->dim_row; ++r){
@@ -68,9 +69,10 @@ void
 display_cell(Point pos,Cave* cave){
     Content content;
 
-    if(pos.r>0)
-        content=cave->content[pos.r-1][pos.c];
-    //pos.r+=1;/*first line is reserved for score panel.                       */
+    /*'-1' eliminates '+1' from display_curr_screen.
+    This manipulation for score panel.                                      */
+    content=cave->content[pos.r-1][pos.c];
+
     /*Firstly, target cell is cleared.                                      */
     al_draw_bitmap(empty_cell, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
 
@@ -97,7 +99,11 @@ display_cell(Point pos,Cave* cave){
             al_draw_bitmap(monster, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
             break;
         case GATE:
-            al_draw_bitmap(gate, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
+            if(((cave->dia_req)-(cave->collected_dia))>0)
+                al_draw_bitmap(in_wall, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
+            else
+                al_draw_bitmap(gate, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
+
             break;
         case SPIDER:
             al_draw_bitmap(spider, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
@@ -136,7 +142,7 @@ display_score_panel(Cave *curr_cave, Game *g){
         al_draw_bitmap(empty_cell, g->cam_pos.c+(i*CELL_SIZE), g->cam_pos.r, 0);
     }
 
-    if( ((curr_cave->dia_req)-(g->miner.collected_dia)) >0){
+    if( ((curr_cave->dia_req)-(curr_cave->collected_dia)) >0){
         int_to_str(str_dia_req, curr_cave->dia_req);
         int_to_str(str_dia_val, curr_cave->dia_val);
 
@@ -144,7 +150,7 @@ display_score_panel(Cave *curr_cave, Game *g){
         al_draw_bitmap(small_diamond, g->cam_pos.c+(3*CELL_SIZE), g->cam_pos.r , 0);
         al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_val);
 
-    }else if( ((curr_cave->dia_req)-(g->miner.collected_dia))<=0 ){
+    }else if( ((curr_cave->dia_req)-(curr_cave->collected_dia))<=0 ){
         int_to_str(str_ex_dia_val, curr_cave->ex_dia_val);
 
         al_draw_bitmap(small_diamond, g->cam_pos.c+(1*CELL_SIZE), g->cam_pos.r , 0);
