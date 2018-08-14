@@ -33,11 +33,6 @@ intro_game(Game *game,int scr_width,int scr_height){
     al_rest(0.1);
     al_clear_to_color(al_map_rgb(0,0,0));
 
-    game->miner.life=MINER_LIFE;
-    game->miner.score=0;
-    game->miner.curr_cave_score=0;
-    game->miner.collected_dia=0;
-
     al_destroy_bitmap(image1);
     al_destroy_bitmap(image2);
     al_destroy_sample(sample);
@@ -47,19 +42,28 @@ void
 play_game(Game * g){
     Cave curr_cave;
     ALLEGRO_EVENT ev;
-    Direction dir;
     Point mouse_pos;
     bool play, moving;/*play :display screen, moving: miner moves.          */
 
-    play=true;
-    moving=true;
-    g->status=CONTINUE;
-    dir=NONE;
+    /*Miner's initial values.                                               */
+    g->miner.life=MINER_LIFE;
+    g->miner.alive=true;
+    g->miner.score=0;
+    g->miner.curr_cave_score=0;
+    g->miner.collected_dia=0;
+
+    play=true;              /*if play==true, the screen will be refreshed.   */
+    moving=true;            /*when miner moves, it turns out true.           */
+    g->status=CONTINUE;     /*status is initialized as CONTINUE.             */
+    g->miner.move_dir=NONE; /*miner's movement direction                     */
+
+    /*current cave's initial values.                                         */
     curr_cave.content=NULL;
     curr_cave.head_monster=NULL;
     curr_cave.head_spider=NULL;
     curr_cave.dim_row=0;
     curr_cave.dim_col=0;
+
     copy_cave(&curr_cave, g->head_cave);
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
 
@@ -80,11 +84,12 @@ play_game(Game * g){
 
             /*this control is performed after al_flip_display, because if miner
              is dead, we freeze the screen for a while.                      */
-            if(is_miner_dead(&curr_cave, &(g->miner))){
+            if(g->miner.alive==false){
                 --(g->miner.life);
                 if((g->miner.life)>0){
                     restart_cave(g, &curr_cave);
                     moving=true;
+                    g->miner.alive=true;
                 }else{
                     g->status=END;
                 }
@@ -101,20 +106,20 @@ play_game(Game * g){
                 g->status=END;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_DOWN){
-                dir=DOWN;
+                g->miner.move_dir=DOWN;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_UP){
-                dir=UP;
+                g->miner.move_dir=UP;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_LEFT){
-                dir=LEFT;
+                g->miner.move_dir=LEFT;
             }
             else if(ev.keyboard.keycode==ALLEGRO_KEY_RIGHT){
-                dir=RIGHT;
+                g->miner.move_dir=RIGHT;
             }
         }
         else if(ev.type==ALLEGRO_EVENT_KEY_UP){
-            dir=NONE;
+            g->miner.move_dir=NONE;
         }
         else if(ev.type==ALLEGRO_EVENT_MOUSE_AXES){
             mouse_pos.c=ev.mouse.x;
@@ -134,6 +139,7 @@ play_game(Game * g){
         else if(ev.type==ALLEGRO_EVENT_TIMER){
 
             if(ev.timer.source==main_timer){
+                is_miner_dead(&curr_cave, &(g->miner));
                 play=true;
             }
             if(ev.timer.source==panel_timer && g->status==CONTINUE){
@@ -141,10 +147,10 @@ play_game(Game * g){
             }
             if(ev.timer.source==falling_timer && g->status==CONTINUE){
                 move_insects(&curr_cave);
-                control_falling(&curr_cave);
+                control_falling(&(g->miner), &curr_cave);
             }
-            if(ev.timer.source==miner_timer && dir!=NONE && g->status==CONTINUE){
-                g->status=move(&curr_cave, &(g->miner),dir);
+            if(ev.timer.source==miner_timer && g->miner.move_dir!=NONE && g->status==CONTINUE){
+                g->status=move(&curr_cave, &(g->miner));
                 moving=true;
             }
         }
@@ -153,7 +159,7 @@ play_game(Game * g){
 }
 
 Status
-move(Cave * cave,Miner *m,Direction dir){
+move(Cave * cave,Miner *m){
 
     Status status;      /*status of the game                                */
     char target;        /*target cell                                       */
@@ -162,11 +168,11 @@ move(Cave * cave,Miner *m,Direction dir){
     Point pre_pos;      /*previous position                                 */
 
     status=CONTINUE;/*status is set CONTINUE as default.                    */
-    detect_target(dir, cave, m, &target, &after_target, &tp, &atp);
+    detect_target(cave, m, &target, &after_target, &tp, &atp);
 
     /*it is controlled and if the move possible player's choice is applied. */
     if(target!=IN_WALL && target !=EX_WALL && target!=WATER &&
-     !(target==ROCK && dir==UP) && !(target==ROCK && after_target!=EMPTY_CELL)){
+    !(target==ROCK && m->move_dir==UP) && !(target==ROCK && after_target!=EMPTY_CELL)){
 
         pre_pos=m->pos;
         m->pos=tp;      /*miner goes to target position(tp)                 */
@@ -196,7 +202,7 @@ move(Cave * cave,Miner *m,Direction dir){
             }
         }
         else if(target==ROCK && after_target==EMPTY_CELL){
-            if(dir!=UP){
+            if(m->move_dir!=UP){
                 cave->content[atp.r][atp.c]=ROCK;
             }
         }

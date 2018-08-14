@@ -14,12 +14,8 @@ void play_game(Game * game);
 
 /*-- Status move(...) ---------------------------------------------------------
     When player wants to make a move this function is called.
-    Return values;
-        CONTINUE :if the game is continued.
-        RESTART  :if the miner is losed one of his life.
-        END      :if the game is terminated.
 ----------------------------------------------------------------------------*/
-Status move(Cave *curr_cave,Miner *m,Direction dir);
+Status move(Cave *curr_cave,Miner *m);
 
 
 #endif

@@ -13,7 +13,7 @@
 #define CELL_SIZE 64                                /*icon pixel            */
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
-#define FALL_PS 4                                   /*falling frequence.    */
+#define FALL_PS 3                                   /*falling frequence.    */
 #define MPS 7                                       /*miner's speed freq.   */
 #define LINE_SIZE 240   /*when it is changes, update 'README' and 'maps.txt'
                             file to specify the line size requirement.      */
@@ -81,6 +81,7 @@ typedef struct Monster{
     Point pos;
     Point *route_head;
     struct Monster *next;
+    bool alive;
 }Monster;
 
 typedef struct Spider{
@@ -88,6 +89,7 @@ typedef struct Spider{
     Point next_pos;
     struct Spider *next;
     Direction move_dir;/*current movement direction                         */
+    bool alive;
 }Spider;
 
 typedef struct Cave{
@@ -104,6 +106,8 @@ typedef struct Miner{
     int score, curr_cave_score, collected_dia;/*current lvl collected diamond*/
     Point pos;
     int life;
+    bool alive;
+    Direction move_dir;
 }Miner;
 
 typedef struct Game{

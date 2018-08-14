@@ -8,7 +8,7 @@
 #include"allegro5/allegro_native_dialog.h"
 
 void
-control_falling(Cave *cave) {
+control_falling(Miner *m, Cave *cave) {
     /*Since display cell required a Point parameter and for clarification,
     Point types are used. */
     Point target;
@@ -52,9 +52,15 @@ control_falling(Cave *cave) {
                 target.c=c+1;
             }
 
+
+
             if(falling){
                 cave->content[target.r][target.c]=cave->content[pos.r][pos.c];
                 cave->content[pos.r][pos.c]=EMPTY_CELL;
+
+                if(cave->content[target.r][target.c]==ROCK && cave->content[target.r+1][target.c]==MINER)
+                    m->alive=false;
+
                 /*related bitmaps are being updated.                        */
                 display_cell(pos , cave);
                 display_cell(target, cave);
@@ -66,13 +72,13 @@ control_falling(Cave *cave) {
 }
 
 void
-detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_target, Point *tp,Point *atp) {
+detect_target(Cave *cave, Miner *m, char *target, char *after_target, Point *tp, Point *atp) {
 
     /*We can reach target and after target from tp and atp but for convinience,
     we keep the two kind of data.*/
 
     /*target and after target are determined according to direction.        */
-    if(dir==UP){
+    if(m->move_dir==UP){
         tp->c=m->pos.c;
         tp->r=m->pos.r-1;
         atp->c=tp->c;
@@ -81,7 +87,7 @@ detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_targ
         }else{              /*else atp is come up to tp                     */
             atp->r=tp->r;
         }
-    }else if(dir==RIGHT){
+    }else if(m->move_dir==RIGHT){
         tp->r=m->pos.r;
         tp->c=m->pos.c+1;
         atp->r=tp->r;
@@ -90,7 +96,7 @@ detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_targ
         }else{
             atp->c=tp->c;
         }
-    }else if(dir==DOWN){
+    }else if(m->move_dir==DOWN){
         tp->c=m->pos.c;
         tp->r=m->pos.r+1;
         atp->c=tp->c;
@@ -99,7 +105,7 @@ detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_targ
         }else{
             atp->r=tp->r;
         }
-    }else if(dir==LEFT){
+    }else if(m->move_dir==LEFT){
         tp->r=m->pos.r;
         tp->c=m->pos.c-1;
         atp->r=tp->r;
@@ -116,11 +122,9 @@ detect_target(Direction dir, Cave *cave, Miner *m,char *target, char *after_targ
     return;
 }
 
-bool
+void
 is_miner_dead(Cave *curr_cave, Miner *m) {
-    bool dead;
 
-    dead=false;
     if( curr_cave->content[m->pos.r-1][m->pos.c] ==MONSTER
         || curr_cave->content[m->pos.r+1][m->pos.c] ==MONSTER
         || curr_cave->content[m->pos.r][m->pos.c-1] ==MONSTER
@@ -131,9 +135,9 @@ is_miner_dead(Cave *curr_cave, Miner *m) {
         || curr_cave->content[m->pos.r][m->pos.c+1] ==SPIDER
         || curr_cave->max_time <=0
     ){
-        dead=true;
+        m->alive=false;
     }
-    return dead;
+    return;
 }
 
 void

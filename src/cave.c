@@ -137,7 +137,7 @@ display_curr_screen(Cave * cave, Game *g){
 }
 
 void
-display_cell(Point pos,Cave* cave){
+display_cell(Point pos, Cave* cave){
     Content content;
 
     /*'-1' eliminates '+1' from display_curr_screen.
