@@ -58,9 +58,13 @@ control_falling(Miner *m, Cave *cave) {
                 cave->content[target.r][target.c]=cave->content[pos.r][pos.c];
                 cave->content[pos.r][pos.c]=EMPTY_CELL;
 
-                if(cave->content[target.r][target.c]==ROCK && cave->content[target.r+1][target.c]==MINER)
-                    m->alive=false;
+                /*A falling rock can die miner, spider or a monster.        */
+                if(cave->content[target.r][target.c]==ROCK){
+                   if(cave->content[target.r+1][target.c]==MINER)
+                        m->alive=false;
 
+                    control_crushed_insects(cave, target);
+                }
                 /*related bitmaps are being updated.                        */
                 display_cell(pos , cave);
                 display_cell(target, cave);
@@ -68,6 +72,77 @@ control_falling(Miner *m, Cave *cave) {
             }
         }
     }
+    return;
+}
+
+/*This function is called after any rock is falled.                         */
+void
+control_crushed_insects(Cave *cave, Point rock_pos){
+
+    Spider *temp_spider, *curr_spider;
+    Monster *temp_monster, *curr_monster;
+    bool monster_crush, spider_crush;/*Is current insect crushed.           */
+
+    spider_crush=false;
+    /*Spiders are controlled, if one of them is under the rock              */
+    curr_spider=cave->head_spider;
+    if(curr_spider!=NULL){
+        /*if crushed spider is head_spider(head node)                       */
+        if((curr_spider->pos.r)==rock_pos.r+1 && (curr_spider->pos.c)==rock_pos.c){
+            spider_crush=true;
+            temp_spider=curr_spider;
+            curr_spider=curr_spider->next;
+            cave->head_spider=curr_spider;/*head is redetermined.           */
+            free(temp_spider);
+            temp_spider=NULL;
+        }
+
+        /*connector nodes are controlled.                                   */
+        while(!spider_crush && curr_spider!=NULL && curr_spider->next!=NULL){
+            if((curr_spider->next->pos.r)==rock_pos.r+1 && (curr_spider->next->pos.c)==rock_pos.c){
+                spider_crush=true;
+                temp_spider=curr_spider->next;
+                curr_spider->next=curr_spider->next->next;
+                free(temp_spider);
+                temp_spider=NULL;
+            }
+            curr_spider=curr_spider->next;
+        }
+    }
+
+    /*Monsters are controlled, if one of them is under the rock              */
+    curr_monster=cave->head_monster;
+    if(!spider_crush && curr_monster!=NULL){
+        /*if crushed monster is head_monster(head node)                      */
+        if((curr_monster->pos.r)==rock_pos.r+1 && (curr_monster->pos.c)==rock_pos.c){
+            monster_crush=true;
+            temp_monster=curr_monster;
+            curr_monster=curr_monster->next;
+            cave->head_monster=curr_monster;/*head is redetermined.         */
+            free(temp_monster);
+            temp_monster=NULL;
+        }
+
+        /*connector nodes are controlled.                                   */
+        while(!monster_crush && curr_monster!=NULL && curr_monster->next!=NULL){
+            if((curr_monster->next->pos.r)==rock_pos.r+1 && (curr_monster->next->pos.c)==rock_pos.c){
+                monster_crush=true;
+                temp_monster=curr_monster->next;
+                curr_monster->next=curr_monster->next->next;
+                free(temp_monster);
+                temp_monster=NULL;
+            }
+            curr_monster=curr_monster->next;
+        }
+    }
+
+    if(spider_crush){
+        cave->content[rock_pos.r+1][rock_pos.c]=EMPTY_CELL;
+    }
+    else if(monster_crush){
+        cave->content[rock_pos.r+1][rock_pos.c]=EMPTY_CELL;
+    }
+
     return;
 }
 

@@ -8,6 +8,11 @@ a diamond or a rock, the object must be falled.
 ---------------------------------------------------------------------------*/
 void control_falling(Miner *m, Cave *curr_cave);
 
+/*-- void control_crushed_insects(...) ---------------------------------------
+Controls if any spider or monster under a falling rock.
+---------------------------------------------------------------------------*/
+void control_crushed_insects(Cave *cave, Point rock_pos);
+
 /*-- void detect_target(...) ------------------------------------------------
 Before each move 'target cell', 'after target cell'(the second cell in the
 movement directions), target positon, after target position is detected.

@@ -69,7 +69,6 @@ play_game(Game * g){
 
     while(g->status!=END){
         if(play && al_is_event_queue_empty(event_queue)){
-
             if(moving){
                 al_clear_to_color(al_map_rgb(0,0,0));
                 al_identity_transform(&camera);
