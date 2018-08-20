@@ -78,7 +78,8 @@ control_falling(Miner *m, Cave *cave) {
 /*This function is called after any rock is falled.                         */
 void
 control_crushed_insects(Cave *cave, Point rock_pos){
-
+    Point spider_dia_arr [DIA_OF_SPIDER];
+    Point monster_dia_arr [DIA_OF_MONSTER];
     Spider *temp_spider, *curr_spider;
     Monster *temp_monster, *curr_monster;
     bool monster_crush, spider_crush;/*Is current insect crushed.           */
@@ -136,11 +137,133 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         }
     }
 
-    if(spider_crush){
+    /*the rock and the insect are deleted from the map.                     */
+    if(spider_crush || monster_crush){
+
+        cave->content[rock_pos.r][rock_pos.c]=EMPTY_CELL;
         cave->content[rock_pos.r+1][rock_pos.c]=EMPTY_CELL;
+
+        rock_pos.r+=1;/*it is used for insect position.                     */
+        if(spider_crush){
+            find_available_cells_for_dia(cave, spider_dia_arr, DIA_OF_SPIDER, rock_pos);
+            fill_available_cells_with_dia(cave, spider_dia_arr, DIA_OF_SPIDER);
+        }
+        else if(monster_crush){
+            find_available_cells_for_dia(cave, monster_dia_arr, DIA_OF_MONSTER, rock_pos);
+            fill_available_cells_with_dia(cave, monster_dia_arr, DIA_OF_MONSTER);
+        }
+
     }
-    else if(monster_crush){
-        cave->content[rock_pos.r+1][rock_pos.c]=EMPTY_CELL;
+
+    return;
+}
+
+void
+find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point ins_pos){
+    int radius;     /*current radius of the dead insect */
+    int determined; /*determined target number          */
+    Point curr_cell;
+
+    radius=0;
+    tar_cells[0]=ins_pos;/*Dead insect's pos is always will be available.   */
+    determined=1;/*one target is already determined above.                  */
+    while((arr_size-determined)>0){
+        ++radius;
+        /*left side control*/
+        if((ins_pos.c-radius)>0 &&
+            (arr_size-determined)>0 &&
+            (cave->content[ins_pos.r][ins_pos.c-radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r][ins_pos.c-radius]==SOIL)   ){
+            curr_cell.r=ins_pos.r;
+            curr_cell.c=ins_pos.c-radius;
+            tar_cells[determined]=curr_cell;
+            ++determined;
+        }
+        /*right side control*/
+        if((ins_pos.c+radius)<(cave->dim_col) &&
+            (arr_size-determined)>0 &&
+            (cave->content[ins_pos.r][ins_pos.c+radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r][ins_pos.c+radius]==SOIL)   ){
+            curr_cell.r=ins_pos.r;
+            curr_cell.c=ins_pos.c+radius;
+            tar_cells[determined]=curr_cell;
+            ++determined;
+        }
+        /*underside control*/
+        if((ins_pos.r+radius)<(cave->dim_row) &&
+            (arr_size-determined)>0 &&
+            (cave->content[ins_pos.r+radius][ins_pos.c]==EMPTY_CELL ||
+                        cave->content[ins_pos.r+radius][ins_pos.c]==SOIL)   ){
+            curr_cell.r=ins_pos.r+radius;
+            curr_cell.c=ins_pos.c;
+            tar_cells[determined]=curr_cell;
+            ++determined;
+        }
+        /*upside control*/
+        if((ins_pos.r-radius)>0 &&
+            (arr_size-determined)>0 &&
+            (cave->content[ins_pos.r-radius][ins_pos.c]==EMPTY_CELL ||
+                        cave->content[ins_pos.r-radius][ins_pos.c]==SOIL)   ){
+            curr_cell.r=ins_pos.r-radius;
+            curr_cell.c=ins_pos.c;
+            tar_cells[determined]=curr_cell;
+            ++determined;
+        }
+        /*right underside diagonal control*/
+        if((ins_pos.r+radius)<(cave->dim_row) && (ins_pos.c+radius)<(cave->dim_col) &&
+            (arr_size-determined)>0 &&
+            (cave->content[ins_pos.r+radius][ins_pos.c]==EMPTY_CELL ||
+                        cave->content[ins_pos.r+radius][ins_pos.c]==SOIL)   ){
+            curr_cell.r=ins_pos.r+radius;
+            curr_cell.c=ins_pos.c+radius;
+            tar_cells[determined]=curr_cell;
+            ++determined;
+        }
+        /*right upside diagonal control*/
+        if((ins_pos.c+radius)<(cave->dim_col) && (ins_pos.r-radius)>0 &&
+            (arr_size-determined)>0 &&
+            (cave->content[ins_pos.r][ins_pos.c+radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r][ins_pos.c+radius]==SOIL)   ){
+            curr_cell.r=ins_pos.r-radius;
+            curr_cell.c=ins_pos.c+radius;
+            tar_cells[determined]=curr_cell;
+            ++determined;
+        }
+        /*left upside diagonal control*/
+        if((ins_pos.c-radius)>0 && (ins_pos.r-radius)>0 &&
+            (arr_size-determined)>0 &&
+            (cave->content[ins_pos.r][ins_pos.c-radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r][ins_pos.c-radius]==SOIL)   ){
+            curr_cell.r=ins_pos.r-radius;
+            curr_cell.c=ins_pos.c-radius;
+            tar_cells[determined]=curr_cell;
+            ++determined;
+        }
+        /*left underside diagonal control*/
+        if((ins_pos.c-radius)>0 && (ins_pos.r+radius)<(cave->dim_row) &&
+            (arr_size-determined)>0 &&
+            (cave->content[ins_pos.r][ins_pos.c-radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r][ins_pos.c-radius]==SOIL)   ){
+            curr_cell.r=ins_pos.r+radius;
+            curr_cell.c=ins_pos.c-radius;
+            tar_cells[determined]=curr_cell;
+            ++determined;
+        }
+    }
+
+    return;
+}
+
+void
+fill_available_cells_with_dia(Cave *curr_cave, Point tar_cells[], int arr_size){
+
+    int i;
+    Point curr_cell;
+
+    for(i=0; i<arr_size; ++i){
+        curr_cell=tar_cells[i];
+        curr_cave->content[curr_cell.r][curr_cell.c]=DIAMOND;
+        fprintf(stderr, "%d %d \n", curr_cell.r, curr_cell.c);
     }
 
     return;

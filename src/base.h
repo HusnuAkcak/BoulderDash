@@ -15,6 +15,8 @@
 #define FPS 60                                      /*display frequence     */
 #define FALL_PS 3                                   /*falling frequence.    */
 #define MPS 7                                       /*miner's speed freq.   */
+#define DIA_OF_SPIDER 8     /*diamond number that is created after any spider is crushed. */
+#define DIA_OF_MONSTER 12   /*diamond number that is created after any monster is crushed. */
 #define LINE_SIZE 240   /*when it is changes, update 'README' and 'maps.txt'
                             file to specify the line size requirement.      */
 
@@ -52,6 +54,7 @@ ALLEGRO_BITMAP *empty_cell;
 ALLEGRO_BITMAP *pause_button;
 ALLEGRO_BITMAP *play_button;
 ALLEGRO_BITMAP *time_icon;
+ALLEGRO_BITMAP *explosion;
 
 /*###########################################################################
                         END OF GLOBAL VARIABLES

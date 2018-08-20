@@ -8,10 +8,25 @@ a diamond or a rock, the object must be falled.
 ---------------------------------------------------------------------------*/
 void control_falling(Miner *m, Cave *curr_cave);
 
-/*-- void control_crushed_insects(...) ---------------------------------------
+/*-- void control_crushed_insects(...) --------------------------------------
 Controls if any spider or monster under a falling rock.
 ---------------------------------------------------------------------------*/
 void control_crushed_insects(Cave *cave, Point rock_pos);
+
+/*-- void find_available_cells_for_dia(...) ---------------------------------
+    Find available cells(empty or soil) to locate created diamonds.
+---------------------------------------------------------------------------*/
+void find_available_cells_for_dia(Cave *curr_cave, Point [], int arr_size, Point insect_pos);
+
+/*-- void fill_available_cells_with_dia(...) ---------------------------------
+    Fill available cells with diamond. To do that content of the map is updated.
+----------------------------------------------------------------------------*/
+void fill_available_cells_with_dia(Cave *curr_cave, Point [], int arr_size);
+
+/*-- void explode_cells(...) ------------------------------------------------
+    Makes cells empty.
+---------------------------------------------------------------------------*/
+void explode_cells(Cave *curr_cave, Point [], int arr_size);
 
 /*-- void detect_target(...) ------------------------------------------------
 Before each move 'target cell', 'after target cell'(the second cell in the

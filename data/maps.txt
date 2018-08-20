@@ -26,16 +26,16 @@ Cave 1
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WrPd.....ddrrrrrrr.......d.d     ..d..dW
-W.....r..dr.r....... .......     . ....W
-Wr... r..d.r....r...       ....r. .. drW
-W .... .... .... ......  . ............W
-WSd.r. ....S.... .rr...........r..r... W
-W.d...M...... .. .  ...  ...  ..r.. r..W
-W.d.wwwwwwwwwwwwMw Swwwwwwwwwwwwwww...rW
+WrPd.....d...............d.d     ..d..dW
+W.....r..d...r...... .......     . ....W
+Wr... r..d... ......       ....r. .. drW
+W .... ...... .........  . ............W
+W d.r. ......S....rr...........r..r... W
+W.d... ...........  ...  ...  ..r.. r..W
+W.d.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
 W.d.. .r.... ....r.. .. ..r.... .......W
 W.d.......r...... .....r...drr..d.r.r..W
-W.d.r.... r.rr.d.S...r..r......r.r..drXW
+W.d.r.... r.rr.d. ...r..r......r.r..drXW
 W.drr ....r.rr..r .r......... ..r......W
 Wdd...d......... ..... ..d...r.....r...W
 Wdd...r.r..r.......r.... ... .r........W
