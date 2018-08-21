@@ -9,20 +9,24 @@ d#Converted using Tim Stridmann's X2BDCFF converter.
 
 #cave inormation sequance is shown below :
 
+# [CaveNumber]
 # [Name]
 # [Dimension]
 # [CaveTime]
 # [DiamondsRequired]
 # [DiamondValue]
+# [WaterDischargePeriod]
 
 [game]
 
 [cave]
+no:1
 Cave 1
-40x22
-120
-18
-15 20
+dim:40x22
+time:120
+dia_req:18
+dia_val: 15 ex_dia_val:20
+water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -51,11 +55,13 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
+no:2
 Cave 2
-40x22
-100
-8
-35 40
+dim:40x22
+time:100
+dia_req:8
+dia_val:35 ex_dia_val:40
+water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -84,11 +90,13 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
+no:3
 Cave 3
-40x22
-180
-25
-10 12
+dim:40x22
+time:180
+dia_req:25
+dia_val:10 ex_dia_val:12
+water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -118,11 +126,13 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 
 [cave]
+no:4
 Cave 4
-40x22
-200
-80
-4 5
+dim:40x22
+time:200
+dia_req:80
+dia_val:4 ex_dia_val:5
+water_period:4
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -151,11 +161,13 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
+no:5
 Cave 5
-40x22
-200
-28
-18 90
+dim:40x22
+time:200
+dia_req:28
+dia_val:18 ex_dia_val:90
+water_period:4
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -184,11 +196,13 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
+no:6
 Cave 6
-20x12
-20
-36
-14
+dim:20x12
+time:20
+dia_req:36
+dia_val:14 ex_dia_val:20
+water_period:3
 
 [map]
 WWWWWWWWWWWWWWWWWWWW
@@ -207,11 +221,13 @@ WWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
+no:7
 Cave 7
-20x12
-20
-6
-14 25
+dim:20x12
+time:20
+dia_req:6
+dia_val:14 ex_dia_val:25
+water_period:3
 
 [map]
 WWWWWWWWWWWWWWWWWWWW

@@ -25,7 +25,7 @@ import_caves(Game *game){
     }
     /*until the game finishes...                                        */
     while((inp!=NULL)&&(string_cmp(line,"[/game]\n")!=0)){
-        if(game->head_cave==NULL){
+        if(game->head_cave==NULL){/*head node allocation*/
             game->head_cave=(Cave*)malloc(sizeof(Cave));
             curr_cave=game->head_cave;
             curr_cave->next=NULL;
@@ -36,16 +36,20 @@ import_caves(Game *game){
             curr_cave->next=NULL;
         }
 
-        fgets(line,LINE_SIZE,inp);
-        strcpy(curr_cave->cave_name,line);
-        fgets(line,LINE_SIZE,inp);
-        sscanf(line,"%dx%d",&curr_cave->dim_col,&curr_cave->dim_row);
-        fgets(line,LINE_SIZE,inp);
-        sscanf(line,"%d",&curr_cave->max_time);
-        fgets(line,LINE_SIZE,inp);
-        sscanf(line,"%d",&curr_cave->dia_req);
-        fgets(line,LINE_SIZE,inp);
-        sscanf(line,"%d %d",&curr_cave->dia_val,&curr_cave->ex_dia_val);
+        fgets(line, LINE_SIZE, inp);
+        sscanf(line, "no:%d", &curr_cave->cave_number);
+        fgets(line, LINE_SIZE, inp);
+        strcpy(curr_cave->cave_name, line);
+        fgets(line, LINE_SIZE, inp);
+        sscanf(line, "dim:%dx%d", &curr_cave->dim_col, &curr_cave->dim_row);
+        fgets(line, LINE_SIZE, inp);
+        sscanf(line, "time:%d", &curr_cave->max_time);
+        fgets(line, LINE_SIZE, inp);
+        sscanf(line, "dia_req:%d", &curr_cave->dia_req);
+        fgets(line, LINE_SIZE, inp);
+        sscanf(line, "dia_val:%d ex_dia_val:%d", &curr_cave->dia_val, &curr_cave->ex_dia_val);
+        fgets(line, LINE_SIZE, inp);
+        sscanf(line, "water_period:%d", &curr_cave->water_discharge_period);
 
         /*the lines are ignored until map is read.                         */
         while(string_cmp(line,"[map]\n")!=0){
@@ -88,6 +92,7 @@ copy_cave(Cave *dest, Cave* src){
         free(dest->content);
     }
 
+    dest->cave_number=src->cave_number;
     string_cpy(dest->cave_name, src->cave_name);
     dest->dim_row=src->dim_row;
     dest->dim_col=src->dim_col;
@@ -95,7 +100,9 @@ copy_cave(Cave *dest, Cave* src){
     dest->dia_req=src->dia_req;
     dest->dia_val=src->dia_val;
     dest->ex_dia_val=src->ex_dia_val;
+    dest->water_discharge_period=src->water_discharge_period;
     dest->collected_dia=0;
+
 
     dest->content=(Content**)calloc(dest->dim_row, sizeof(Content*));
     for(r=0;r<dest->dim_row; ++r){
@@ -217,7 +224,7 @@ display_score_panel(Cave *curr_cave, Game *g){
         int_to_str(str_dia_req, curr_cave->dia_req);
         int_to_str(str_dia_val, curr_cave->dia_val);
 
-        al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(2*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_req);
+        al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(2*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_req);
         al_draw_bitmap(small_diamond, g->cam_pos.c+(3*CELL_SIZE), g->cam_pos.r , 0);
         al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_val);
 
@@ -232,7 +239,7 @@ display_score_panel(Cave *curr_cave, Game *g){
     int_to_str(str_collected_dia, g->miner.collected_dia);
     int_to_str(str_max_time, curr_cave->max_time);
     int_to_str(str_score, g->miner.score);
-    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(8*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_collected_dia);
+    al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(8*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_collected_dia);
     al_draw_bitmap(time_icon, g->cam_pos.c+(9*CELL_SIZE), g->cam_pos.r, 0);
     al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_max_time);
     al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(14*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);

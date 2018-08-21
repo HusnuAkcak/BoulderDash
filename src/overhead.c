@@ -263,7 +263,6 @@ fill_available_cells_with_dia(Cave *curr_cave, Point tar_cells[], int arr_size){
     for(i=0; i<arr_size; ++i){
         curr_cell=tar_cells[i];
         curr_cave->content[curr_cell.r][curr_cell.c]=DIAMOND;
-        fprintf(stderr, "%d %d \n", curr_cell.r, curr_cell.c);
     }
 
     return;

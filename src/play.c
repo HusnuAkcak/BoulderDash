@@ -66,7 +66,6 @@ play_game(Game * g){
 
     copy_cave(&curr_cave, g->head_cave);
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
-
     while(g->status!=END){
         if(play && al_is_event_queue_empty(event_queue)){
             if(moving){
