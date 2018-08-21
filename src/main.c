@@ -18,8 +18,8 @@ main()
     event_queue=NULL;
 
     import_caves(&game);
-    /*test_import(&game);//could be called when it is wanted to see if the maps are correcty imported or not.
-    */
+    //test_import(&game);//could be called when it is wanted to see if the maps are correcty imported or not.
+
 
     /*Initialisations                                                       */
     al_init();

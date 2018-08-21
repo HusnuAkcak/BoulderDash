@@ -33,7 +33,12 @@ void display_score_panel(Cave *curr_cave, Game *g);
 /*-- void restart_cave(...) --------------------------------------------------
     When miner dies, if he has enought life to play, current cave is restarted.
 ----------------------------------------------------------------------------*/
-void restart_cave(Game *game,Cave *curr_cave);
+void restart_cave(Game *game, Cave *curr_cave);
+
+/*-- Status go_next_cave(...) --------------------------------------------------
+    It is provide to copy next cave and perform necessary operation to go next cave.
+----------------------------------------------------------------------------*/
+Status go_next_cave(Game *game, Cave *curr_cave);
 
 /*--free_caves(...) ---------------------------------------------------------
     The caves are freed.

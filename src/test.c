@@ -25,11 +25,13 @@ test_import(Game *game)
     for(curr_cave=game->head_cave;curr_cave->next!=NULL;curr_cave=curr_cave->next)
     {
         ++cave_num;
+        fprintf(out_p,"Cave No         :%d\n",curr_cave->cave_number);
         fprintf(out_p,"Cave Name       :%s",curr_cave->cave_name);
         fprintf(out_p,"Cave Dimension  :%d %d\n",curr_cave->dim_row,curr_cave->dim_col);
         fprintf(out_p,"Time            :%d\n",curr_cave->max_time);
         fprintf(out_p,"Diamond Req.    :%d\n",curr_cave->dia_req);
         fprintf(out_p,"Diamond Val.    :%d %d\n",curr_cave->dia_val,curr_cave->ex_dia_val);
+        fprintf(out_p,"Water Period    :%d\n",curr_cave->water_discharge_period);
 
         for(i=0; i<(curr_cave->dim_row); ++i)
         {

@@ -79,7 +79,6 @@ play_game(Game * g){
             display_curr_screen(&curr_cave, g);
             al_flip_display();
 
-
             /*this control is performed after al_flip_display, because if miner
              is dead, we freeze the screen for a while.                      */
             if(g->miner.alive==false){
@@ -91,6 +90,10 @@ play_game(Game * g){
                 }else{
                     g->status=END;
                 }
+            }
+
+            if(g->status==NEXT){
+                g->status=go_next_cave(g, &curr_cave);
             }
             play=false;
         }
@@ -174,17 +177,14 @@ move(Cave * cave,Miner *m){
 
         pre_pos=m->pos;
         m->pos=tp;      /*miner goes to target position(tp)                 */
-        cave->content[tp.r][tp.c]=MINER;/*cave content is updated           */
+        cave->content[tp.r][tp.c]=MINER;/*target is occupied.               */
 
         /*previous location(miner's old pos) is changed as EMPTY_CELL       */
         cave->content[pre_pos.r][pre_pos.c]=EMPTY_CELL;
 
-        if(cave->content[tp.r][tp.c]==GATE){/*this function will be adjusted then.*/
-            if((cave->dia_req)-(cave->collected_dia)<=0 && cave->next!=NULL){
-                cave=cave->next;
-            }
-            else if((cave->dia_req)-(cave->collected_dia)<=0 && cave->next==NULL){
-                status=END;
+        if(target==GATE){
+            if((cave->dia_req)-(cave->collected_dia)<=0){
+                status=NEXT;
             }
         }
         else if(target==DIAMOND){

@@ -341,7 +341,6 @@ void
 find_miner_loc(Cave *curr_cave, Miner *m) {
 
     int r,c;
-
     for(r=0;r<curr_cave->dim_row;++r){
         for(c=0;c<curr_cave->dim_col;++c){
             if(curr_cave->content[r][c]==MINER){

@@ -66,8 +66,8 @@ ALLEGRO_BITMAP *explosion;
 /*Cave symbols meaning.                                                    */
 typedef enum{EX_WALL='W',IN_WALL='w',SOIL='.',DIAMOND='d',ROCK='r',GATE='X',
             SPIDER='S',MINER='P',WATER='l',MONSTER='M',EMPTY_CELL=' '}Content;
-typedef enum{UP, RIGHT, DOWN, LEFT, NONE}Direction; /*movement directions  */
-typedef enum{PAUSE, RESTART, END, CONTINUE}Status;  /*status of the game   */
+typedef enum{UP, RIGHT, DOWN, LEFT, NONE}Direction; /*movement directions       */
+typedef enum{PAUSE, RESTART, END, CONTINUE, NEXT}Status;/*status of the game    */
 /*###########################################################################
                             END OF ENUM TYPES
 ###########################################################################*/

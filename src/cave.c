@@ -91,7 +91,6 @@ copy_cave(Cave *dest, Cave* src){
     if(dest->content!=0){
         free(dest->content);
     }
-
     dest->cave_number=src->cave_number;
     string_cpy(dest->cave_name, src->cave_name);
     dest->dim_row=src->dim_row;
@@ -272,6 +271,27 @@ restart_cave(Game *g,Cave *curr_cave){
     g->miner.curr_cave_score=0;
     g->miner.collected_dia=0;
     return;
+}
+
+Status
+go_next_cave(Game *g, Cave *curr_cave){
+    Cave *temp_cave;
+    Status status;
+
+    // temp_cave and curr_cave are made equal
+    for(temp_cave=g->head_cave; temp_cave->cave_number!=curr_cave->cave_number; temp_cave=temp_cave->next);
+
+    temp_cave=temp_cave->next;// next cave is reached.
+    if(temp_cave==NULL){
+        status=END;
+    }
+    else{
+        copy_cave(curr_cave, temp_cave);
+        find_miner_loc(curr_cave, &(g->miner));
+        status=CONTINUE;
+    }
+
+    return status;
 }
 
 void

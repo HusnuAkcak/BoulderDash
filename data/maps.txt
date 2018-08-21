@@ -24,13 +24,13 @@ no:1
 Cave 1
 dim:40x22
 time:120
-dia_req:18
+dia_req:1
 dia_val: 15 ex_dia_val:20
 water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WrPd.....d...............d.d     ..d..dW
+WrPdX....d...............d.d     ..d..dW
 W.....r..d...r...... .......     . ....W
 Wr... r..d... ......       ....r. .. drW
 W .... ...... .........  . ............W
@@ -39,7 +39,7 @@ W.d... ...........  ...  ...  ..r.. r..W
 W.d.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
 W.d.. .r.... ....r.. .. ..r.... .......W
 W.d.......r...... .....r...drr..d.r.r..W
-W.d.r.... r.rr.d. ...r..r......r.r..drXW
+W.d.r.... r.rr.d. ...r..r......r.r..d..W
 W.drr ....r.rr..r .r......... ..r......W
 Wdd...d......... ..... ..d...r.....r...W
 Wdd...r.r..r.......r.... ... .r........W
@@ -65,11 +65,11 @@ water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WXP. ...... rr.r......r ..r.. ..rr..r..W
-W.....rr......  r.r. .r...r......r.....W
-W...r..........r .....r ....r.r.r... . W
-W......r...............r..r....r.......W
-Wrr.........rr rrr..... ..rr....r......W
+WX.. ...... rr.r......r ..r.. ..rr..r..W
+WP....rr......  r.r. .r...r......r.....W
+W...r.. .......r .....r ....r.r.r... . W
+W...... ...............r..r....r.......W
+Wrr....M....rr rrr..... ..rr....r......W
 W....r..r ..r.r...rr....r..........r ..W
 W. ....r...r.rrr.r....... ........ .r..W
 W.... ....rr...r.r....r..r..r...r....r.W
@@ -94,7 +94,7 @@ no:3
 Cave 3
 dim:40x22
 time:180
-dia_req:25
+dia_req:10
 dia_val:10 ex_dia_val:12
 water_period:5
 
@@ -114,7 +114,7 @@ W. r...d.rrrr.d.r....r.....r..... r.r..W
 W..rr..d..rrr.d r..........r........r..W
 W....r.d.r..r.dr.rr....rr.... r...r ...W
 W....r.d.r....dr...rr.r....r...rrr.r.r.W
-Wr......... ..d.r.r ...................W
+Wr.....X... ..d.r.r ...................W
 Wrr. . .rr....d......r.rr........r.r...W
 W.r. r...rr...dr.......r...r.....r.r..rW
 W. ... ....r..d..r....r.. .r...........W
@@ -130,7 +130,7 @@ no:4
 Cave 4
 dim:40x22
 time:200
-dia_req:80
+dia_req:1
 dia_val:4 ex_dia_val:5
 water_period:4
 
@@ -149,8 +149,8 @@ Wrrddddddddddddrrdrdrdddrrrw        wrrW
 Wdddddddrdrdrrrdddrdrd.rdrdw        wddW
 Wdrdrwwwwww.wwwwwwdddddrdrrw        wrrW
 Wddddw           wrdddrdrdrw        wrdW
-Wrrddw           wddddddrrdw        wrdW
-Wdddd.           .drddddrddw        wrdW
+Wrrddw           wddddddrrdw    X   wrdW
+Wdddd.           .drddddrddw    d   wrdW
 Wddrrw           wddddddddrw        wrrW
 Wrdrrw           wrrdrdddrdw    P   wrrW
 Wdrdrw           wddrdddrdrwwwwwwwwwwrrW
