@@ -13,7 +13,7 @@
 #define CELL_SIZE 64                                /*icon pixel            */
 #define MINER_LIFE 3
 #define FPS 60                                      /*display frequence     */
-#define FALL_PS 3                                   /*falling frequence.    */
+#define FALL_PS 2.5                                   /*falling frequence.    */
 #define MPS 7                                       /*miner's speed freq.   */
 #define DIA_OF_SPIDER 8     /*diamond number that is created after any spider is crushed. */
 #define DIA_OF_MONSTER 12   /*diamond number that is created after any monster is crushed. */

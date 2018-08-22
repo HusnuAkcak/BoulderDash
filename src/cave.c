@@ -177,7 +177,7 @@ display_cell(Point pos, Cave* cave){
             break;
         case GATE:
             if(((cave->dia_req)-(cave->collected_dia))>0)
-                al_draw_bitmap(in_wall, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
+                al_draw_bitmap(empty_cell, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
             else
                 al_draw_bitmap(gate, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
 
@@ -288,6 +288,7 @@ go_next_cave(Game *g, Cave *curr_cave){
     else{
         copy_cave(curr_cave, temp_cave);
         find_miner_loc(curr_cave, &(g->miner));
+        ++(g->miner.life);
         status=CONTINUE;
     }
 

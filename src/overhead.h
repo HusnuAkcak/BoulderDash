@@ -38,7 +38,7 @@ void detect_target(Cave *cave, Miner *m,char *target, char *after_target,
 /*-- void is_miner_dead(...) ------------------------------------------------
     Tells, if miner is died or not in this cell.
 ---------------------------------------------------------------------------*/
-void is_miner_dead(Cave *curr_cave, Miner *m);
+void is_miner_dead(Game *g, Cave *curr_cave, Miner *m);
 
 
 /*-- void find_miner_loc(...) -----------------------------------------------

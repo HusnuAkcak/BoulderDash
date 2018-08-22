@@ -93,7 +93,14 @@ play_game(Game * g){
             }
 
             if(g->status==NEXT){
-                g->status=go_next_cave(g, &curr_cave);
+                if(curr_cave.max_time>0){//left time is being added to miner's score.
+                    --curr_cave.max_time;
+                    ++(g->miner.score);
+                    ++(g->miner.curr_cave_score);
+                }
+                else{
+                    g->status=go_next_cave(g, &curr_cave);
+                }
             }
             play=false;
         }
@@ -140,7 +147,7 @@ play_game(Game * g){
         else if(ev.type==ALLEGRO_EVENT_TIMER){
 
             if(ev.timer.source==main_timer){
-                is_miner_dead(&curr_cave, &(g->miner));
+                is_miner_dead(g,&curr_cave, &(g->miner));
                 play=true;
             }
             if(ev.timer.source==panel_timer && g->status==CONTINUE){

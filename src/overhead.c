@@ -146,10 +146,12 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         rock_pos.r+=1;/*it is used for insect position.                     */
         if(spider_crush){
             find_available_cells_for_dia(cave, spider_dia_arr, DIA_OF_SPIDER, rock_pos);
+            fprintf(stderr, "fpos:%d %d\n", spider_dia_arr[0].r, spider_dia_arr[0].c);
             fill_available_cells_with_dia(cave, spider_dia_arr, DIA_OF_SPIDER);
         }
         else if(monster_crush){
             find_available_cells_for_dia(cave, monster_dia_arr, DIA_OF_MONSTER, rock_pos);
+            fprintf(stderr, "fpos:%d %d\n", monster_dia_arr[0].r, monster_dia_arr[0].c);
             fill_available_cells_with_dia(cave, monster_dia_arr, DIA_OF_MONSTER);
         }
 
@@ -212,8 +214,8 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
         /*right underside diagonal control*/
         if((ins_pos.r+radius)<(cave->dim_row) && (ins_pos.c+radius)<(cave->dim_col) &&
             (arr_size-determined)>0 &&
-            (cave->content[ins_pos.r+radius][ins_pos.c]==EMPTY_CELL ||
-                        cave->content[ins_pos.r+radius][ins_pos.c]==SOIL)   ){
+            (cave->content[ins_pos.r+radius][ins_pos.c+radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r+radius][ins_pos.c+radius]==SOIL)   ){
             curr_cell.r=ins_pos.r+radius;
             curr_cell.c=ins_pos.c+radius;
             tar_cells[determined]=curr_cell;
@@ -222,8 +224,8 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
         /*right upside diagonal control*/
         if((ins_pos.c+radius)<(cave->dim_col) && (ins_pos.r-radius)>0 &&
             (arr_size-determined)>0 &&
-            (cave->content[ins_pos.r][ins_pos.c+radius]==EMPTY_CELL ||
-                        cave->content[ins_pos.r][ins_pos.c+radius]==SOIL)   ){
+            (cave->content[ins_pos.r-radius][ins_pos.c+radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r-radius][ins_pos.c+radius]==SOIL)   ){
             curr_cell.r=ins_pos.r-radius;
             curr_cell.c=ins_pos.c+radius;
             tar_cells[determined]=curr_cell;
@@ -232,8 +234,8 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
         /*left upside diagonal control*/
         if((ins_pos.c-radius)>0 && (ins_pos.r-radius)>0 &&
             (arr_size-determined)>0 &&
-            (cave->content[ins_pos.r][ins_pos.c-radius]==EMPTY_CELL ||
-                        cave->content[ins_pos.r][ins_pos.c-radius]==SOIL)   ){
+            (cave->content[ins_pos.r-radius][ins_pos.c-radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r-radius][ins_pos.c-radius]==SOIL)   ){
             curr_cell.r=ins_pos.r-radius;
             curr_cell.c=ins_pos.c-radius;
             tar_cells[determined]=curr_cell;
@@ -242,8 +244,8 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
         /*left underside diagonal control*/
         if((ins_pos.c-radius)>0 && (ins_pos.r+radius)<(cave->dim_row) &&
             (arr_size-determined)>0 &&
-            (cave->content[ins_pos.r][ins_pos.c-radius]==EMPTY_CELL ||
-                        cave->content[ins_pos.r][ins_pos.c-radius]==SOIL)   ){
+            (cave->content[ins_pos.r+radius][ins_pos.c-radius]==EMPTY_CELL ||
+                        cave->content[ins_pos.r+radius][ins_pos.c-radius]==SOIL)   ){
             curr_cell.r=ins_pos.r+radius;
             curr_cell.c=ins_pos.c-radius;
             tar_cells[determined]=curr_cell;
@@ -320,7 +322,7 @@ detect_target(Cave *cave, Miner *m, char *target, char *after_target, Point *tp,
 }
 
 void
-is_miner_dead(Cave *curr_cave, Miner *m) {
+is_miner_dead(Game *g, Cave *curr_cave, Miner *m) {
 
     if( curr_cave->content[m->pos.r-1][m->pos.c] ==MONSTER
         || curr_cave->content[m->pos.r+1][m->pos.c] ==MONSTER
@@ -330,7 +332,7 @@ is_miner_dead(Cave *curr_cave, Miner *m) {
         || curr_cave->content[m->pos.r-1][m->pos.c] ==SPIDER
         || curr_cave->content[m->pos.r][m->pos.c-1] ==SPIDER
         || curr_cave->content[m->pos.r][m->pos.c+1] ==SPIDER
-        || curr_cave->max_time <=0
+        || (curr_cave->max_time <=0 && g->status!=NEXT)
     ){
         m->alive=false;
     }

@@ -31,25 +31,25 @@ water_period:5
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WrPdX....d...............d.d     ..d..dW
-W.....r..d...r...... .......     . ....W
-Wr... r..d... ......       ....r. .. drW
-W .... ...... .........  . ............W
-W d.r. ......S....rr...........r..r... W
-W.d... ...........  ...  ...  ..r.. r..W
-W.d.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
-W.d.. .r.... ....r.. .. ..r.... .......W
-W.d.......r...... .....r...drr..d.r.r..W
-W.d.r.... r.rr.d. ...r..r......r.r..d..W
-W.drr ....r.rr..r .r......... ..r......W
-Wdd...d......... ..... ..d...r.....r...W
-Wdd...r.r..r.......r.... ... .r........W
-Wdddwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
-Wddd. . ...r...r.... .. .r......... ..rW
-Wddd....r .......r....... ..r...r ...rrW
-Wddd...r......r. rr.....d..............W
-Wddd. .. .. ...r....r.r...r..r.r......rW
-Wdddr. ...dd. ............r.....r... d W
-W.dd...d.ddd.......... ..d. .......d..dW
+Wr....r..d...r...... .......     . ....W
+Wr... r..d..........       ....r. .. drW
+Wr.... ...... .........  . ............W
+Wr..r. ......S....rr...........r..r... W
+Wr.... ...........  ...  ...  ..r.. r..W
+Wr. ......wwwwwwwwwwwwwwwwwwwwwwwww...rW
+Wr. . .r.... ....r.. .. ..r.... .......W
+Wr. ......r...... .....r...drr..d.r.r..W
+Wr. r.... r.rr.d. ...r..r......r.r..d..W
+Wr. r ....r.rr..r .r......... ..r......W
+Wr. ..d......... ..... ..d...r.....r...W
+Wr. ..r.r..r.......r.... ... .r........W
+Wr. wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
+Wr. . . ...r...r.... .. .r......... ..rW
+Wr. ....r .......r....... ..r...r ...rrW
+Wr. ...r......r. rr.....d..............W
+Wr. . .. .. ...r....r.r...r..r.r......rW
+Wdd r. ...dd. ............r.....r... d W
+W.d ...d.ddd.......... ..d. .......d..dW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
@@ -66,11 +66,11 @@ water_period:5
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WX.. ...... rr.r......r ..r.. ..rr..r..W
-WP....rr......  r.r. .r...r......r.....W
-W...r.. .......r .....r ....r.r.r... . W
-W...... ...............r..r....r.......W
-Wrr....M....rr rrr..... ..rr....r......W
-W....r..r ..r.r...rr....r..........r ..W
+WP..rrrrrr........r. .r...r......r.....W
+W............     ....r ....r.r.r... . W
+W...     ....     .....r..r....r.......W
+Wrrr S   ...r S   ..... ..rr....r......W
+W..r.r...r..r.r...rr....r..........r ..W
 W. ....r...r.rrr.r....... ........ .r..W
 W.... ....rr...r.r....r..r..r...r....r.W
 W....r.... .........r.....r...r....rr.rW
