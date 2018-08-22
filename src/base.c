@@ -19,6 +19,7 @@ string_cpy(char *dest, const char *src){
 
 int
 string_cmp(const char * str1, const char *str2){
+
     int status; /*if strings are equal, status will be 0.                */
     int i;      /*loop variable                                          */
 
@@ -101,7 +102,8 @@ load_cave_bitmaps(){
     return;
 }
 
-void destroy_cave_bitmaps(){
+void
+destroy_cave_bitmaps(){
     al_destroy_bitmap(in_wall);
     al_destroy_bitmap(ex_wall);
     al_destroy_bitmap(soil);

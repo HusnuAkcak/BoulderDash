@@ -146,12 +146,10 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         rock_pos.r+=1;/*it is used for insect position.                     */
         if(spider_crush){
             find_available_cells_for_dia(cave, spider_dia_arr, DIA_OF_SPIDER, rock_pos);
-            fprintf(stderr, "fpos:%d %d\n", spider_dia_arr[0].r, spider_dia_arr[0].c);
             fill_available_cells_with_dia(cave, spider_dia_arr, DIA_OF_SPIDER);
         }
         else if(monster_crush){
             find_available_cells_for_dia(cave, monster_dia_arr, DIA_OF_MONSTER, rock_pos);
-            fprintf(stderr, "fpos:%d %d\n", monster_dia_arr[0].r, monster_dia_arr[0].c);
             fill_available_cells_with_dia(cave, monster_dia_arr, DIA_OF_MONSTER);
         }
 
@@ -332,7 +330,7 @@ is_miner_dead(Game *g, Cave *curr_cave, Miner *m) {
         || curr_cave->content[m->pos.r-1][m->pos.c] ==SPIDER
         || curr_cave->content[m->pos.r][m->pos.c-1] ==SPIDER
         || curr_cave->content[m->pos.r][m->pos.c+1] ==SPIDER
-        || (curr_cave->max_time <=0 && g->status!=NEXT)
+        || (curr_cave->left_time <=0 && g->status!=NEXT)
     ){
         m->alive=false;
     }

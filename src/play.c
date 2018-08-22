@@ -15,18 +15,23 @@ intro_game(Game *game,int scr_width,int scr_height){
 
     ALLEGRO_BITMAP      *image1;
     ALLEGRO_BITMAP      *image2;
-    ALLEGRO_SAMPLE      *sample;
 
-    /*intro music                                                      */
+
+    /*background music(It is always played.)                               */
     al_reserve_samples(1);
-    sample=al_load_sample(AUDIO_PATH"/Music.wav");
-    al_play_sample(sample,1.0,0.0,1.0,ALLEGRO_PLAYMODE_ONCE,NULL);
+    background=al_load_sample(AUDIO_PATH"/Music.wav");
+    background_instance=al_create_sample_instance(background);
+    al_attach_sample_instance_to_mixer(background_instance, al_get_default_mixer());
+    al_set_sample_instance_playmode(background_instance ,ALLEGRO_PLAYMODE_LOOP);
+    al_play_sample_instance(background_instance);
 
+    /*First intro image                                                    */
     image1=al_load_bitmap(IMG_PATH"/boulder_dash.jpg");
     al_draw_bitmap(image1,scr_width/3,scr_height/3,0);
     al_flip_display();
     al_rest(0.1);
     al_clear_to_color(al_map_rgb(0,0,0));
+    /*Second intro image                                                    */
     image2=al_load_bitmap(IMG_PATH"/title_screen.png");
     al_draw_bitmap(image2,scr_width/3,scr_height/3,0);
     al_flip_display();
@@ -35,7 +40,6 @@ intro_game(Game *game,int scr_width,int scr_height){
 
     al_destroy_bitmap(image1);
     al_destroy_bitmap(image2);
-    al_destroy_sample(sample);
 }
 
 void
@@ -76,6 +80,19 @@ play_game(Game * g){
                 al_use_transform(&camera);
                 moving=false;
             }
+
+            if(g->status==NEXT){
+                if(curr_cave.left_time>0){//left time is being added to miner's score.
+                    --curr_cave.left_time;
+                    ++(g->miner.score);
+                    ++(g->miner.curr_cave_score);
+                }
+                else{
+                    g->status=go_next_cave(g, &curr_cave);
+                    moving=true;
+                }
+            }
+
             display_curr_screen(&curr_cave, g);
             al_flip_display();
 
@@ -83,6 +100,7 @@ play_game(Game * g){
              is dead, we freeze the screen for a while.                      */
             if(g->miner.alive==false){
                 --(g->miner.life);
+        
                 if((g->miner.life)>0){
                     restart_cave(g, &curr_cave);
                     moving=true;
@@ -92,20 +110,11 @@ play_game(Game * g){
                 }
             }
 
-            if(g->status==NEXT){
-                if(curr_cave.max_time>0){//left time is being added to miner's score.
-                    --curr_cave.max_time;
-                    ++(g->miner.score);
-                    ++(g->miner.curr_cave_score);
-                }
-                else{
-                    g->status=go_next_cave(g, &curr_cave);
-                }
-            }
             play=false;
         }
 
         al_wait_for_event(event_queue,&ev);
+
         if(ev.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
             g->status=END;
         }
@@ -151,7 +160,12 @@ play_game(Game * g){
                 play=true;
             }
             if(ev.timer.source==panel_timer && g->status==CONTINUE){
-                --curr_cave.max_time;
+                --curr_cave.left_time;
+
+                if( (curr_cave.left_time) < (curr_cave.max_time/10.0) ){
+                    /*in last 1/10 time left, music volume is inreased.*/
+                    al_set_sample_instance_gain(background_instance, 3);
+                }
             }
             if(ev.timer.source==falling_timer && g->status==CONTINUE){
                 move_insects(&curr_cave);
@@ -197,6 +211,7 @@ move(Cave * cave,Miner *m){
         else if(target==DIAMOND){
             ++m->collected_dia;
             ++cave->collected_dia;
+
             if((cave->dia_req)-(cave->collected_dia)>0){
                 m->curr_cave_score+=cave->dia_val;
                 m->score+=cave->dia_val;    /*general score                 */

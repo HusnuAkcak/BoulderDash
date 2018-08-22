@@ -101,6 +101,7 @@ copy_cave(Cave *dest, Cave* src){
     dest->ex_dia_val=src->ex_dia_val;
     dest->water_discharge_period=src->water_discharge_period;
     dest->collected_dia=0;
+    dest->left_time=dest->max_time;
 
 
     dest->content=(Content**)calloc(dest->dim_row, sizeof(Content*));
@@ -113,6 +114,8 @@ copy_cave(Cave *dest, Cave* src){
         }
     }
     find_insects(dest);
+    /*when starting a new cave music volume is set its normal level.     */
+    al_set_sample_instance_gain(background_instance, 1);
     return;
 }
 
@@ -126,7 +129,7 @@ display_curr_screen(Cave * cave, Game *g){
     screen_dim.r=al_get_display_height(display);
     screen_dim.c=al_get_display_width(display);
 
-    /*Real coordinate info is translated to cave coord info.            */
+    /*Real coordinate info is translated to cave coord info.             */
     start_loc.c=(g->cam_pos.c/CELL_SIZE);
     start_loc.r=(g->cam_pos.r/CELL_SIZE)+1;/*One line is reserved for score panel.*/
     end_loc.c=(g->cam_pos.c/CELL_SIZE)+(screen_dim.c/CELL_SIZE);
@@ -202,7 +205,7 @@ display_score_panel(Cave *curr_cave, Game *g){
     char str_dia_val[NAME_LENGTH];
     char str_ex_dia_val[NAME_LENGTH];
     char str_collected_dia[NAME_LENGTH];
-    char str_max_time[NAME_LENGTH];
+    char str_left_time[NAME_LENGTH];
     char str_score[NAME_LENGTH];
     char str_life[NAME_LENGTH];
 
@@ -210,7 +213,7 @@ display_score_panel(Cave *curr_cave, Game *g){
     str_dia_val[0]=0;
     str_ex_dia_val[0]=0;
     str_collected_dia[0]=0;
-    str_max_time[0]=0;
+    str_left_time[0]=0;
     str_score[0]=0;
     str_life[0]=0;
 
@@ -236,11 +239,11 @@ display_score_panel(Cave *curr_cave, Game *g){
         al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_ex_dia_val);
     }
     int_to_str(str_collected_dia, g->miner.collected_dia);
-    int_to_str(str_max_time, curr_cave->max_time);
+    int_to_str(str_left_time, curr_cave->left_time);
     int_to_str(str_score, g->miner.score);
     al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(8*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_collected_dia);
     al_draw_bitmap(time_icon, g->cam_pos.c+(9*CELL_SIZE), g->cam_pos.r, 0);
-    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_max_time);
+    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_left_time);
     al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(14*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);
 
     int_to_str(str_life, g->miner.life);
@@ -289,6 +292,7 @@ go_next_cave(Game *g, Cave *curr_cave){
         copy_cave(curr_cave, temp_cave);
         find_miner_loc(curr_cave, &(g->miner));
         ++(g->miner.life);
+        g->miner.collected_dia=0;
         status=CONTINUE;
     }
 

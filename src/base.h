@@ -1,24 +1,25 @@
 #include "allegro5/allegro.h"
 #include "allegro5/allegro_ttf.h"
+#include "allegro5/allegro_acodec.h"
+#include "allegro5/allegro_audio.h"
 #ifndef _BASE_H_
 #define _BASE_H_
 
 /*###########################################################################
                                 CONSTANTS
 ###########################################################################*/
-#define NAME_LENGTH 15                              /*cave name             */
-#define MAP_FILE "../data/maps.txt"                 /*cave maps             */
-#define FONT_FILE "../data/font/commodore.ttf"      /*game font type        */
-#define FONT_SIZE 50                                /*game font size        */
-#define CELL_SIZE 64                                /*icon pixel            */
-#define MINER_LIFE 3
-#define FPS 60                                      /*display frequence     */
-#define FALL_PS 2.5                                   /*falling frequence.    */
-#define MPS 7                                       /*miner's speed freq.   */
-#define DIA_OF_SPIDER 8     /*diamond number that is created after any spider is crushed. */
-#define DIA_OF_MONSTER 12   /*diamond number that is created after any monster is crushed. */
-#define LINE_SIZE 240   /*when it is changes, update 'README' and 'maps.txt'
-                            file to specify the line size requirement.      */
+#define LINE_SIZE 240     //used while caves are imported.
+#define NAME_LENGTH 15                              //cave name
+#define MAP_FILE "../data/maps.txt"                 //cave maps
+#define FONT_FILE "../data/font/commodore.ttf"      //game font type
+#define FONT_SIZE 50                                //game font size
+#define CELL_SIZE 64                                //icon pixel
+#define MINER_LIFE 30                                //miner's initial life
+#define FPS 60                                      //display frequence
+#define FALL_PS 2.5                                 //falling frequence.
+#define MPS 7                                       //miner's speed freq.
+#define DIA_OF_SPIDER 8   //dia num that is created after spiders are crushed.
+#define DIA_OF_MONSTER 12 //dia num that is created after monsters are crushed.
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -30,14 +31,20 @@
 /*###########################################################################
                             GLOBAL VARIABLES
 ###########################################################################*/
-/*Allegro components.                                                       */
+/*ALLEGRO COMPONENTS.                                                       */
 ALLEGRO_DISPLAY         *display;
 ALLEGRO_EVENT_QUEUE     *event_queue;
 ALLEGRO_TIMER           *main_timer, *panel_timer, *falling_timer, *miner_timer;
 ALLEGRO_FONT            *font;
 ALLEGRO_TRANSFORM       camera;
 
-/*CAVE BITMAPS                                                              */
+
+
+/*Game muscis samples and sample instances.                              */
+ALLEGRO_SAMPLE *background;
+ALLEGRO_SAMPLE_INSTANCE *background_instance;
+
+/*Cave bitmaps                                                            */
 ALLEGRO_BITMAP *ex_wall;
 ALLEGRO_BITMAP *in_wall;
 ALLEGRO_BITMAP *soil;
@@ -99,7 +106,8 @@ typedef struct Cave{
     int cave_number;
     char cave_name[NAME_LENGTH];
     int dim_row,dim_col;    /*dimension_x and dimension_y                   */
-    int max_time,dia_req,collected_dia,dia_val,ex_dia_val;/*dia =diamond    */
+    int left_time, max_time;
+    int dia_req, collected_dia, dia_val, ex_dia_val;/*dia =diamond          */
     int water_discharge_period;
     Content **content;
     Monster *head_monster;
@@ -135,7 +143,7 @@ typedef struct Game{
 void load_cave_bitmaps();
 
 /*-- void destroy_cave_bitmaps(...) -----------------------------------------
-    destroy_bitmap function is called for each cave bitmaps.
+    Destroys cave bitmaps.
 ---------------------------------------------------------------------------*/
 void destroy_cave_bitmaps();
 

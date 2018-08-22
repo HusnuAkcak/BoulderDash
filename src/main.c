@@ -2,6 +2,7 @@
 #include"allegro5/allegro.h"
 #include"allegro5/allegro_image.h"
 #include"allegro5/allegro_acodec.h"
+#include"allegro5/allegro_audio.h"
 #include"allegro5/allegro_ttf.h"
 #include"base.h"
 #include"cave.h"
@@ -70,13 +71,20 @@ main()
     intro_game(&game,disp_data.width,disp_data.height);
     play_game(&game);
 
-    /*free operations                                                       */
+    /*######################### Free operations ############################*/
+
+    free_caves(game.head_cave); // Caves are freed.
+    destroy_cave_bitmaps();     // Cave bitmaps are freed.
+
+    /*samples are freed.                                                    */
+    al_destroy_sample(background);
+    al_destroy_sample_instance(background_instance);
+
+    /*Other free opererations.                                              */
     al_destroy_event_queue(event_queue);
     al_destroy_display(display);
     al_destroy_font(font);
     al_destroy_timer(main_timer);
-    destroy_cave_bitmaps();
-    free_caves(game.head_cave);
 
     return 0;
 }
