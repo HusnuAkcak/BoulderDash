@@ -20,6 +20,7 @@
 #define MPS 7                                       //miner's speed freq.
 #define DIA_OF_SPIDER 8   //dia num that is created after spiders are crushed.
 #define DIA_OF_MONSTER 12 //dia num that is created after monsters are crushed.
+#define MINER_DEATH_DURATION 2 //duration of time to die.(in second)
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -72,7 +73,7 @@ ALLEGRO_BITMAP *explosion;
 ###########################################################################*/
 /*Cave symbols meaning.                                                    */
 typedef enum{EX_WALL='W',IN_WALL='w',SOIL='.',DIAMOND='d',ROCK='r',GATE='X',
-            SPIDER='S',MINER='P',WATER='l',MONSTER='M',EMPTY_CELL=' '}Content;
+DEAD_MINER='p', SPIDER='S',MINER='P',WATER='l',MONSTER='M',EMPTY_CELL=' '}Content;
 typedef enum{UP, RIGHT, DOWN, LEFT, NONE}Direction; /*movement directions       */
 typedef enum{PAUSE, RESTART, END, CONTINUE, NEXT}Status;/*status of the game    */
 /*###########################################################################
@@ -121,6 +122,7 @@ typedef struct Miner{
     int life;
     bool alive;
     Direction move_dir;
+    int duration_of_death;
 }Miner;
 
 typedef struct Game{

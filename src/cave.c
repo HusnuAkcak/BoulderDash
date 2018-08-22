@@ -103,7 +103,6 @@ copy_cave(Cave *dest, Cave* src){
     dest->collected_dia=0;
     dest->left_time=dest->max_time;
 
-
     dest->content=(Content**)calloc(dest->dim_row, sizeof(Content*));
     for(r=0;r<dest->dim_row; ++r){
         dest->content[r]=(Content*)calloc(dest->dim_col, sizeof(Content));
@@ -174,6 +173,9 @@ display_cell(Point pos, Cave* cave){
             break;
         case MINER:
             al_draw_bitmap(miner, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
+            break;
+        case DEAD_MINER:
+            al_draw_bitmap(explosion, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
             break;
         case MONSTER:
             al_draw_bitmap(monster, (pos.c)*CELL_SIZE, ((pos.r)*CELL_SIZE), 0);
@@ -273,6 +275,7 @@ restart_cave(Game *g,Cave *curr_cave){
     g->miner.score=(g->miner.score)-(g->miner.curr_cave_score);
     g->miner.curr_cave_score=0;
     g->miner.collected_dia=0;
+    g->miner.duration_of_death=MINER_DEATH_DURATION;
     return;
 }
 

@@ -60,9 +60,10 @@ control_falling(Miner *m, Cave *cave) {
 
                 /*A falling rock can die miner, spider or a monster.        */
                 if(cave->content[target.r][target.c]==ROCK){
-                   if(cave->content[target.r+1][target.c]==MINER)
-                        m->alive=false;
-
+                   if(cave->content[target.r+1][target.c]==MINER){
+                       cave->content[target.r+1][target.c]=DEAD_MINER;
+                       m->alive=false;
+                    }
                     control_crushed_insects(cave, target);
                 }
                 /*related bitmaps are being updated.                        */
@@ -332,6 +333,7 @@ is_miner_dead(Game *g, Cave *curr_cave, Miner *m) {
         || curr_cave->content[m->pos.r][m->pos.c+1] ==SPIDER
         || (curr_cave->left_time <=0 && g->status!=NEXT)
     ){
+        curr_cave->content[m->pos.r][m->pos.c]=DEAD_MINER;
         m->alive=false;
     }
     return;

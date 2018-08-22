@@ -69,6 +69,7 @@ play_game(Game * g){
     curr_cave.dim_col=0;
 
     copy_cave(&curr_cave, g->head_cave);
+    g->miner.duration_of_death=MINER_DEATH_DURATION;
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
     while(g->status!=END){
         if(play && al_is_event_queue_empty(event_queue)){
@@ -97,16 +98,19 @@ play_game(Game * g){
             al_flip_display();
 
             /*this control is performed after al_flip_display, because if miner
-             is dead, we freeze the screen for a while.                      */
+            is dead, we freeze the screen for a while.                      */
             if(g->miner.alive==false){
-                --(g->miner.life);
-
-                if((g->miner.life)>0){
-                    restart_cave(g, &curr_cave);
-                    moving=true;
-                    g->miner.alive=true;
-                }else{
-                    g->status=END;
+                g->status=PAUSE;
+                if((g->miner.duration_of_death)<=0){
+                    --(g->miner.life);
+                    if((g->miner.life)>0){
+                        restart_cave(g, &curr_cave);
+                        moving=true;
+                        g->miner.alive=true;
+                        g->status=CONTINUE;
+                    }else{
+                        g->status=END;
+                    }
                 }
             }
 
@@ -163,6 +167,7 @@ play_game(Game * g){
                 is_miner_dead(g,&curr_cave, &(g->miner));
                 play=true;
             }
+
             if(ev.timer.source==panel_timer && g->status==CONTINUE){
                 --curr_cave.left_time;
 
@@ -171,10 +176,16 @@ play_game(Game * g){
                     al_set_sample_instance_gain(background_instance, 3);
                 }
             }
+            else if(ev.timer.source==panel_timer){
+                if(g->miner.alive==false)
+                    --(g->miner.duration_of_death);
+            }
+
             if(ev.timer.source==falling_timer && g->status==CONTINUE){
                 move_insects(&curr_cave);
                 control_falling(&(g->miner), &curr_cave);
             }
+
             if(ev.timer.source==miner_timer && g->miner.move_dir!=NONE && g->status==CONTINUE){
                 g->status=move(&curr_cave, &(g->miner));
                 moving=true;
