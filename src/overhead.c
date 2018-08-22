@@ -140,7 +140,7 @@ control_crushed_insects(Cave *cave, Point rock_pos){
 
     /*the rock and the insect are deleted from the map.                     */
     if(spider_crush || monster_crush){
-
+        al_play_sample_instance(insect_dies_instance);
         cave->content[rock_pos.r][rock_pos.c]=EMPTY_CELL;
         cave->content[rock_pos.r+1][rock_pos.c]=EMPTY_CELL;
 

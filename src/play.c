@@ -18,11 +18,6 @@ intro_game(Game *game,int scr_width,int scr_height){
 
 
     /*background music(It is always played.)                               */
-    al_reserve_samples(1);
-    background=al_load_sample(AUDIO_PATH"/Music.wav");
-    background_instance=al_create_sample_instance(background);
-    al_attach_sample_instance_to_mixer(background_instance, al_get_default_mixer());
-    al_set_sample_instance_playmode(background_instance ,ALLEGRO_PLAYMODE_LOOP);
     al_play_sample_instance(background_instance);
 
     /*First intro image                                                    */
@@ -100,6 +95,7 @@ play_game(Game * g){
             /*this control is performed after al_flip_display, because if miner
             is dead, we freeze the screen for a while.                      */
             if(g->miner.alive==false){
+                al_play_sample_instance(miner_dies_instance);
                 g->status=PAUSE;
                 if((g->miner.duration_of_death)<=0){
                     --(g->miner.life);
@@ -164,7 +160,7 @@ play_game(Game * g){
         else if(ev.type==ALLEGRO_EVENT_TIMER){
 
             if(ev.timer.source==main_timer){
-                is_miner_dead(g,&curr_cave, &(g->miner));
+                is_miner_dead(g, &curr_cave, &(g->miner));
                 play=true;
             }
 
@@ -229,6 +225,9 @@ move(Cave * cave,Miner *m){
             ++m->collected_dia;
             ++cave->collected_dia;
 
+            if(cave->dia_req==cave->collected_dia)
+                al_play_sample_instance(door_opens_instance);
+                
             if((cave->dia_req)-(cave->collected_dia)>0){
                 m->curr_cave_score+=cave->dia_val;
                 m->score+=cave->dia_val;    /*general score                 */

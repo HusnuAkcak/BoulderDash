@@ -43,7 +43,13 @@ ALLEGRO_TRANSFORM       camera;
 
 /*Game muscis samples and sample instances.                              */
 ALLEGRO_SAMPLE *background;
+ALLEGRO_SAMPLE *miner_dies;
+ALLEGRO_SAMPLE *insect_dies;
+ALLEGRO_SAMPLE *door_opens;
 ALLEGRO_SAMPLE_INSTANCE *background_instance;
+ALLEGRO_SAMPLE_INSTANCE *miner_dies_instance;
+ALLEGRO_SAMPLE_INSTANCE *insect_dies_instance;
+ALLEGRO_SAMPLE_INSTANCE *door_opens_instance;
 
 /*Cave bitmaps                                                            */
 ALLEGRO_BITMAP *ex_wall;
@@ -148,6 +154,16 @@ void load_cave_bitmaps();
     Destroys cave bitmaps.
 ---------------------------------------------------------------------------*/
 void destroy_cave_bitmaps();
+
+/*-- void load_sample_instance(...) --------------------------------------
+    loads samples and sample instances.
+--------------------------------------------------------------------------*/
+void load_sample_instance();
+
+/*-- void destroy_sample_instance(...) --------------------------------------
+    destroys samples and sample instances.
+--------------------------------------------------------------------------*/
+void destroy_sample_instance();
 
 /*-- string_cmp(...) --------------------------------------------------------
     retrun 0 :if two string is equal.
