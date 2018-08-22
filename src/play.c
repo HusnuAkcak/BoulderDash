@@ -100,7 +100,7 @@ play_game(Game * g){
              is dead, we freeze the screen for a while.                      */
             if(g->miner.alive==false){
                 --(g->miner.life);
-        
+
                 if((g->miner.life)>0){
                     restart_cave(g, &curr_cave);
                     moving=true;
@@ -147,10 +147,14 @@ play_game(Game * g){
                 mouse_pos.c>(19*CELL_SIZE) &&
                 mouse_pos.c<(20*CELL_SIZE)
             ){
-                if(g->status==CONTINUE)
+                if(g->status==CONTINUE){
                     g->status=PAUSE;
-                else if(g->status==PAUSE)
+                    al_stop_sample_instance(background_instance);
+                }
+                else if(g->status==PAUSE){
                     g->status=CONTINUE;
+                    al_play_sample_instance(background_instance);
+                }
             }
         }
         else if(ev.type==ALLEGRO_EVENT_TIMER){
@@ -176,6 +180,8 @@ play_game(Game * g){
                 moving=true;
             }
         }
+
+
     }
     return;
 }
