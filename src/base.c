@@ -150,6 +150,7 @@ load_sample_instance(){
     al_set_sample_instance_playmode(door_opens_instance, ALLEGRO_PLAYMODE_ONCE);
     return;
 }
+
 void
 destroy_sample_instance(){
 

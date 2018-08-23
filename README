@@ -7,6 +7,7 @@ NOTES:
 	[RELATED MAP FILE]
 	-If maps.txt file changes, do not overshoot 240 character per line.
 	Limit variable is defined in 'base.h' as constant, named LINE_SIZE.
+	-Cave numbers are unique properties of caves.
 
 SOURCES:
 	Sounds are taken from 'https://github.com/AMC-TUT/boulder-dash-craftyjs'

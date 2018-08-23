@@ -100,6 +100,7 @@ copy_cave(Cave *dest, Cave* src){
     dest->dia_val=src->dia_val;
     dest->ex_dia_val=src->ex_dia_val;
     dest->water_discharge_period=src->water_discharge_period;
+
     dest->collected_dia=0;
     dest->left_time=dest->max_time;
 
@@ -112,7 +113,10 @@ copy_cave(Cave *dest, Cave* src){
             dest->content[r][c]=src->content[r][c];
         }
     }
-    find_insects(dest);
+    find_insects(dest);     //spiders and monsters are being found.
+    find_gate_loc(dest);    //gate position is being found.
+    dest->content[dest->gate_loc.r][dest->gate_loc.c]=EMPTY_CELL;// gate is hidden.
+
     /*when starting a new cave music volume is set its normal level.     */
     al_set_sample_instance_gain(background_instance, 1);
     return;
@@ -137,7 +141,8 @@ display_curr_screen(Cave * cave, Game *g){
     /*In border, the cells are displayed.                               */
     for(curr_cell.c=start_loc.c; curr_cell.c<end_loc.c; ++curr_cell.c){
         for(curr_cell.r=start_loc.r; curr_cell.r<end_loc.r; ++curr_cell.r){
-            display_cell(curr_cell, cave);
+            if(curr_cell.c<cave->dim_col && curr_cell.r<cave->dim_row)
+                display_cell(curr_cell, cave);
         }
     }
 
@@ -295,6 +300,7 @@ go_next_cave(Game *g, Cave *curr_cave){
         copy_cave(curr_cave, temp_cave);
         find_miner_loc(curr_cave, &(g->miner));
         ++(g->miner.life);
+        g->miner.curr_cave_score=0;
         g->miner.collected_dia=0;
         status=CONTINUE;
     }

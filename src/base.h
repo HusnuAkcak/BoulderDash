@@ -14,7 +14,7 @@
 #define FONT_FILE "../data/font/commodore.ttf"      //game font type
 #define FONT_SIZE 50                                //game font size
 #define CELL_SIZE 64                                //icon pixel
-#define MINER_LIFE 30                                //miner's initial life
+#define MINER_LIFE 3                                //miner's initial life
 #define FPS 60                                      //display frequence
 #define FALL_PS 2.5                                 //falling frequence.
 #define MPS 7                                       //miner's speed freq.
@@ -116,6 +116,7 @@ typedef struct Cave{
     int left_time, max_time;
     int dia_req, collected_dia, dia_val, ex_dia_val;/*dia =diamond          */
     int water_discharge_period;
+    Point gate_loc; //the gate is hidden until req_dia collected.
     Content **content;
     Monster *head_monster;
     Spider  *head_spider;

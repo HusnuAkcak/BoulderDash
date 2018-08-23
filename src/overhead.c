@@ -355,6 +355,22 @@ find_miner_loc(Cave *curr_cave, Miner *m) {
 }
 
 void
+find_gate_loc(Cave *cave){
+
+    int r,c;
+
+    for(c=0; c<(cave->dim_col); ++c){
+        for(r=0; r<(cave->dim_row); ++r){
+            if(cave->content[r][c]==GATE){
+                cave->gate_loc.r=r;
+                cave->gate_loc.c=c;
+            }
+        }
+    }
+    return;
+}
+
+void
 set_camera(Game *g, Cave *curr_cave) {
     Point camera_pos, screen_dim, cave_dim;
 

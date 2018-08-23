@@ -172,9 +172,9 @@ play_game(Game * g){
                     al_set_sample_instance_gain(background_instance, 3);
                 }
             }
-            else if(ev.timer.source==panel_timer){
-                if(g->miner.alive==false)
-                    --(g->miner.duration_of_death);
+            else if(ev.timer.source==panel_timer && (g->miner.alive==false) ){
+                /*left time is added to score.                              */
+                --(g->miner.duration_of_death);
             }
 
             if(ev.timer.source==falling_timer && g->status==CONTINUE){
@@ -225,9 +225,11 @@ move(Cave * cave,Miner *m){
             ++m->collected_dia;
             ++cave->collected_dia;
 
-            if(cave->dia_req==cave->collected_dia)
+            if(cave->dia_req==cave->collected_dia){
                 al_play_sample_instance(door_opens_instance);
-                
+                cave->content[cave->gate_loc.r][cave->gate_loc.c]=GATE;
+            }
+
             if((cave->dia_req)-(cave->collected_dia)>0){
                 m->curr_cave_score+=cave->dia_val;
                 m->score+=cave->dia_val;    /*general score                 */

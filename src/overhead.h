@@ -46,6 +46,10 @@ void is_miner_dead(Game *g, Cave *curr_cave, Miner *m);
 ---------------------------------------------------------------------------*/
 void find_miner_loc(Cave *curr_cave, Miner *miner);
 
+/*-- void find_gate_loc(...) -----------------------------------------------
+    Current cave's gate location is determined.
+--------------------------------------------------------------------------*/
+void find_gate_loc(Cave *curr_cave);
 
 /*-- void set_monitor(...) --------------------------------------------------
     Screen view is set, according to miner's location.
