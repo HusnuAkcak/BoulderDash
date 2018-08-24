@@ -141,7 +141,7 @@ display_curr_screen(Cave * cave, Game *g){
 
     /*is water discharged                                               */
     curr_time=al_get_timer_count(panel_timer);
-    if(curr_time % (cave->water_discharge_period)==0){
+    if(curr_time % (cave->water_discharge_period)==0 && g->status==CONTINUE){
 
         if(cave->last_water_discharge_time<curr_time){
             do{
@@ -251,7 +251,7 @@ display_score_panel(Cave *curr_cave, Game *g){
         int_to_str(str_dia_req, curr_cave->dia_req);
         int_to_str(str_dia_val, curr_cave->dia_val);
 
-        al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(1*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_req);
+        al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(2*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_req);
         al_draw_bitmap(small_diamond, g->cam_pos.c+(3*CELL_SIZE), g->cam_pos.r , 0);
         al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_val);
 
@@ -268,18 +268,19 @@ display_score_panel(Cave *curr_cave, Game *g){
     int_to_str(str_score, g->miner.score);
     al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(8*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_collected_dia);
     al_draw_bitmap(time_icon, g->cam_pos.c+(9*CELL_SIZE), g->cam_pos.r, 0);
-    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_left_time);
-    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(14*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);
+    al_draw_text(font, al_map_rgb(155, 0, 0), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_left_time);
+    al_draw_text(font, al_map_rgb(155, 155, 0), g->cam_pos.c+(14*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);
 
     int_to_str(str_life, g->miner.life);
-    al_draw_bitmap(miner_symbol, g->cam_pos.c+(16*CELL_SIZE), g->cam_pos.r, 0);
-    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(18*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_life);
+    al_draw_bitmap(miner_symbol, g->cam_pos.c+(16*CELL_SIZE)-15, g->cam_pos.r, 0);
+    al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(17*CELL_SIZE)+15, g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_life);
 
     if(g->status==CONTINUE)
-        al_draw_bitmap(pause_button, g->cam_pos.c+(19*CELL_SIZE), g->cam_pos.r, 0);
+        al_draw_bitmap(pause_button, g->cam_pos.c+(18*CELL_SIZE), g->cam_pos.r, 0);
     else if(g->status==PAUSE)
-        al_draw_bitmap(play_button, g->cam_pos.c+(19*CELL_SIZE), g->cam_pos.r, 0);
+        al_draw_bitmap(play_button, g->cam_pos.c+(18*CELL_SIZE), g->cam_pos.r, 0);
 
+    al_draw_bitmap(restart_level_button, g->cam_pos.c+(19*CELL_SIZE), g->cam_pos.r, 0);
     return;
 }
 
@@ -299,6 +300,8 @@ restart_cave(Game *g,Cave *curr_cave){
     g->miner.curr_cave_score=0;
     g->miner.collected_dia=0;
     g->miner.duration_of_death=MINER_DEATH_DURATION;
+    g->status=CONTINUE;
+    g->miner.alive=true;
     return;
 }
 

@@ -102,8 +102,6 @@ play_game(Game * g){
                     if((g->miner.life)>0){
                         restart_cave(g, &curr_cave);
                         moving=true;
-                        g->miner.alive=true;
-                        g->status=CONTINUE;
                     }else{
                         g->status=END;
                     }
@@ -144,8 +142,8 @@ play_game(Game * g){
         }
         else if(ev.type==ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
             if(mouse_pos.r>0 && mouse_pos.r<CELL_SIZE &&
-                mouse_pos.c>(19*CELL_SIZE) &&
-                mouse_pos.c<(20*CELL_SIZE)
+                mouse_pos.c>(18*CELL_SIZE) &&
+                mouse_pos.c<(19*CELL_SIZE)
             ){
                 if(g->status==CONTINUE){
                     g->status=PAUSE;
@@ -155,6 +153,14 @@ play_game(Game * g){
                     g->status=CONTINUE;
                     al_play_sample_instance(background_instance);
                 }
+            }
+            else if(mouse_pos.r>0 && mouse_pos.r<CELL_SIZE &&
+                mouse_pos.c>(19*CELL_SIZE) &&
+                mouse_pos.c<(20*CELL_SIZE)
+            ){
+                al_stop_sample_instance(background_instance);
+                al_play_sample_instance(background_instance);
+                restart_cave(g, &curr_cave);
             }
         }
         else if(ev.type==ALLEGRO_EVENT_TIMER){
@@ -222,9 +228,6 @@ move(Cave * cave,Miner *m){
             }
         }
         else if(target==DIAMOND){
-            ++m->collected_dia;
-            ++cave->collected_dia;
-
             if(cave->dia_req==cave->collected_dia){
                 al_play_sample_instance(door_opens_instance);
                 cave->content[cave->gate_loc.r][cave->gate_loc.c]=GATE;
@@ -238,6 +241,9 @@ move(Cave * cave,Miner *m){
                 m->curr_cave_score+=cave->ex_dia_val;
                 m->score+=cave->ex_dia_val; /*general score                 */
             }
+
+            ++m->collected_dia;
+            ++cave->collected_dia;
         }
         else if(target==ROCK && after_target==EMPTY_CELL){
             if(m->move_dir!=UP){

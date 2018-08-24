@@ -68,8 +68,10 @@ ALLEGRO_BITMAP *monster;
 ALLEGRO_BITMAP *empty_cell;
 ALLEGRO_BITMAP *pause_button;
 ALLEGRO_BITMAP *play_button;
+ALLEGRO_BITMAP *restart_level_button;
 ALLEGRO_BITMAP *time_icon;
 ALLEGRO_BITMAP *explosion;
+
 
 /*###########################################################################
                         END OF GLOBAL VARIABLES

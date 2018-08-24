@@ -25,7 +25,7 @@ Cave 1
 dim:40x22
 time:100
 dia_req:1
-dia_val: 15 ex_dia_val:20
+dia_val: 1500 ex_dia_val:1500
 water_period:5
 
 [map]
