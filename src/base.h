@@ -2,6 +2,7 @@
 #include "allegro5/allegro_ttf.h"
 #include "allegro5/allegro_acodec.h"
 #include "allegro5/allegro_audio.h"
+#include <time.h>
 #ifndef _BASE_H_
 #define _BASE_H_
 
@@ -116,6 +117,7 @@ typedef struct Cave{
     int left_time, max_time;
     int dia_req, collected_dia, dia_val, ex_dia_val;/*dia =diamond          */
     int water_discharge_period;
+    long last_water_discharge_time;
     Point gate_loc; //the gate is hidden until req_dia collected.
     Content **content;
     Monster *head_monster;

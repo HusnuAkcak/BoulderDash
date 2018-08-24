@@ -100,6 +100,7 @@ copy_cave(Cave *dest, Cave* src){
     dest->dia_val=src->dia_val;
     dest->ex_dia_val=src->ex_dia_val;
     dest->water_discharge_period=src->water_discharge_period;
+    dest->last_water_discharge_time=0;
 
     dest->collected_dia=0;
     dest->left_time=dest->max_time;
@@ -125,8 +126,8 @@ copy_cave(Cave *dest, Cave* src){
 void
 display_curr_screen(Cave * cave, Game *g){
 
-    Point start_loc, end_loc, screen_dim, curr_cell;
-
+    Point start_loc, end_loc, screen_dim, curr_cell, water_cell;
+    long curr_time;
     display_score_panel(cave, g);
 
     screen_dim.r=al_get_display_height(display);
@@ -137,6 +138,23 @@ display_curr_screen(Cave * cave, Game *g){
     start_loc.r=(g->cam_pos.r/CELL_SIZE)+1;/*One line is reserved for score panel.*/
     end_loc.c=(g->cam_pos.c/CELL_SIZE)+(screen_dim.c/CELL_SIZE);
     end_loc.r=(g->cam_pos.r/CELL_SIZE)+(screen_dim.r/CELL_SIZE);
+
+    /*is water discharged                                               */
+    curr_time=al_get_timer_count(panel_timer);
+    if(curr_time % (cave->water_discharge_period)==0){
+
+        if(cave->last_water_discharge_time<curr_time){
+            do{
+                water_cell.r=(start_loc.r) + rand()%( (end_loc.r)-(start_loc.r)-1);
+                water_cell.c=(start_loc.c) + rand()%( (end_loc.c)-(start_loc.c)-1);
+            }
+            while(cave->content[water_cell.r][water_cell.c]!=EMPTY_CELL &&
+                            cave->content[water_cell.r][water_cell.c]!=SOIL);
+
+            cave->content[water_cell.r][water_cell.c]=WATER;
+            cave->last_water_discharge_time=curr_time;
+        }
+    }
 
     /*In border, the cells are displayed.                               */
     for(curr_cell.c=start_loc.c; curr_cell.c<end_loc.c; ++curr_cell.c){
@@ -233,7 +251,7 @@ display_score_panel(Cave *curr_cave, Game *g){
         int_to_str(str_dia_req, curr_cave->dia_req);
         int_to_str(str_dia_val, curr_cave->dia_val);
 
-        al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(2*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_req);
+        al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(1*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_req);
         al_draw_bitmap(small_diamond, g->cam_pos.c+(3*CELL_SIZE), g->cam_pos.r , 0);
         al_draw_text(font, al_map_rgb(255, 255, 255), g->cam_pos.c+(5*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_dia_val);
 

@@ -15,6 +15,7 @@ main()
     Game game;                      /*game struct                           */
     ALLEGRO_DISPLAY_MODE disp_data; /*frame width and height is keept.      */
 
+    srand(time(NULL));
     display=NULL;
     event_queue=NULL;
 
@@ -65,7 +66,7 @@ main()
     al_start_timer(falling_timer);
     al_start_timer(miner_timer);
 
-    load_cave_bitmaps();    //Cave bitmaps are loaded.      
+    load_cave_bitmaps();    //Cave bitmaps are loaded.
     load_sample_instance(); //samples and sample instances are loaded.
     /*The game structure is started.                                        */
     intro_game(&game,disp_data.width,disp_data.height);
