@@ -15,7 +15,7 @@
 #define FONT_FILE "../data/font/commodore.ttf"      //game font type
 #define FONT_SIZE 50                                //game font size
 #define CELL_SIZE 64                                //icon pixel
-#define MINER_LIFE 3                                //miner's initial life
+#define MINER_LIFE 30                                //miner's initial life
 #define FPS 60                                      //display frequence
 #define FALL_PS 2.5                                 //falling frequence.
 #define MPS 7                                       //miner's speed freq.
@@ -99,7 +99,8 @@ typedef struct Point{
 
 typedef struct Monster{
     Point pos;
-    Point *route_head;
+    Point *route;               /*the complate route of monster             */
+    int route_size;             /*size of dynamic route array               */
     struct Monster *next;
     bool alive;
 }Monster;
@@ -108,19 +109,19 @@ typedef struct Spider{
     Point pos;
     Point next_pos;
     struct Spider *next;
-    Direction move_dir;/*current movement direction                         */
+    Direction move_dir;         /*current movement direction                */
     bool alive;
 }Spider;
 
 typedef struct Cave{
     int cave_number;
     char cave_name[NAME_LENGTH];
-    int dim_row,dim_col;    /*dimension_x and dimension_y                   */
+    int dim_row,dim_col;        /*dimension_x and dimension_y               */
     int left_time, max_time;
     int dia_req, collected_dia, dia_val, ex_dia_val;/*dia =diamond          */
     int water_discharge_period;
     long last_water_discharge_time;
-    Point gate_loc; //the gate is hidden until req_dia collected.
+    Point gate_loc;             /*the gate is hidden until req_dia collected*/
     Content **content;
     Monster *head_monster;
     Spider  *head_spider;
@@ -194,6 +195,16 @@ void reverse_str(char *str);
     merges two char arrays.
 ---------------------------------------------------------------------------*/
 void string_cat(char* first, char *sec);
+
+/*-- void copy_point_array() -----------------------------------------------
+    copy src array to dest array.
+---------------------------------------------------------------------------*/
+void copy_point_array(Point *dest, Point *src, int size);
+
+/*-- bool is_pos_in_route(...) ---------------------------------------------
+    Controls if given pos in the given Point array.
+--------------------------------------------------------------------------*/
+bool is_pos_in_route(Point *curr_route, int curr_route_size, Point pos);
 
 /*###########################################################################
                         END OF FUNCTION PROTOTYPES

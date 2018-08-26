@@ -158,3 +158,34 @@ destroy_sample_instance(){
 
     return;
 }
+
+void
+copy_point_array(Point *dest, Point *src, int size){
+
+    int i;
+    for(i=0; i<size; ++i){
+        // fprintf(stderr, "(%d %d)\n", src[i].r, src[i].c);
+        dest[i]=src[i];
+        // fprintf(stderr, "{{%d %d}}\n", dest[i].r, dest[i].c);
+    }
+
+    return;
+}
+
+bool
+is_pos_in_route(Point *curr_route, int curr_route_size, Point pos){
+    bool in;
+    int i;
+
+    in=false;
+    i=0;
+    while(in==false && i<curr_route_size){
+        if(curr_route[i].r==pos.r && curr_route[i].c==pos.c){
+            // fprintf(stderr, "current detected repeted position is [%d %d]\n",pos.r, pos.c);
+            in=true;
+        }
+        ++i;
+    }
+
+    return in;
+}

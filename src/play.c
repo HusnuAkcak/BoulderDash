@@ -184,7 +184,7 @@ play_game(Game * g){
             }
 
             if(ev.timer.source==falling_timer && g->status==CONTINUE){
-                move_insects(&curr_cave);
+                move_insects(g, &curr_cave);
                 control_falling(&(g->miner), &curr_cave);
             }
 
@@ -228,6 +228,8 @@ move(Cave * cave,Miner *m){
             }
         }
         else if(target==DIAMOND){
+            ++m->collected_dia;
+            ++cave->collected_dia;
             if(cave->dia_req==cave->collected_dia){
                 al_play_sample_instance(door_opens_instance);
                 cave->content[cave->gate_loc.r][cave->gate_loc.c]=GATE;
@@ -241,9 +243,6 @@ move(Cave * cave,Miner *m){
                 m->curr_cave_score+=cave->ex_dia_val;
                 m->score+=cave->ex_dia_val; /*general score                 */
             }
-
-            ++m->collected_dia;
-            ++cave->collected_dia;
         }
         else if(target==ROCK && after_target==EMPTY_CELL){
             if(m->move_dir!=UP){
