@@ -68,14 +68,6 @@ play_game(Game * g){
     find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
     while(g->status!=END){
         if(play && al_is_event_queue_empty(event_queue)){
-            if(moving){
-                al_clear_to_color(al_map_rgb(0,0,0));
-                al_identity_transform(&camera);
-                set_camera(g, &curr_cave);
-                al_translate_transform(&camera, -(g->cam_pos.c), -(g->cam_pos.r));
-                al_use_transform(&camera);
-                moving=false;
-            }
 
             if(g->status==NEXT){
                 if(curr_cave.left_time>0){//left time is being added to miner's score.
@@ -85,12 +77,25 @@ play_game(Game * g){
                 }
                 else{
                     g->status=go_next_cave(g, &curr_cave);
+                    // fprintf(stderr, "I am in next level.\n");
                     moving=true;
                 }
             }
 
+            if(moving){
+                al_clear_to_color(al_map_rgb(0,0,0));
+                al_identity_transform(&camera);
+                set_camera(g, &curr_cave);
+                al_translate_transform(&camera, -(g->cam_pos.c), -(g->cam_pos.r));
+                al_use_transform(&camera);
+                moving=false;
+            }
+
+
             display_curr_screen(&curr_cave, g);
+            // fprintf(stderr, "1curr screen is displayed\n");
             al_flip_display();
+            // fprintf(stderr, "2curr screen is displayed\n");
 
             /*this control is performed after al_flip_display, because if miner
             is dead, we freeze the screen for a while.                      */
@@ -184,7 +189,9 @@ play_game(Game * g){
             }
 
             if(ev.timer.source==falling_timer && g->status==CONTINUE){
+                // fprintf(stderr, "before move insects\n");
                 move_insects(g, &curr_cave);
+                // fprintf(stderr, "after move insects\n");
                 control_falling(&(g->miner), &curr_cave);
             }
 
@@ -196,6 +203,7 @@ play_game(Game * g){
 
 
     }
+    fprintf(stderr, "game is ended\n");
     return;
 }
 

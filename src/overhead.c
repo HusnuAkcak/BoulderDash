@@ -401,3 +401,29 @@ set_camera(Game *g, Cave *curr_cave) {
     g->cam_pos=camera_pos;
     return;
 }
+
+int
+count_soil_cell_in_screen(Point start_loc, Point end_loc, Cave *cave){
+    int r, c, soil_cell_number;
+
+    soil_cell_number=0;
+    for(r=(start_loc.r); r<(end_loc.r); ++r)
+        for(c=(start_loc.c); c<(end_loc.c); ++c)
+            if(r<(cave->dim_row) && c<(cave->dim_col) && cave->content[r][c]==SOIL)
+                ++soil_cell_number;
+
+    return soil_cell_number;
+}
+
+int
+count_empty_cell_in_screen(Point start_loc, Point end_loc, Cave *cave){
+    int r, c, empty_cell_number;
+
+    empty_cell_number=0;
+    for(r=(start_loc.r); r<(end_loc.r); ++r)
+        for(c=(start_loc.c); c<(end_loc.c); ++c)
+            if(r<(cave->dim_row) && c<(cave->dim_col) && cave->content[r][c]==EMPTY_CELL)
+                ++empty_cell_number;
+
+    return empty_cell_number;
+}

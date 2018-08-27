@@ -15,7 +15,7 @@ void calc_spiders_route(Cave *curr_cave, Spider *curr_spider, Direction dir);
 /*-- void calc_monster_route(...) ----------------------------------------
     Calculates the shortest way to catch miner.
 -------------------------------------------------------------------------*/
-void calc_monster_route(Cave *curr_cave, Monster *curr_monster, Point *curr_route, int curr_route_size, Direction move_dir, int *shortest_distance);
+void calc_monster_route(Point miner_pos, Cave *curr_cave, Monster *curr_monster, Point *curr_route, int curr_route_size, Direction move_dir, int *shortest_distance);
 
 /*-- Direction can_spider_move(...) ----------------------------------------
     Returns true if a spider can move one cell from given pos to given dir.
@@ -40,7 +40,7 @@ void move_spider(Cave *curr_cave, Spider *curr_spider);
 /*-- bool is_miner_caught(...) ----------------------------------------------
     Tells, if the miner caught or not.
 ---------------------------------------------------------------------------*/
-bool is_miner_caught(Cave *cave, Point pos);
+bool is_miner_caught(Point miner_pos, Point pos);
 
 /*-- bool monster_move_possible(...) ---------------------------------------
     Tells, if monster can move or not.

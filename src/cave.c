@@ -127,8 +127,8 @@ void
 display_curr_screen(Cave * cave, Game *g){
 
     Point start_loc, end_loc, screen_dim, curr_cell, water_cell;
+    int i;
     long curr_time;
-    display_score_panel(cave, g);
 
     screen_dim.r=al_get_display_height(display);
     screen_dim.c=al_get_display_width(display);
@@ -139,28 +139,56 @@ display_curr_screen(Cave * cave, Game *g){
     end_loc.c=(g->cam_pos.c/CELL_SIZE)+(screen_dim.c/CELL_SIZE);
     end_loc.r=(g->cam_pos.r/CELL_SIZE)+(screen_dim.r/CELL_SIZE);
 
-    /*is water discharged                                               */
+    /*Score panel is cleared and then redisplayed.*/
+    for(i=0; i<(end_loc.c); ++i){
+        al_draw_bitmap(empty_cell, g->cam_pos.c+(i*CELL_SIZE), g->cam_pos.r, 0);
+        // fprintf(stderr, "Score panel is being cleaned.\n");
+    }
+    display_score_panel(cave, g);
+
+    /*start and end locations are controlled with cave dimensions.          */
+    // fprintf(stderr, "before:start_loc %d %d , end_loc %d %d\n",start_loc.r, start_loc.c ,end_loc.r, end_loc.c);
+
+    if(start_loc.r<0)
+        start_loc.r=0;
+    if(start_loc.c<0)
+        start_loc.c=0;
+    if(end_loc.c>(cave->dim_col))
+        end_loc.c=cave->dim_col;
+    if(end_loc.r>(cave->dim_row))
+        end_loc.r=cave->dim_row;
+
+     // fprintf(stderr, "after:start_loc %d %d , end_loc %d %d\n",start_loc.r, start_loc.c ,end_loc.r, end_loc.c);
+
+
+    /*  WATER DISCHARGE OPERATION                                           */
     curr_time=al_get_timer_count(panel_timer);
-    if(curr_time % (cave->water_discharge_period)==0 && g->status==CONTINUE){
+    if( g->status == CONTINUE &&                                //if status is active.
+        (curr_time % (cave->water_discharge_period) == 0) &&    //when it comes to
+        (cave->last_water_discharge_time) < curr_time         //if water discharged at this time
+        && (count_empty_cell_in_screen(start_loc, end_loc, cave) > 0 || count_soil_cell_in_screen(start_loc, end_loc, cave) > 0)//if there is any available cell for water
+    ){
+        /*It is tried to be found an available location in the current screen as random.    */
+        do{
+            water_cell.r=(start_loc.r) + rand()%( (end_loc.r)-(start_loc.r)-1);
+            water_cell.c=(start_loc.c) + rand()%( (end_loc.c)-(start_loc.c)-1);
+            // fprintf(stderr, "I am in do while.\n");
+            // fprintf(stderr, "in loop :start_loc %d %d , end_loc %d %d\n",start_loc.r, start_loc.c ,end_loc.r, end_loc.c);
+            // fprintf(stderr, "tar wat loc {%d %d} target %c\n",water_cell.r, water_cell.c, cave->content[water_cell.r][water_cell.c]);
 
-        if(cave->last_water_discharge_time<curr_time){
-            do{
-                water_cell.r=(start_loc.r) + rand()%( (end_loc.r)-(start_loc.r)-1);
-                water_cell.c=(start_loc.c) + rand()%( (end_loc.c)-(start_loc.c)-1);
-            }
-            while(cave->content[water_cell.r][water_cell.c]!=EMPTY_CELL &&
-                            cave->content[water_cell.r][water_cell.c]!=SOIL);
-
-            cave->content[water_cell.r][water_cell.c]=WATER;
-            cave->last_water_discharge_time=curr_time;
         }
+        while(cave->content[water_cell.r][water_cell.c]!=EMPTY_CELL &&
+                        cave->content[water_cell.r][water_cell.c]!=SOIL);
+
+        cave->content[water_cell.r][water_cell.c]=WATER;
+        cave->last_water_discharge_time=curr_time;
     }
 
-    /*In border, the cells are displayed.                               */
+    /*In current screen, the cells are displayed.                           */
     for(curr_cell.c=start_loc.c; curr_cell.c<end_loc.c; ++curr_cell.c){
-        for(curr_cell.r=start_loc.r; curr_cell.r<end_loc.r; ++curr_cell.r){
-            if(curr_cell.c<cave->dim_col && curr_cell.r<cave->dim_row)
-                display_cell(curr_cell, cave);
+        for(curr_cell.r=start_loc.r; curr_cell.r<end_loc.r+1; ++curr_cell.r){
+            // fprintf(stderr, "it is displayed.\n");
+            display_cell(curr_cell, cave);
         }
     }
 
@@ -224,7 +252,7 @@ display_cell(Point pos, Cave* cave){
 
 void
 display_score_panel(Cave *curr_cave, Game *g){
-    int i;
+
     /*string version of the data to use in al_draw_text function            */
     char str_dia_req[NAME_LENGTH];
     char str_dia_val[NAME_LENGTH];
@@ -242,10 +270,6 @@ display_score_panel(Cave *curr_cave, Game *g){
     str_score[0]=0;
     str_life[0]=0;
 
-    /*Score panel is cleared.*/
-    for(i=0;i<curr_cave->dim_col;++i){
-        al_draw_bitmap(empty_cell, g->cam_pos.c+(i*CELL_SIZE), g->cam_pos.r, 0);
-    }
 
     if( ((curr_cave->dia_req)-(curr_cave->collected_dia)) >0){
         int_to_str(str_dia_req, curr_cave->dia_req);
@@ -290,7 +314,7 @@ restart_cave(Game *g,Cave *curr_cave){
     Cave *temp_cave;
 
     for(    temp_cave=g->head_cave;
-            string_cmp(temp_cave->cave_name, curr_cave->cave_name)!=0;
+            temp_cave->cave_number != curr_cave->cave_number;
             temp_cave=temp_cave->next
         );
 
@@ -313,13 +337,17 @@ go_next_cave(Game *g, Cave *curr_cave){
     // temp_cave and curr_cave are made equal
     for(temp_cave=g->head_cave; temp_cave->cave_number!=curr_cave->cave_number; temp_cave=temp_cave->next);
 
+    // fprintf(stderr, "no:%d\n",curr_cave->cave_number);
     temp_cave=temp_cave->next;// next cave is reached.
     if(temp_cave==NULL){
+        // fprintf(stderr, "END\n");
         status=END;
     }
     else{
+        // fprintf(stderr, "next\n");
         copy_cave(curr_cave, temp_cave);
         find_miner_loc(curr_cave, &(g->miner));
+        // fprintf(stderr, "miner's loc [%d %d]\n",g->miner.pos.r, g->miner.pos.c);
         ++(g->miner.life);
         g->miner.curr_cave_score=0;
         g->miner.collected_dia=0;

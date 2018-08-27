@@ -55,4 +55,15 @@ void find_gate_loc(Cave *curr_cave);
     Screen view is set, according to miner's location.
 ---------------------------------------------------------------------------*/
 void set_camera(Game *g, Cave *curr_cave);
+
+/*-- int count_soil_cell(...) ----------------------------------------------
+    Count soil cells in the cave.
+---------------------------------------------------------------------------*/
+int count_soil_cell_in_screen(Point start_loc, Point end_loc, Cave *cave);
+
+
+/*-- int count_empty_cell(...) ----------------------------------------------
+    Count empty cells in the cave.
+---------------------------------------------------------------------------*/
+int count_empty_cell_in_screen(Point start_loc, Point end_loc, Cave *cave);
 #endif

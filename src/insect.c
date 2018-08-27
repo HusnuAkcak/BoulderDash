@@ -55,7 +55,9 @@ move_insects(Game *g, Cave *curr_cave){
     for(curr_monster=curr_cave->head_monster;
         curr_monster!=NULL;
         curr_monster=curr_monster->next){
+            // fprintf(stderr, "before monster move\n");
             move_monster(g->miner.pos, curr_cave, curr_monster);
+            // fprintf(stderr, "after monster move\n");
         }
 
     for(curr_spider=curr_cave->head_spider;
@@ -74,44 +76,55 @@ move_monster(Point miner_pos, Cave *curr_cave, Monster *curr_monster){
     Point *curr_route;
 
 
+    if(curr_monster->route!=NULL){
+        free(curr_monster->route);
+        curr_monster->route=NULL;
+        curr_monster->route_size=0;
+    }
+
     curr_route=NULL;
     curr_route_size=0;
     shortest_distance=-1;
-    calc_monster_route(curr_cave, curr_monster, curr_route, curr_route_size, NONE, &shortest_distance);
+    // fprintf(stderr, "before calc monster's route\n");
+    calc_monster_route(miner_pos, curr_cave, curr_monster, curr_route, curr_route_size, NONE, &shortest_distance);
+    // fprintf(stderr, "after calc monster's route\n");
     // fprintf(stderr, "route size of monster %d\n",curr_monster->route_size);
     // fprintf(stderr, "target cell [%d %d]\n",curr_monster->route[0].r, curr_monster->route[0].c);
     apply_monster_next_move(curr_cave, curr_monster);
-    //fprintf(stderr, "\n\n\n\n\nNEW SEARCH\n\n\n\n");
+    // fprintf(stderr, "\n\n\n\n\nNEW SEARCH\n\n\n\n");
 
     return;
 }
 
 void
-calc_monster_route(Cave *cave, Monster *curr_mon, Point *curr_route, int curr_route_size, Direction move_dir, int *short_dist){
+calc_monster_route(Point miner_pos, Cave *cave, Monster *curr_mon, Point *curr_route, int curr_route_size, Direction move_dir, int *short_dist){
     int i;
-    Point pos, next_pos;    /*monster pos and next pos.                     */
+    Point mon_pos, mon_next_pos;    /*monster pos and next pos.                     */
     Point *temp_route;      /*used to copy current path.                    */
 
-    if(curr_route_size>1000)
-        return;
     if(curr_route==NULL){
         // fprintf(stderr, "I am here\n");
-        pos=curr_mon->pos;
+        mon_pos=curr_mon->pos;
     }
     else{
-        pos=curr_route[curr_route_size-1];
+        mon_pos=curr_route[curr_route_size-1];
         // fprintf(stderr, "[[%d %d]]\n",pos.r, pos.c);
     }
 
-
-    if(is_miner_caught(cave, pos)){
+    if(is_miner_caught(miner_pos, mon_pos)){
         // fprintf(stderr,"I have found miner\n");
-        // fprintf(stderr,"short dist %d, curr_route_size %d \n",*short_dist, curr_route_size);
+        fprintf(stderr,"short dist %d, curr_route_size %d \n",*short_dist, curr_route_size);
         // getchar();
         if(*short_dist==(-1) || curr_route_size < *short_dist){
-            // fprintf(stderr, "A new shortest way is found.\n");
-            // fprintf(stderr, "old shor way %d, curr_route_size %d\n",*short_dist, curr_route_size);
+            fprintf(stderr, "A new shortest way is found.\n");
+            fprintf(stderr, "old short way %d, curr_route_size %d\n\n\n",*short_dist, curr_route_size);
             // getchar();
+
+            if(curr_mon->route!=NULL){
+                free(curr_mon->route);
+                curr_mon->route=NULL;
+            }
+
             *short_dist=curr_route_size;
             curr_mon->route=curr_route;
             curr_mon->route_size=curr_route_size;
@@ -119,56 +132,58 @@ calc_monster_route(Cave *cave, Monster *curr_mon, Point *curr_route, int curr_ro
         return;
     }
 
-    // fprintf(stderr, "arr_size %d \n",curr_route_size);
-    // fprintf(stderr, "loc [%d %d]\n",pos.r, pos.c);
-    // for(i=0; i<curr_route_size; ++i){
-    //     fprintf(stderr, "[%d %d],",curr_route[i].r, curr_route[i].c);
-    // }
-    // fprintf(stderr, "\n\n");
+    fprintf(stderr, "arr_size %d \n",curr_route_size);
+    fprintf(stderr, "mons_last_loc [%d %d]\n",mon_pos.r, mon_pos.c);
+    fprintf(stderr, "miner_loc [%d %d]\n",miner_pos.r, miner_pos.c);
+    for(i=0; i<curr_route_size; ++i){
+        fprintf(stderr, "[%d %d],",curr_route[i].r, curr_route[i].c);
+    }
+    fprintf(stderr, "\n\n");
 
-    next_pos=pos;/*next_pos will be manipulated below.                      */
-    if(monster_move_possible(cave, curr_route, curr_route_size, pos, DOWN)){
+    mon_next_pos=mon_pos;/*next_pos will be manipulated below.                      */
+    if(monster_move_possible(cave, curr_route, curr_route_size, mon_pos, DOWN)){
         // fprintf(stderr, "1down :: (%d %d)\n", next_pos.r, next_pos.c);
-        ++next_pos.r;
+        ++mon_next_pos.r;
         // fprintf(stderr, "2down :: (%d %d)\n", next_pos.r, next_pos.c);
 
         temp_route=(Point*)calloc(curr_route_size+1, sizeof(Point));
         copy_point_array(temp_route, curr_route, curr_route_size);
-        temp_route[curr_route_size]=next_pos;
-        calc_monster_route(cave, curr_mon, temp_route, curr_route_size+1, move_dir, short_dist);
+        temp_route[curr_route_size]=mon_next_pos;
+        calc_monster_route(miner_pos, cave, curr_mon, temp_route, curr_route_size+1, move_dir, short_dist);
     }
-    next_pos=pos;/*next_pos will be manipulated below.                      */
-    if(monster_move_possible(cave, curr_route, curr_route_size, pos, RIGHT)){
+    mon_next_pos=mon_pos;/*next_pos will be manipulated below.                      */
+    if(monster_move_possible(cave, curr_route, curr_route_size, mon_pos, RIGHT)){
         // fprintf(stderr, "right ::\n ");
-        ++next_pos.c;
+        ++mon_next_pos.c;
         // fprintf(stderr, "2right :: (%d %d)\n", next_pos.r, next_pos.c);
         temp_route=(Point*)calloc(curr_route_size+1, sizeof(Point));
         copy_point_array(temp_route, curr_route, curr_route_size);
-        temp_route[curr_route_size]=next_pos;
-        calc_monster_route(cave, curr_mon, temp_route, curr_route_size+1, move_dir, short_dist);
+        temp_route[curr_route_size]=mon_next_pos;
+        calc_monster_route(miner_pos, cave, curr_mon, temp_route, curr_route_size+1, move_dir, short_dist);
     }
-    next_pos=pos;/*next_pos will be manipulated below.                      */
-    if(monster_move_possible(cave, curr_route, curr_route_size, pos, UP)){
+    mon_next_pos=mon_pos;/*next_pos will be manipulated below.                      */
+    if(monster_move_possible(cave, curr_route, curr_route_size, mon_pos, UP)){
         // fprintf(stderr, "up :: \n");
-        --next_pos.r;
+        --mon_next_pos.r;
         // fprintf(stderr, "2up :: (%d %d)\n", next_pos.r, next_pos.c);
         temp_route=(Point*)calloc(curr_route_size+1, sizeof(Point));
         copy_point_array(temp_route, curr_route, curr_route_size);
-        temp_route[curr_route_size]=next_pos;
-        calc_monster_route(cave, curr_mon, temp_route, curr_route_size+1, move_dir, short_dist);
+        temp_route[curr_route_size]=mon_next_pos;
+        calc_monster_route(miner_pos, cave, curr_mon, temp_route, curr_route_size+1, move_dir, short_dist);
     }
-    next_pos=pos;/*next_pos will be manipulated below.                      */
-    if(monster_move_possible(cave, curr_route, curr_route_size, pos, LEFT)){
+    mon_next_pos=mon_pos;/*next_pos will be manipulated below.                      */
+    if(monster_move_possible(cave, curr_route, curr_route_size, mon_pos, LEFT)){
         // fprintf(stderr, "left ::\n ");
-        --next_pos.c;
+        --mon_next_pos.c;
         // fprintf(stderr, "2left :: (%d %d)\n", next_pos.r, next_pos.c);
         temp_route=(Point*)calloc(curr_route_size+1, sizeof(Point));
         copy_point_array(temp_route, curr_route, curr_route_size);
-        temp_route[curr_route_size]=next_pos;
-        calc_monster_route(cave, curr_mon, temp_route, curr_route_size+1, move_dir, short_dist);
+        temp_route[curr_route_size]=mon_next_pos;
+        calc_monster_route(miner_pos, cave, curr_mon, temp_route, curr_route_size+1, move_dir, short_dist);
     }
-
+    // fprintf(stderr, "I am leaving calc_monster_route function\n");
     free(curr_route);
+    curr_route=NULL;
     return;
 }
 
@@ -176,14 +191,17 @@ void
 apply_monster_next_move(Cave *cave, Monster *mon){
 
     Point tar;/*target cell.    */
-
-    tar=mon->route[0];
-    cave->content[mon->pos.r][mon->pos.c]=EMPTY_CELL;
-    cave->content[tar.r][tar.c]=MONSTER;
-    mon->pos=tar;
+    // fprintf(stderr, "monster's move is being applied.\n");
+    if(mon->route!=NULL){
+        tar=mon->route[0];
+        cave->content[mon->pos.r][mon->pos.c]=EMPTY_CELL;
+        cave->content[tar.r][tar.c]=MONSTER;
+        mon->pos=tar;
+    }
 
     return;
 }
+
 /*Spiders follow right, bottom, left, top squence if the target cell is empty.*/
 void
 move_spider(Cave *curr_cave, Spider *curr_spider){
@@ -300,15 +318,19 @@ calc_spiders_route(Cave *curr_cave, Spider *s, Direction dir){
 }
 
 bool
-is_miner_caught(Cave *cave, Point insect_pos){
+is_miner_caught(Point miner_pos, Point insect_pos){
     bool caught;
 
+    fprintf(stderr, "miner pos (%d %d)\n",miner_pos.r, miner_pos.c);
+    fprintf(stderr, "Controlled pos is {%d %d}\n",insect_pos.r, insect_pos.c);
     caught=false;
-    if( cave->content[insect_pos.r-1][insect_pos.c]==MINER ||
-    cave->content[insect_pos.r+1][insect_pos.c]==MINER ||
-    cave->content[insect_pos.r][insect_pos.c-1]==MINER ||
-    cave->content[insect_pos.r][insect_pos.c+1]==MINER  ){
+    if( (miner_pos.r == (insect_pos.r-1) && miner_pos.c==insect_pos.c) ||
+        (miner_pos.r == (insect_pos.r+1) && miner_pos.c==insect_pos.c) ||
+        (miner_pos.c == (insect_pos.c-1) && miner_pos.r==insect_pos.r) ||
+        (miner_pos.c == (insect_pos.c+1) && miner_pos.r==insect_pos.r)
+    ){
         caught=true;
+        // fprintf(stderr, "I have found miner.\n");
     }
 
     return caught;
@@ -317,7 +339,8 @@ is_miner_caught(Cave *cave, Point insect_pos){
 bool
 monster_move_possible(Cave *cave, Point *curr_route, int curr_route_size, Point pos, Direction dir){
     bool move_possible;
-    // fprintf(stderr, "dir :%d, pos:{%d %d} \n",dir, pos.r, pos.c);
+    // fprintf(stderr, "[monster move possible] cave dim (%d %d)\n",cave->dim_row, cave->dim_col);
+    // fprintf(stderr, "[monster move possible] dir :%d, pos:{%d %d} \n",dir, pos.r, pos.c);
     move_possible=false;
     switch(dir){
         case DOWN:
@@ -344,6 +367,10 @@ monster_move_possible(Cave *cave, Point *curr_route, int curr_route_size, Point 
         // fprintf(stderr, "permitted pos:{%d %d}\n",pos.r, pos.c);
         move_possible=true;
     }
+    else{
+        // fprintf(stderr ,"[%d %d] is not permitted.\n", pos.r, pos.c);
+    }
+    // fprintf(stderr , "end of monster move possible function permission %d\n",move_possible);
 
     return move_possible;
 }

@@ -18,7 +18,6 @@ d#Converted using Tim Stridmann's X2BDCFF converter.
 # [WaterDischargePeriod]
 
 [game]
-
 [cave]
 no:1
 Cave 1
@@ -30,12 +29,12 @@ water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WrPd.r...d.llll..........d.d     ..d..dW
-W. ...rrrr...r...... .......     . ....W
-W. ..Xr..d..........       ....r. .. drW
+WrPd.....d.dlll..........d.d     ..d..dW
+W.X...rrrr...r...... .......     . ....W
+W. .. ...d..........       ....r. .. drW
 W.       .... .........  . ............W
-W. .    M....S....rr...........r..r... W
-Wr.... ...........  ...  ...  ..r.. r..W
+W.      M....S....rr...........r..r... W
+Wr. .. ...........  ...  ...  ..r.. r..W
 Wr. ......wwwwwwwwwwwwwwwwwwwwwwwww...rW
 Wr. . .r.... ....r.. .. ..r.... .......W
 Wr. ......r...... .....r...drr..d.r.r..W
@@ -65,9 +64,9 @@ water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WX.. ...... rr.r......r ..r.. ..rr..r..W
-WPd.rrrrrr........r. .r...r......r.....W
-W............     ....r ....r.r.r... . W
+WX.. .r.... rr.r......r ..r.. ..rr..r..W
+WPd   .                         Mr.....W
+W.....................r ....r.r.r... . W
 W...     ....     .....r..r....r.......W
 Wrrr S   ...r     ..... ..rr....r......W
 W..r.r...r..r.r...rr....r..........r ..W
@@ -90,7 +89,25 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-no:3
+no:61
+Cave 6
+dim:8x5
+time:20
+dia_req:1
+dia_val:14 ex_dia_val:20
+water_period:1
+
+[map]
+WWWWWWWW
+W.r...XW
+W.....PW
+WddddddW
+WWWWWWWW
+[/map]
+[/cave]
+
+[cave]
+no:33
 Cave 3
 dim:40x22
 time:180
@@ -124,9 +141,26 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
 
+[cave]
+no:1400
+Cave 6
+dim:8x5
+time:20
+dia_req:1
+dia_val:14 ex_dia_val:20
+water_period:1
+
+[map]
+WWWWWWWW
+W.....XW
+W.....PW
+WddddddW
+WWWWWWWW
+[/map]
+[/cave]
 
 [cave]
-no:4
+no:1444
 Cave 4
 dim:40x22
 time:100
@@ -157,6 +191,24 @@ Wdrdrw           wddrdddrdrwwwwwwwwwwrrW
 Wrrrdwwwwwwwwwwwww.drdrdrdrdrdrrrddr.drW
 Wrrrrddrdrdrdrddrrdr.rrrddrdrrdrdddr.rdW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+[cave]
+no:63
+Cave 6
+dim:8x5
+time:20
+dia_req:1
+dia_val:14 ex_dia_val:20
+water_period:1
+
+[map]
+WWWWWWWW
+W.....XW
+W.....PW
+WddddddW
+WWWWWWWW
 [/map]
 [/cave]
 
@@ -196,6 +248,24 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
+no:64
+Cave 6
+dim:8x5
+time:20
+dia_req:1
+dia_val:14 ex_dia_val:20
+water_period:1
+
+[map]
+WWWWWWWW
+W.....XW
+W.....PW
+WddddddW
+WWWWWWWW
+[/map]
+[/cave]
+
+[cave]
 no:6
 Cave 6
 dim:20x12
@@ -221,6 +291,24 @@ WWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
+no:65
+Cave 6
+dim:8x5
+time:20
+dia_req:1
+dia_val:14 ex_dia_val:20
+water_period:1
+
+[map]
+WWWWWWWW
+W.....XW
+W.....PW
+WddddddW
+WWWWWWWW
+[/map]
+[/cave]
+
+[cave]
 no:7
 Cave 7
 dim:20x12
@@ -242,6 +330,24 @@ WMdddddddddr...ddr.W
 Wddddddddrrr...rrr.W
 WP.................W
 WWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
+
+[cave]
+no:66
+Cave 6
+dim:8x5
+time:20
+dia_req:1
+dia_val:14 ex_dia_val:20
+water_period:1
+
+[map]
+WWWWWWWW
+W.....XW
+W.....PW
+WddddddW
+WWWWWWWW
 [/map]
 [/cave]
 
