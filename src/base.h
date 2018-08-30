@@ -94,7 +94,6 @@ typedef enum{PAUSE, RESTART, END, CONTINUE, NEXT}Status;/*status of the game    
 ###########################################################################*/
 typedef struct Point{
     int c,r;/*column(c) is in place of x, row(r) is in place of y.  */
-    struct Point *next;
 }Point;
 
 typedef struct Monster{

@@ -86,11 +86,13 @@ control_crushed_insects(Cave *cave, Point rock_pos){
     bool monster_crush, spider_crush;/*Is current insect crushed.           */
 
     spider_crush=false;
+    monster_crush=false;
     /*Spiders are controlled, if one of them is under the rock              */
     curr_spider=cave->head_spider;
     if(curr_spider!=NULL){
         /*if crushed spider is head_spider(head node)                       */
         if((curr_spider->pos.r)==rock_pos.r+1 && (curr_spider->pos.c)==rock_pos.c){
+            // fprintf(stderr, "spider next pos[%d %d]\n",curr_spider->next->pos.r, curr_spider->next->pos.c);
             spider_crush=true;
             temp_spider=curr_spider;
             curr_spider=curr_spider->next;
@@ -102,6 +104,7 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         /*connector nodes are controlled.                                   */
         while(!spider_crush && curr_spider!=NULL && curr_spider->next!=NULL){
             if((curr_spider->next->pos.r)==rock_pos.r+1 && (curr_spider->next->pos.c)==rock_pos.c){
+                // fprintf(stderr, "spider next pos[%d %d]\n",curr_spider->next->pos.r, curr_spider->next->pos.c);
                 spider_crush=true;
                 temp_spider=curr_spider->next;
                 curr_spider->next=curr_spider->next->next;
@@ -117,6 +120,7 @@ control_crushed_insects(Cave *cave, Point rock_pos){
     if(!spider_crush && curr_monster!=NULL){
         /*if crushed monster is head_monster(head node)                      */
         if((curr_monster->pos.r)==rock_pos.r+1 && (curr_monster->pos.c)==rock_pos.c){
+            // fprintf(stderr, "monster next pos[%d %d]\n",curr_monster->next->pos.r, curr_monster->next->pos.c);
             monster_crush=true;
             temp_monster=curr_monster;
             curr_monster=curr_monster->next;
@@ -128,6 +132,7 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         /*connector nodes are controlled.                                   */
         while(!monster_crush && curr_monster!=NULL && curr_monster->next!=NULL){
             if((curr_monster->next->pos.r)==rock_pos.r+1 && (curr_monster->next->pos.c)==rock_pos.c){
+                // fprintf(stderr, "monster next pos[%d %d]\n",curr_monster->next->pos.r, curr_monster->next->pos.c);
                 monster_crush=true;
                 temp_monster=curr_monster->next;
                 curr_monster->next=curr_monster->next->next;
@@ -145,6 +150,7 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         cave->content[rock_pos.r+1][rock_pos.c]=EMPTY_CELL;
 
         rock_pos.r+=1;/*it is used for insect position.                     */
+        // fprintf(stderr, "rock_kill_insect [%d %d]\n",rock_pos.r, rock_pos.c);
         if(spider_crush){
             find_available_cells_for_dia(cave, spider_dia_arr, DIA_OF_SPIDER, rock_pos);
             fill_available_cells_with_dia(cave, spider_dia_arr, DIA_OF_SPIDER);
@@ -167,6 +173,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
 
     radius=0;
     tar_cells[0]=ins_pos;/*Dead insect's pos is always will be available.   */
+    // fprintf(stderr, "ins pos [%d %d]\n",ins_pos.r, ins_pos.c);
     determined=1;/*one target is already determined above.                  */
     while((arr_size-determined)>0){
         ++radius;
@@ -264,6 +271,7 @@ fill_available_cells_with_dia(Cave *curr_cave, Point tar_cells[], int arr_size){
     for(i=0; i<arr_size; ++i){
         curr_cell=tar_cells[i];
         curr_cave->content[curr_cell.r][curr_cell.c]=DIAMOND;
+        // fprintf(stderr, "created diamond location [%d %d]\n",curr_cell.r, curr_cell.c);
     }
 
     return;
