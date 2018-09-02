@@ -53,6 +53,8 @@ control_falling(Miner *m, Cave *cave) {
             }
 
             if(falling){
+                al_stop_sample_instance(rock_falling_instance);//if it is being played.
+                al_play_sample_instance(rock_falling_instance);
                 cave->content[target.r][target.c]=cave->content[pos.r][pos.c];
                 cave->content[pos.r][pos.c]=EMPTY_CELL;
 

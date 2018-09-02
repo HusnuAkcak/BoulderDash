@@ -42,7 +42,7 @@ play_game(Game * g){
     Cave curr_cave;
     ALLEGRO_EVENT ev;
     Point mouse_pos;
-    bool play, moving;/*play :display screen, moving: miner moves.          */
+    bool increased, play, moving;/*increased is about music rhytm, play :display screen, moving: miner moves. */
 
     /*Miner's initial values.                                               */
     g->miner.life=MINER_LIFE;
@@ -51,12 +51,13 @@ play_game(Game * g){
     g->miner.curr_cave_score=0;
     g->miner.collected_dia=0;
 
-    play=true;              /*if play==true, the screen will be refreshed.   */
-    moving=true;            /*when miner moves, it turns out true.           */
-    g->status=CONTINUE;     /*status is initialized as CONTINUE.             */
-    g->miner.move_dir=NONE; /*miner's movement direction                     */
+    play=true;              /*if play==true, the screen will be refreshed.      */
+    moving=true;            /*when miner moves, it turns out true.              */
+    increased=false;        /*at the begining music rhytm starts normal.        */
+    g->status=CONTINUE;     /*status is initialized as CONTINUE.                */
+    g->miner.move_dir=NONE; /*miner's movement direction                        */
 
-    /*current cave's initial values.                                         */
+    /*current cave's initial values.                                            */
     curr_cave.content=NULL;
     curr_cave.head_monster=NULL;
     curr_cave.head_spider=NULL;
@@ -105,6 +106,8 @@ play_game(Game * g){
                 if((g->miner.duration_of_death)<=0){
                     --(g->miner.life);
                     if((g->miner.life)>0){
+                        al_set_sample_instance_speed(background_instance, 1.0);
+                        increased=false;
                         restart_cave(g, &curr_cave);
                         moving=true;
                     }else{
@@ -164,6 +167,8 @@ play_game(Game * g){
                 mouse_pos.c<(20*CELL_SIZE)
             ){
                 al_stop_sample_instance(background_instance);
+                al_set_sample_instance_speed(background_instance, 1.0);
+                increased=false;
                 al_play_sample_instance(background_instance);
                 restart_cave(g, &curr_cave);
             }
@@ -178,9 +183,10 @@ play_game(Game * g){
             if(ev.timer.source==panel_timer && g->status==CONTINUE){
                 --curr_cave.left_time;
 
-                if( (curr_cave.left_time) < (curr_cave.max_time/10.0) ){
+                if( (curr_cave.left_time) < (curr_cave.max_time*MUSIC_INCREASE_SLICE) && increased==false){
                     /*in last 1/10 time left, music volume is inreased.*/
-                    al_set_sample_instance_gain(background_instance, 3);
+                    increased=true;
+                    al_set_sample_instance_speed(background_instance, 1.08);
                 }
             }
             else if(ev.timer.source==panel_timer && (g->miner.alive==false) ){
@@ -238,6 +244,8 @@ move(Cave * cave,Miner *m){
         else if(target==DIAMOND){
             ++m->collected_dia;
             ++cave->collected_dia;
+            al_stop_sample_instance(diamond_collect_instance);//if there is already a music.
+            al_play_sample_instance(diamond_collect_instance);
             if(cave->dia_req==cave->collected_dia){
                 al_play_sample_instance(door_opens_instance);
                 cave->content[cave->gate_loc.r][cave->gate_loc.c]=GATE;
@@ -256,6 +264,10 @@ move(Cave * cave,Miner *m){
             if(m->move_dir!=UP){
                 cave->content[atp.r][atp.c]=ROCK;
             }
+        }
+        else if(target==SOIL){
+            al_stop_sample_instance(eat_soil_instance);//if it is being played.
+            al_play_sample_instance(eat_soil_instance);
         }
     }
 

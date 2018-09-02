@@ -133,23 +133,36 @@ load_sample_instance(){
     al_reserve_samples(4);
     background=al_load_sample(AUDIO_PATH"/Music.wav");
     miner_dies=al_load_sample(AUDIO_PATH"/Explosion.wav");
-    insect_dies=al_load_sample(AUDIO_PATH"/Boulder.wav");
+    insect_dies=al_load_sample(AUDIO_PATH"/Explosion.wav");
     door_opens=al_load_sample(AUDIO_PATH"/Crack.wav");
+    diamond_collect=al_load_sample(AUDIO_PATH"/Diamond.wav");
+    eat_soil=al_load_sample(AUDIO_PATH"/MoveDirt.wav");
+    rock_falling=al_load_sample(AUDIO_PATH"/Boulder.wav");
 
     background_instance=al_create_sample_instance(background);
     miner_dies_instance=al_create_sample_instance(miner_dies);
     insect_dies_instance=al_create_sample_instance(insect_dies);
     door_opens_instance=al_create_sample_instance(door_opens);
+    diamond_collect_instance=al_create_sample_instance(diamond_collect);
+    eat_soil_instance=al_create_sample_instance(eat_soil);
+    rock_falling_instance=al_create_sample_instance(rock_falling);
 
     al_attach_sample_instance_to_mixer(background_instance, al_get_default_mixer());
     al_attach_sample_instance_to_mixer(miner_dies_instance, al_get_default_mixer());
     al_attach_sample_instance_to_mixer(insect_dies_instance, al_get_default_mixer());
     al_attach_sample_instance_to_mixer(door_opens_instance, al_get_default_mixer());
+    al_attach_sample_instance_to_mixer(diamond_collect_instance, al_get_default_mixer());
+    al_attach_sample_instance_to_mixer(eat_soil_instance, al_get_default_mixer());
+    al_attach_sample_instance_to_mixer(rock_falling_instance, al_get_default_mixer());
 
     al_set_sample_instance_playmode(background_instance, ALLEGRO_PLAYMODE_LOOP);
     al_set_sample_instance_playmode(miner_dies_instance, ALLEGRO_PLAYMODE_ONCE);
     al_set_sample_instance_playmode(insect_dies_instance, ALLEGRO_PLAYMODE_ONCE);
     al_set_sample_instance_playmode(door_opens_instance, ALLEGRO_PLAYMODE_ONCE);
+    al_set_sample_instance_playmode(diamond_collect_instance, ALLEGRO_PLAYMODE_ONCE);
+    al_set_sample_instance_playmode(eat_soil_instance, ALLEGRO_PLAYMODE_ONCE);
+    al_set_sample_instance_playmode(rock_falling_instance, ALLEGRO_PLAYMODE_ONCE);
+
     return;
 }
 

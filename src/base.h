@@ -21,7 +21,8 @@
 #define MPS 7                                       //miner's speed freq.
 #define DIA_OF_SPIDER 8   //dia num that is created after spiders are crushed.
 #define DIA_OF_MONSTER 12 //dia num that is created after monsters are crushed.
-#define MINER_DEATH_DURATION 2 //duration of time to die.(in second)
+#define MINER_DEATH_DURATION 2      //duration of time to die.(in second)
+#define MUSIC_INCREASE_SLICE 0.1    //time slince to music rhytm increasing.
 
 /*PATHS..                                                                   */
 #define AUDIO_PATH "../data/audio"
@@ -47,10 +48,18 @@ ALLEGRO_SAMPLE *background;
 ALLEGRO_SAMPLE *miner_dies;
 ALLEGRO_SAMPLE *insect_dies;
 ALLEGRO_SAMPLE *door_opens;
+ALLEGRO_SAMPLE *diamond_collect;
+ALLEGRO_SAMPLE *eat_soil;
+ALLEGRO_SAMPLE *rock_falling;
+
 ALLEGRO_SAMPLE_INSTANCE *background_instance;
 ALLEGRO_SAMPLE_INSTANCE *miner_dies_instance;
 ALLEGRO_SAMPLE_INSTANCE *insect_dies_instance;
 ALLEGRO_SAMPLE_INSTANCE *door_opens_instance;
+ALLEGRO_SAMPLE_INSTANCE *diamond_collect_instance;
+ALLEGRO_SAMPLE_INSTANCE *eat_soil_instance;
+ALLEGRO_SAMPLE_INSTANCE *rock_falling_instance;
+
 
 /*Cave bitmaps                                                            */
 ALLEGRO_BITMAP *ex_wall;
