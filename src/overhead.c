@@ -37,7 +37,7 @@ control_falling(Miner *m, Cave *cave) {
                 falling=true;
                 pos.r=r;
                 pos.c=c;
-                target.r=r+1;
+                target.r=r;
                 target.c=c-1;
             }
             /*right diagonal control   */
@@ -48,11 +48,9 @@ control_falling(Miner *m, Cave *cave) {
                 falling=true;
                 pos.r=r;
                 pos.c=c;
-                target.r=r+1;
+                target.r=r;
                 target.c=c+1;
             }
-
-
 
             if(falling){
                 cave->content[target.r][target.c]=cave->content[pos.r][pos.c];

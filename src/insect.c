@@ -9,7 +9,6 @@
 #include"allegro5/allegro_native_dialog.h"
 
 
-
 void
 find_insects(Cave *cave){
     int r,c;
@@ -51,77 +50,13 @@ find_insects(Cave *cave){
 
 void
 move_insects(Game *g, Cave *curr_cave){
-    Monster *curr_monster;
     Spider *curr_spider;
-
-    // for(curr_monster=curr_cave->head_monster;
-    //     curr_monster!=NULL;
-    //     curr_monster=curr_monster->next){
-    //         // fprintf(stderr, "before monster move\n");
-    //         move_monster(g->miner.pos, curr_cave, curr_monster);
-    //         // fprintf(stderr, "after monster move\n");
-    //     }
 
     for(curr_spider=curr_cave->head_spider;
         curr_spider!=NULL;
         curr_spider=curr_spider->next){
             move_spider(curr_cave, curr_spider);
         }
-
-    return;
-}
-
-void
-move_monster(Point miner_pos, Cave *curr_cave, Monster *curr_monster){
-
-    int shortest_distance, curr_route_size;
-    Point *curr_route;
-
-
-    if(curr_monster->route!=NULL){
-        free(curr_monster->route);
-        curr_monster->route=NULL;
-        curr_monster->route_size=0;
-    }
-
-    curr_route=NULL;
-    curr_route_size=0;
-    shortest_distance=-1;
-    // fprintf(stderr, "before calc monster's route\n");
-    calc_monster_route(miner_pos, curr_cave, curr_monster, curr_route, curr_route_size, NONE, &shortest_distance);
-    // fprintf(stderr, "after calc monster's route\n");
-    // fprintf(stderr, "route size of monster %d\n",curr_monster->route_size);
-    // fprintf(stderr, "target cell [%d %d]\n",curr_monster->route[0].r, curr_monster->route[0].c);
-    apply_monster_next_move(curr_cave, curr_monster);
-    // fprintf(stderr, "\n\n\n\n\nNEW SEARCH\n\n\n\n");
-
-    return;
-}
-
-void
-calc_monster_route(Point miner_pos, Cave *cave, Monster *curr_mon, Point *curr_route, int curr_route_size, Direction move_dir, int *short_dist){
-    int i;
-    Point mon_pos, mon_next_pos;    /*monster pos and next pos.             */
-    Point *temp_route;      /*used to copy current path.                    */
-
-
-
-
-
-    return;
-}
-
-void
-apply_monster_next_move(Cave *cave, Monster *mon){
-
-    Point tar;/*target cell.    */
-    // fprintf(stderr, "monster's move is being applied.\n");
-    if(mon->route!=NULL){
-        tar=mon->route[0];
-        cave->content[mon->pos.r][mon->pos.c]=EMPTY_CELL;
-        cave->content[tar.r][tar.c]=MONSTER;
-        mon->pos=tar;
-    }
 
     return;
 }
