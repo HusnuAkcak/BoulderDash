@@ -292,7 +292,12 @@ display_score_panel(Cave *curr_cave, Game *g){
     int_to_str(str_score, g->miner.score);
     al_draw_text(font, al_map_rgb(100, 200, 100), g->cam_pos.c+(8*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_collected_dia);
     al_draw_bitmap(time_icon, g->cam_pos.c+(9*CELL_SIZE), g->cam_pos.r, 0);
-    al_draw_text(font, al_map_rgb(155, 0, 0), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_left_time);
+
+    if((curr_cave->max_time*(MUSIC_INCREASE_SLICE)) > (curr_cave->left_time))
+        al_draw_text(font, al_map_rgb(155, 0, 0), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_left_time);
+    else
+        al_draw_text(font, al_map_rgb(0, 155, 0), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_left_time);
+
     al_draw_text(font, al_map_rgb(155, 155, 0), g->cam_pos.c+(14*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);
 
     int_to_str(str_life, g->miner.life);

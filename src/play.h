@@ -17,5 +17,8 @@ void play_game(Game * game);
 ----------------------------------------------------------------------------*/
 Status move(Cave *curr_cave,Miner *m);
 
-
+/*-- void show_final_results(...) --------------------------------------------
+    Shows final results to the user on final screen.
+----------------------------------------------------------------------------*/
+void show_final_results(Game *g ,Cave *curr_cave);
 #endif

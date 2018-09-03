@@ -149,7 +149,9 @@ play_game(Game * g){
             mouse_pos.r=ev.mouse.y;
         }
         else if(ev.type==ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
-            if(mouse_pos.r>0 && mouse_pos.r<CELL_SIZE &&
+            /*pause button                                                  */
+            if( mouse_pos.r>0 &&
+                mouse_pos.r<CELL_SIZE &&
                 mouse_pos.c>(18*CELL_SIZE) &&
                 mouse_pos.c<(19*CELL_SIZE)
             ){
@@ -162,15 +164,18 @@ play_game(Game * g){
                     al_play_sample_instance(background_instance);
                 }
             }
-            else if(mouse_pos.r>0 && mouse_pos.r<CELL_SIZE &&
-                mouse_pos.c>(19*CELL_SIZE) &&
-                mouse_pos.c<(20*CELL_SIZE)
+            /*restart button                                                 */
+            else if(mouse_pos.r>0 &&
+                    mouse_pos.r<CELL_SIZE &&
+                    mouse_pos.c>(19*CELL_SIZE) &&
+                    mouse_pos.c<(20*CELL_SIZE)
             ){
                 al_stop_sample_instance(background_instance);
                 al_set_sample_instance_speed(background_instance, 1.0);
                 increased=false;
                 al_play_sample_instance(background_instance);
                 restart_cave(g, &curr_cave);
+                moving=true;
             }
         }
         else if(ev.type==ALLEGRO_EVENT_TIMER){
@@ -206,10 +211,8 @@ play_game(Game * g){
                 moving=true;
             }
         }
-
-
     }
-    fprintf(stderr, "game is ended\n");
+    show_final_results(g, &curr_cave);
     return;
 }
 
@@ -273,4 +276,100 @@ move(Cave * cave,Miner *m){
 
 
     return status;
+}
+
+void
+show_final_results(Game *g, Cave *curr_cave){
+    /*string version of the data to use in al_draw_text function            */
+    ALLEGRO_EVENT ev;
+    ALLEGRO_DISPLAY_MODE disp_data;
+    Point mouse_pos;
+    char str_score[NAME_LENGTH];
+    char str_cave_number[NAME_LENGTH];
+    char temp_string[NAME_LENGTH];
+    int r,c;
+
+    /*the screen is made clear.                                             */
+    al_clear_to_color(al_map_rgb(0,0,0));
+
+    /*camera settings are readjusted as (0,0)                               */
+    al_identity_transform(&camera);
+    al_translate_transform(&camera, 0, 0);
+    al_use_transform(&camera);
+
+    /*Screen width and height informations are recieved with 'disp_data'    */
+    al_get_display_mode(0, &disp_data);
+
+    /*initializations for char arrays.                                      */
+    str_score[0]=0;
+    str_cave_number[0]=0;
+    temp_string[0]=0;
+
+    /*the frame is drawed with diamond icons.                               */
+    for(r=CELL_SIZE; r<(disp_data.height-2*CELL_SIZE); r+=CELL_SIZE){
+        al_draw_bitmap(diamond, 0, r, 0);//left side
+        al_draw_bitmap(diamond, (disp_data.width-(2*CELL_SIZE)), r, 0);//right side
+    }
+    for(c=0; c<(disp_data.width-2*CELL_SIZE); c+=CELL_SIZE){
+        al_draw_bitmap(diamond, c, 0, 0);//up side
+        al_draw_bitmap(diamond, c, (disp_data.height-(2*CELL_SIZE)), 0);//bottom side
+    }
+
+    /*strings are manupilated.                                              */
+    string_cpy(str_score,           "SCORE            :");
+    int_to_str(temp_string, g->miner.score);
+    string_cat(str_score, temp_string);
+    temp_string[0]='\0';
+
+    string_cpy(str_cave_number,     "LAST CAVE NUMBER :");
+    int_to_str(temp_string, curr_cave->cave_number);
+    string_cat(str_cave_number, temp_string);
+    temp_string[0]='\0';
+
+    string_cpy(temp_string, curr_cave->cave_name);
+    string_cpy(curr_cave->cave_name, "LAST CAVE NAME   :");
+    string_cat(curr_cave->cave_name, temp_string);
+    temp_string[0]='\0';
+
+    /*Informations are shown on the screen.                                 */
+    al_draw_text(font, al_map_rgb(100, 200, 100), (2*CELL_SIZE), 3*CELL_SIZE, ALLEGRO_ALIGN_LEFT, str_score);
+    al_draw_text(font, al_map_rgb(100, 200, 100), (2*CELL_SIZE), 4*CELL_SIZE, ALLEGRO_ALIGN_LEFT, str_cave_number);
+    al_draw_text(font, al_map_rgb(100, 200, 100), (2*CELL_SIZE), 5*CELL_SIZE, ALLEGRO_ALIGN_LEFT, curr_cave->cave_name);
+
+    al_draw_bitmap(new_game, (7*CELL_SIZE), 6*CELL_SIZE, 0);
+    al_draw_bitmap(exit_game, (10*CELL_SIZE), 6*CELL_SIZE, 0);
+
+    al_flip_display();/*rendering                                           */
+
+    /* current screen stays until the user make a decision.                 */
+    while(1){
+        al_wait_for_event(event_queue ,&ev);
+        if(ev.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
+            break;
+        }
+        else if(ev.type==ALLEGRO_EVENT_KEY_DOWN){
+            if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE)
+                break;
+        }
+        else if(ev.type==ALLEGRO_EVENT_MOUSE_AXES){
+            mouse_pos.c=ev.mouse.x;
+            mouse_pos.r=ev.mouse.y;
+        }
+        else if(ev.type==ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
+            /*new game button   */
+            if( mouse_pos.r>(6*CELL_SIZE) && mouse_pos.r<(8*CELL_SIZE) &&
+                mouse_pos.c>(10*CELL_SIZE) && mouse_pos.c<(12*CELL_SIZE)
+            ){
+                break;
+            }
+            /*exit button       */
+            else if(mouse_pos.r>(6*CELL_SIZE) && mouse_pos.r<(8*CELL_SIZE) &&
+                    mouse_pos.c>(7*CELL_SIZE) && mouse_pos.c<(9*CELL_SIZE)
+            ){
+                play_game(g);
+            }
+        }
+    }
+
+    return;
 }

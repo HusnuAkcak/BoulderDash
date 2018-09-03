@@ -40,6 +40,7 @@ string_cmp(const char * str1, const char *str2){
 void
 int_to_str(char *dest, int src){
     int i;
+
     if(src/10==0){
         for(i=0;dest[i]!=0;++i);
         dest[i]='0'+(src%10);
@@ -71,10 +72,13 @@ reverse_str(char *str){
 
 void
 string_cat(char* first, char *sec){
-    int i;
+    int i,j;
 
     for(i=0;first[i]!=0;++i);
-    first[i+1]=sec[0];
+    for(j=0; sec[j]!=0 && sec[j]!='\n'; ++j){
+        first[i+j]=sec[j];
+    }
+    first[i+j]='\0';
 
     return;
 }
@@ -99,6 +103,8 @@ load_cave_bitmaps(){
     restart_level_button=al_load_bitmap(IMG_PATH"/restart_level.png");
     time_icon=al_load_bitmap(IMG_PATH"/time.png");
     explosion=al_load_bitmap(IMG_PATH"/explosion.png");
+    new_game=al_load_bitmap(IMG_PATH"/new_game.png");
+    exit_game=al_load_bitmap(IMG_PATH"/exit.png");
 
     return;
 }
@@ -169,36 +175,22 @@ load_sample_instance(){
 void
 destroy_sample_instance(){
 
+
+    al_destroy_sample(background);
+    al_destroy_sample(miner_dies);
+    al_destroy_sample(insect_dies);
+    al_destroy_sample(door_opens);
+    al_destroy_sample(diamond_collect);
+    al_destroy_sample(eat_soil);
+    al_destroy_sample(rock_falling);
+
+    al_destroy_sample_instance(background_instance);
+    al_destroy_sample_instance(miner_dies_instance);
+    al_destroy_sample_instance(insect_dies_instance);
+    al_destroy_sample_instance(door_opens_instance);
+    al_destroy_sample_instance(diamond_collect_instance);
+    al_destroy_sample_instance(eat_soil_instance);
+    al_destroy_sample_instance(rock_falling_instance);
+
     return;
-}
-
-void
-copy_point_array(Point *dest, Point *src, int size){
-
-    int i;
-    for(i=0; i<size; ++i){
-        // fprintf(stderr, "(%d %d)\n", src[i].r, src[i].c);
-        dest[i]=src[i];
-        // fprintf(stderr, "{{%d %d}}\n", dest[i].r, dest[i].c);
-    }
-
-    return;
-}
-
-bool
-is_pos_in_route(Point *curr_route, int curr_route_size, Point pos){
-    bool in;
-    int i;
-
-    in=false;
-    i=0;
-    while(in==false && i<curr_route_size){
-        if(curr_route[i].r==pos.r && curr_route[i].c==pos.c){
-            // fprintf(stderr, "current detected repeted position is [%d %d]\n",pos.r, pos.c);
-            in=true;
-        }
-        ++i;
-    }
-
-    return in;
 }

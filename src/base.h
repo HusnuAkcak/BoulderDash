@@ -10,12 +10,12 @@
                                 CONSTANTS
 ###########################################################################*/
 #define LINE_SIZE 240     //used while caves are imported.
-#define NAME_LENGTH 15                              //cave name
+#define NAME_LENGTH 75                              //for some strings
 #define MAP_FILE "../data/maps.txt"                 //cave maps
 #define FONT_FILE "../data/font/commodore.ttf"      //game font type
 #define FONT_SIZE 50                                //game font size
 #define CELL_SIZE 64                                //icon pixel
-#define MINER_LIFE 30                                //miner's initial life
+#define MINER_LIFE 4                                //miner's initial life
 #define FPS 60                                      //display frequence
 #define FALL_PS 2.5                                 //falling frequence.
 #define MPS 7                                       //miner's speed freq.
@@ -80,7 +80,8 @@ ALLEGRO_BITMAP *play_button;
 ALLEGRO_BITMAP *restart_level_button;
 ALLEGRO_BITMAP *time_icon;
 ALLEGRO_BITMAP *explosion;
-
+ALLEGRO_BITMAP *new_game;
+ALLEGRO_BITMAP *exit_game;
 
 /*###########################################################################
                         END OF GLOBAL VARIABLES
@@ -203,16 +204,6 @@ void reverse_str(char *str);
     merges two char arrays.
 ---------------------------------------------------------------------------*/
 void string_cat(char* first, char *sec);
-
-/*-- void copy_point_array() -----------------------------------------------
-    copy src array to dest array.
----------------------------------------------------------------------------*/
-void copy_point_array(Point *dest, Point *src, int size);
-
-/*-- bool is_pos_in_route(...) ---------------------------------------------
-    Controls if given pos in the given Point array.
---------------------------------------------------------------------------*/
-bool is_pos_in_route(Point *curr_route, int curr_route_size, Point pos);
 
 /*###########################################################################
                         END OF FUNCTION PROTOTYPES
