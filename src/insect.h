@@ -27,9 +27,4 @@ void move_insects(Game *g,Cave *curr_cave);
 ---------------------------------------------------------------------------*/
 void move_spider(Cave *curr_cave, Spider *curr_spider);
 
-/*-- bool is_miner_caught(...) ----------------------------------------------
-    Tells, if the miner caught or not.
----------------------------------------------------------------------------*/
-bool is_miner_caught(Point miner_pos, Point pos);
-
 #endif

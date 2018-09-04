@@ -9,15 +9,14 @@
 
 void
 control_falling(Miner *m, Cave *cave) {
-    /*Since display cell required a Point parameter and for clarification,
-    Point types are used. */
+
     Point target;
     Point pos;
     bool falling;
     int r,c;
 
     falling=false;
-    /*border is not controlled.                                             */
+    /*border is controlled.                                                 */
     for(r=(cave->dim_row)-1; r>0; --r){
         for(c=(cave->dim_col)-1; c>0; --c){
             /*underside control         */
@@ -61,10 +60,12 @@ control_falling(Miner *m, Cave *cave) {
                 /*A falling rock can die miner, spider or a monster.        */
                 if(cave->content[target.r][target.c]==ROCK){
                    if(cave->content[target.r+1][target.c]==MINER){
-                       cave->content[target.r+1][target.c]=DEAD_MINER;
                        m->alive=false;
+                       cave->content[target.r+1][target.c]=DEAD_MINER;
                     }
-                    control_crushed_insects(cave, target);
+                    else{
+                        control_crushed_insects(cave, target);
+                    }
                 }
                 /*related bitmaps are being updated.                        */
                 display_cell(pos , cave);
@@ -92,7 +93,6 @@ control_crushed_insects(Cave *cave, Point rock_pos){
     if(curr_spider!=NULL){
         /*if crushed spider is head_spider(head node)                       */
         if((curr_spider->pos.r)==rock_pos.r+1 && (curr_spider->pos.c)==rock_pos.c){
-            // fprintf(stderr, "spider next pos[%d %d]\n",curr_spider->next->pos.r, curr_spider->next->pos.c);
             spider_crush=true;
             temp_spider=curr_spider;
             curr_spider=curr_spider->next;
@@ -104,7 +104,6 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         /*connector nodes are controlled.                                   */
         while(!spider_crush && curr_spider!=NULL && curr_spider->next!=NULL){
             if((curr_spider->next->pos.r)==rock_pos.r+1 && (curr_spider->next->pos.c)==rock_pos.c){
-                // fprintf(stderr, "spider next pos[%d %d]\n",curr_spider->next->pos.r, curr_spider->next->pos.c);
                 spider_crush=true;
                 temp_spider=curr_spider->next;
                 curr_spider->next=curr_spider->next->next;
@@ -120,7 +119,6 @@ control_crushed_insects(Cave *cave, Point rock_pos){
     if(!spider_crush && curr_monster!=NULL){
         /*if crushed monster is head_monster(head node)                      */
         if((curr_monster->pos.r)==rock_pos.r+1 && (curr_monster->pos.c)==rock_pos.c){
-            // fprintf(stderr, "monster next pos[%d %d]\n",curr_monster->next->pos.r, curr_monster->next->pos.c);
             monster_crush=true;
             temp_monster=curr_monster;
             curr_monster=curr_monster->next;
@@ -132,7 +130,6 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         /*connector nodes are controlled.                                   */
         while(!monster_crush && curr_monster!=NULL && curr_monster->next!=NULL){
             if((curr_monster->next->pos.r)==rock_pos.r+1 && (curr_monster->next->pos.c)==rock_pos.c){
-                // fprintf(stderr, "monster next pos[%d %d]\n",curr_monster->next->pos.r, curr_monster->next->pos.c);
                 monster_crush=true;
                 temp_monster=curr_monster->next;
                 curr_monster->next=curr_monster->next->next;
@@ -150,7 +147,6 @@ control_crushed_insects(Cave *cave, Point rock_pos){
         cave->content[rock_pos.r+1][rock_pos.c]=EMPTY_CELL;
 
         rock_pos.r+=1;/*it is used for insect position.                     */
-        // fprintf(stderr, "rock_kill_insect [%d %d]\n",rock_pos.r, rock_pos.c);
         if(spider_crush){
             find_available_cells_for_dia(cave, spider_dia_arr, DIA_OF_SPIDER, rock_pos);
             fill_available_cells_with_dia(cave, spider_dia_arr, DIA_OF_SPIDER);
@@ -173,7 +169,6 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
 
     radius=0;
     tar_cells[0]=ins_pos;/*Dead insect's pos is always will be available.   */
-    // fprintf(stderr, "ins pos [%d %d]\n",ins_pos.r, ins_pos.c);
     determined=1;/*one target is already determined above.                  */
     while((arr_size-determined)>0){
         ++radius;
@@ -182,6 +177,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
             (arr_size-determined)>0 &&
             (cave->content[ins_pos.r][ins_pos.c-radius]==EMPTY_CELL ||
                         cave->content[ins_pos.r][ins_pos.c-radius]==SOIL)   ){
+
             curr_cell.r=ins_pos.r;
             curr_cell.c=ins_pos.c-radius;
             tar_cells[determined]=curr_cell;
@@ -192,6 +188,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
             (arr_size-determined)>0 &&
             (cave->content[ins_pos.r][ins_pos.c+radius]==EMPTY_CELL ||
                         cave->content[ins_pos.r][ins_pos.c+radius]==SOIL)   ){
+
             curr_cell.r=ins_pos.r;
             curr_cell.c=ins_pos.c+radius;
             tar_cells[determined]=curr_cell;
@@ -202,6 +199,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
             (arr_size-determined)>0 &&
             (cave->content[ins_pos.r+radius][ins_pos.c]==EMPTY_CELL ||
                         cave->content[ins_pos.r+radius][ins_pos.c]==SOIL)   ){
+
             curr_cell.r=ins_pos.r+radius;
             curr_cell.c=ins_pos.c;
             tar_cells[determined]=curr_cell;
@@ -212,6 +210,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
             (arr_size-determined)>0 &&
             (cave->content[ins_pos.r-radius][ins_pos.c]==EMPTY_CELL ||
                         cave->content[ins_pos.r-radius][ins_pos.c]==SOIL)   ){
+
             curr_cell.r=ins_pos.r-radius;
             curr_cell.c=ins_pos.c;
             tar_cells[determined]=curr_cell;
@@ -222,6 +221,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
             (arr_size-determined)>0 &&
             (cave->content[ins_pos.r+radius][ins_pos.c+radius]==EMPTY_CELL ||
                         cave->content[ins_pos.r+radius][ins_pos.c+radius]==SOIL)   ){
+
             curr_cell.r=ins_pos.r+radius;
             curr_cell.c=ins_pos.c+radius;
             tar_cells[determined]=curr_cell;
@@ -232,6 +232,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
             (arr_size-determined)>0 &&
             (cave->content[ins_pos.r-radius][ins_pos.c+radius]==EMPTY_CELL ||
                         cave->content[ins_pos.r-radius][ins_pos.c+radius]==SOIL)   ){
+
             curr_cell.r=ins_pos.r-radius;
             curr_cell.c=ins_pos.c+radius;
             tar_cells[determined]=curr_cell;
@@ -242,6 +243,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
             (arr_size-determined)>0 &&
             (cave->content[ins_pos.r-radius][ins_pos.c-radius]==EMPTY_CELL ||
                         cave->content[ins_pos.r-radius][ins_pos.c-radius]==SOIL)   ){
+
             curr_cell.r=ins_pos.r-radius;
             curr_cell.c=ins_pos.c-radius;
             tar_cells[determined]=curr_cell;
@@ -252,6 +254,7 @@ find_available_cells_for_dia(Cave *cave, Point tar_cells[], int arr_size, Point 
             (arr_size-determined)>0 &&
             (cave->content[ins_pos.r+radius][ins_pos.c-radius]==EMPTY_CELL ||
                         cave->content[ins_pos.r+radius][ins_pos.c-radius]==SOIL)   ){
+
             curr_cell.r=ins_pos.r+radius;
             curr_cell.c=ins_pos.c-radius;
             tar_cells[determined]=curr_cell;
@@ -271,7 +274,6 @@ fill_available_cells_with_dia(Cave *curr_cave, Point tar_cells[], int arr_size){
     for(i=0; i<arr_size; ++i){
         curr_cell=tar_cells[i];
         curr_cave->content[curr_cell.r][curr_cell.c]=DIAMOND;
-        // fprintf(stderr, "created diamond location [%d %d]\n",curr_cell.r, curr_cell.c);
     }
 
     return;
@@ -351,8 +353,8 @@ void
 find_miner_loc(Cave *curr_cave, Miner *m) {
 
     int r,c;
-    for(r=0;r<curr_cave->dim_row;++r){
-        for(c=0;c<curr_cave->dim_col;++c){
+    for(r=0; r<curr_cave->dim_row; ++r){
+        for(c=0; c<curr_cave->dim_col; ++c){
             if(curr_cave->content[r][c]==MINER){
                 m->pos.r=r;
                 m->pos.c=c;
@@ -391,9 +393,6 @@ set_camera(Game *g, Cave *curr_cave) {
     camera_pos.r=(g->miner.pos.r*CELL_SIZE)-(screen_dim.r/2);
     camera_pos.c=(g->miner.pos.c*CELL_SIZE)-(screen_dim.c/2);
 
-    // fprintf(stderr, "cave_dim:%d,%d\n",cave_dim.r, cave_dim.c);
-    // fprintf(stderr, "screen_dim:%d,%d\n",screen_dim.r/2, screen_dim.c/2);
-    // fprintf(stderr, "miner's pos:%d,%d\n",g->miner.pos.r, g->miner.pos.c);
     /*if camera is not in cave border it is adjusted                        */
     if(camera_pos.r<0)
         camera_pos.r=0;

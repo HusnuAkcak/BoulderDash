@@ -13,28 +13,28 @@
 void
 intro_game(Game *game,int scr_width,int scr_height){
 
-    ALLEGRO_BITMAP      *image1;
-    ALLEGRO_BITMAP      *image2;
+    ALLEGRO_BITMAP      *boulder_dash;
+    ALLEGRO_BITMAP      *title_screen;
 
 
     /*background music(It is always played.)                               */
     al_play_sample_instance(background_instance);
 
     /*First intro image                                                    */
-    image1=al_load_bitmap(IMG_PATH"/boulder_dash.jpg");
-    al_draw_bitmap(image1,scr_width/3,scr_height/3,0);
+    boulder_dash=al_load_bitmap(IMG_PATH"/boulder_dash.jpg");
+    al_draw_bitmap(boulder_dash,scr_width/3,scr_height/3,0);
     al_flip_display();
-    al_rest(0.1);
+    al_rest(1);
     al_clear_to_color(al_map_rgb(0,0,0));
     /*Second intro image                                                    */
-    image2=al_load_bitmap(IMG_PATH"/title_screen.png");
-    al_draw_bitmap(image2,scr_width/3,scr_height/3,0);
+    title_screen=al_load_bitmap(IMG_PATH"/title_screen.png");
+    al_draw_bitmap(title_screen,scr_width/3,scr_height/3,0);
     al_flip_display();
-    al_rest(0.1);
+    al_rest(1);
     al_clear_to_color(al_map_rgb(0,0,0));
 
-    al_destroy_bitmap(image1);
-    al_destroy_bitmap(image2);
+    al_destroy_bitmap(boulder_dash);
+    al_destroy_bitmap(title_screen);
 }
 
 void
@@ -42,7 +42,8 @@ play_game(Game * g){
     Cave curr_cave;
     ALLEGRO_EVENT ev;
     Point mouse_pos;
-    bool increased, play, moving;/*increased is about music rhytm, play :display screen, moving: miner moves. */
+    /*increased is about music rhytm, play :display screen, moving: miner moves. */
+    bool increased, play, moving;
 
     /*Miner's initial values.                                               */
     g->miner.life=MINER_LIFE;
@@ -64,12 +65,14 @@ play_game(Game * g){
     curr_cave.dim_row=0;
     curr_cave.dim_col=0;
 
+    al_set_sample_instance_speed(background_instance, 1.0);/*music rhythm           */
     copy_cave(&curr_cave, g->head_cave);
-    g->miner.duration_of_death=MINER_DEATH_DURATION;
-    find_miner_loc(&curr_cave, &(g->miner));    /*Miner's location is found. */
+    g->miner.duration_of_death=MINER_DEATH_DURATION;/*waiting time after miner dies.*/
+    find_miner_loc(&curr_cave, &(g->miner));        /*Miner's location is found.    */
     while(g->status!=END){
         if(play && al_is_event_queue_empty(event_queue)){
 
+            /*if it is required to level up                                 */
             if(g->status==NEXT){
                 if(curr_cave.left_time>0){//left time is being added to miner's score.
                     --curr_cave.left_time;
@@ -78,11 +81,11 @@ play_game(Game * g){
                 }
                 else{
                     g->status=go_next_cave(g, &curr_cave);
-                    // fprintf(stderr, "I am in next level.\n");
                     moving=true;
                 }
             }
 
+            /*if miner moves                                                */
             if(moving){
                 al_clear_to_color(al_map_rgb(0,0,0));
                 al_identity_transform(&camera);
@@ -92,11 +95,9 @@ play_game(Game * g){
                 moving=false;
             }
 
-
+            /*bitmaps of current screen are updated.                        */
             display_curr_screen(&curr_cave, g);
-            // fprintf(stderr, "1curr screen is displayed\n");
-            al_flip_display();
-            // fprintf(stderr, "2curr screen is displayed\n");
+            al_flip_display();/*rendering                                   */
 
             /*this control is performed after al_flip_display, because if miner
             is dead, we freeze the screen for a while.                      */
@@ -106,16 +107,16 @@ play_game(Game * g){
                 if((g->miner.duration_of_death)<=0){
                     --(g->miner.life);
                     if((g->miner.life)>0){
+                        /*music rhythm is set its normal speed.             */
                         al_set_sample_instance_speed(background_instance, 1.0);
-                        increased=false;
-                        restart_cave(g, &curr_cave);
-                        moving=true;
+                        increased=false;/*music rhythm is not increased     */
+                        restart_cave(g, &curr_cave);/*cave is restarting.   */
+                        moving=true;/*miner's pos is possibly changed.      */
                     }else{
                         g->status=END;
                     }
                 }
             }
-
             play=false;
         }
 
@@ -157,11 +158,11 @@ play_game(Game * g){
             ){
                 if(g->status==CONTINUE){
                     g->status=PAUSE;
-                    al_stop_sample_instance(background_instance);
+                    al_stop_sample_instance(background_instance);/*music is stopped.*/
                 }
                 else if(g->status==PAUSE){
                     g->status=CONTINUE;
-                    al_play_sample_instance(background_instance);
+                    al_play_sample_instance(background_instance);/*music is played. */
                 }
             }
             /*restart button                                                 */
@@ -189,29 +190,28 @@ play_game(Game * g){
                 --curr_cave.left_time;
 
                 if( (curr_cave.left_time) < (curr_cave.max_time*MUSIC_INCREASE_SLICE) && increased==false){
-                    /*in last 1/10 time left, music volume is inreased.*/
+                    /*music rhythm is inreased.                             */
                     increased=true;
                     al_set_sample_instance_speed(background_instance, 1.08);
                 }
             }
             else if(ev.timer.source==panel_timer && (g->miner.alive==false) ){
-                /*left time is added to score.                              */
+                /*when miner dies the screen is freezed till miner's duration of death. */
                 --(g->miner.duration_of_death);
             }
 
             if(ev.timer.source==falling_timer && g->status==CONTINUE){
-                // fprintf(stderr, "before move insects\n");
                 move_insects(g, &curr_cave);
-                // fprintf(stderr, "after move insects\n");
                 control_falling(&(g->miner), &curr_cave);
             }
-
+            /*it is controlled, if miner want to move or not.               */
             if(ev.timer.source==miner_timer && g->miner.move_dir!=NONE && g->status==CONTINUE){
                 g->status=move(&curr_cave, &(g->miner));
                 moving=true;
             }
         }
     }
+    /*when loop is terminated final result is shown to user.                */
     show_final_results(g, &curr_cave);
     return;
 }
@@ -225,7 +225,7 @@ move(Cave * cave,Miner *m){
     Point tp, atp;      /*tp=target point, atp=after target point           */
     Point pre_pos;      /*previous position                                 */
 
-    status=CONTINUE;/*status is set CONTINUE as default.                    */
+    status=CONTINUE;    /*status is set CONTINUE as default.                */
     detect_target(cave, m, &target, &after_target, &tp, &atp);
 
     /*it is controlled and if the move possible player's choice is applied. */

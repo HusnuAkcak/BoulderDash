@@ -20,8 +20,7 @@ main()
     event_queue=NULL;
 
     import_caves(&game);
-    //test_import(&game);//could be called when it is wanted to see if the maps are correcty imported or not.
-
+    // test_import(&game);//could be called when it is wanted to see if the maps are correcty imported or not.
 
     /*Initialisations                                                       */
     al_init();
@@ -31,20 +30,18 @@ main()
     al_init_acodec_addon();
     al_init_image_addon();
 
-
     /*Mouse and keyboard options are installed.                             */
     al_install_mouse();
     al_install_keyboard();
 
-
     /*Screen width and height informations are recieved with 'disp_data'    */
     al_get_display_mode(0, &disp_data);
 
-    main_timer=al_create_timer(1.0/FPS);/*timer for game operations         */
-    panel_timer=al_create_timer(1.0);/*timer for score panel                */
-    falling_timer=al_create_timer(1.0/FALL_PS);/*timer for falling obj.     */
-    miner_timer=al_create_timer(1.0/MPS);
-    event_queue=al_create_event_queue();/*Event queue is created.           */
+    main_timer=al_create_timer(1.0/FPS);        /*timer for game operations */
+    panel_timer=al_create_timer(1.0);           /*timer for score panel     */
+    falling_timer=al_create_timer(1.0/FALL_PS); /*timer for falling obj.    */
+    miner_timer=al_create_timer(1.0/MPS);       /*controls miner's speed.   */
+    event_queue=al_create_event_queue();        /*Event queue is created.   */
 
     /*The font is loaded.                                                   */
     font=al_load_font(FONT_FILE,FONT_SIZE,0);
@@ -52,7 +49,7 @@ main()
     /*The frame is displayed on the screen.                                 */
     display=al_create_display(disp_data.width, disp_data.height);
 
-    /*The components are introduced to the event queue                      */
+    /*The components are introduced to the event queue.                     */
     al_register_event_source(event_queue,al_get_display_event_source(display));
     al_register_event_source(event_queue,al_get_timer_event_source(main_timer));
     al_register_event_source(event_queue,al_get_timer_event_source(panel_timer));
@@ -66,14 +63,14 @@ main()
     al_start_timer(falling_timer);
     al_start_timer(miner_timer);
 
-    load_cave_bitmaps();    //Cave bitmaps are loaded.
-    load_sample_instance(); //samples and sample instances are loaded.
+    load_cave_bitmaps();    /*Cave bitmaps are loaded.                      */
+    load_sample_instance(); /*samples and sample instances are loaded.      */
+
     /*The game structure is started.                                        */
     intro_game(&game,disp_data.width,disp_data.height);
     play_game(&game);
 
     /*######################### Free operations ############################*/
-
     free_caves(game.head_cave); // Caves are freed.
     destroy_cave_bitmaps();     // Cave bitmaps are freed.
 

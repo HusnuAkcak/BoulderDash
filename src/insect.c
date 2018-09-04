@@ -23,7 +23,6 @@ find_insects(Cave *cave){
     for(c=0; c<(cave->dim_col); ++c){
         for(r=0; r<(cave->dim_row); ++r){
             if(cave->content[r][c]==SPIDER){
-                // fprintf(stderr, "spider pos [%d %d]\n", r,c);
                 pre_spider=curr_spider;
                 curr_spider=(Spider*)malloc(sizeof(Spider));
                 curr_spider->pos.r=r;
@@ -31,7 +30,6 @@ find_insects(Cave *cave){
                 curr_spider->move_dir=NONE;
                 curr_spider->next=pre_spider;
             }else if(cave->content[r][c]==MONSTER){
-                // fprintf(stderr, "monster pos [%d %d]\n", r,c);
                 pre_monster=curr_monster;
                 curr_monster=(Monster*)malloc(sizeof(Monster));
                 curr_monster->pos.r=r;
@@ -71,7 +69,6 @@ move_spider(Cave *curr_cave, Spider *curr_spider){
         curr_cave->content[curr_spider->pos.r][curr_spider->pos.c]=EMPTY_CELL;
         curr_cave->content[curr_spider->next_pos.r][curr_spider->next_pos.c]=SPIDER;
         curr_spider->pos=curr_spider->next_pos;
-        //fprintf(stderr, "pos:%d,%d dir:%d\n", curr_spider->pos.r, curr_spider->pos.c, curr_spider->move_dir);
     }
 
     return;
@@ -143,7 +140,6 @@ can_spider_move(Cave *cave, Point pos, Direction dir){
                 dir=NONE;
             break;
     }
-
     return dir;
 }
 
@@ -174,23 +170,4 @@ calc_spiders_route(Cave *curr_cave, Spider *s, Direction dir){
             break;
     }
     return;
-}
-
-bool
-is_miner_caught(Point miner_pos, Point insect_pos){
-    bool caught;
-
-    fprintf(stderr, "miner pos (%d %d)\n",miner_pos.r, miner_pos.c);
-    fprintf(stderr, "Controlled pos is {%d %d}\n",insect_pos.r, insect_pos.c);
-    caught=false;
-    if( (miner_pos.r == (insect_pos.r-1) && miner_pos.c==insect_pos.c) ||
-        (miner_pos.r == (insect_pos.r+1) && miner_pos.c==insect_pos.c) ||
-        (miner_pos.c == (insect_pos.c-1) && miner_pos.r==insect_pos.r) ||
-        (miner_pos.c == (insect_pos.c+1) && miner_pos.r==insect_pos.r)
-    ){
-        caught=true;
-        // fprintf(stderr, "I have found miner.\n");
-    }
-
-    return caught;
 }

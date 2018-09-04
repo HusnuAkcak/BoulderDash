@@ -12,3 +12,6 @@ NOTES:
 SOURCES:
 	Sounds are taken from 'https://github.com/AMC-TUT/boulder-dash-craftyjs'
 	Maps are taken from 'http://www.boulder-dash.nl/' and majorly edited.
+
+TO COMPILE:
+	To compile the project it is required to install allegro 5.2.4

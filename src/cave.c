@@ -85,12 +85,16 @@ void
 copy_cave(Cave *dest, Cave* src){
     int r,c;
 
-    for(r=0;r<dest->dim_row;++r){
+    /*Previous content array is free.                                       */
+    for(r=0; r<(dest->dim_row); ++r){
         free(dest->content[r]);
+        dest->content[r]=NULL;
     }
-    if(dest->content!=0){
+    if(dest->content!=NULL){
         free(dest->content);
+        dest->content=NULL;
     }
+
     dest->cave_number=src->cave_number;
     string_cpy(dest->cave_name, src->cave_name);
     dest->dim_row=src->dim_row;
@@ -102,18 +106,22 @@ copy_cave(Cave *dest, Cave* src){
     dest->water_discharge_period=src->water_discharge_period;
     dest->last_water_discharge_time=0;
 
+    /*cave initial values.                                                  */
     dest->collected_dia=0;
     dest->left_time=dest->max_time;
 
+    /*allocation for content array.                                         */
     dest->content=(Content**)calloc(dest->dim_row, sizeof(Content*));
     for(r=0;r<dest->dim_row; ++r){
         dest->content[r]=(Content*)calloc(dest->dim_col, sizeof(Content));
     }
+    /*content is being copied from source to destination.                   */
     for(r=0;r<dest->dim_row;++r){
         for(c=0;c<dest->dim_col;++c){
             dest->content[r][c]=src->content[r][c];
         }
     }
+
     find_insects(dest);     //spiders and monsters are being found.
     find_gate_loc(dest);    //gate position is being found.
     dest->content[dest->gate_loc.r][dest->gate_loc.c]=EMPTY_CELL;// gate is hidden.
@@ -133,22 +141,19 @@ display_curr_screen(Cave * cave, Game *g){
     screen_dim.r=al_get_display_height(display);
     screen_dim.c=al_get_display_width(display);
 
-    /*Real coordinate info is translated to cave coord info.             */
+    /*Real coordinate info is translated to cave coord info.                */
     start_loc.c=(g->cam_pos.c/CELL_SIZE);
     start_loc.r=(g->cam_pos.r/CELL_SIZE)+1;/*One line is reserved for score panel.*/
     end_loc.c=(g->cam_pos.c/CELL_SIZE)+(screen_dim.c/CELL_SIZE);
     end_loc.r=(g->cam_pos.r/CELL_SIZE)+(screen_dim.r/CELL_SIZE);
 
-    /*Score panel is cleared and then redisplayed.*/
+    /*Score panel is cleared and then redisplayed.                          */
     for(i=0; i<(end_loc.c); ++i){
         al_draw_bitmap(empty_cell, g->cam_pos.c+(i*CELL_SIZE), g->cam_pos.r, 0);
-        // fprintf(stderr, "Score panel is being cleaned.\n");
     }
     display_score_panel(cave, g);
 
     /*start and end locations are controlled with cave dimensions.          */
-    // fprintf(stderr, "before:start_loc %d %d , end_loc %d %d\n",start_loc.r, start_loc.c ,end_loc.r, end_loc.c);
-
     if(start_loc.r<0)
         start_loc.r=0;
     if(start_loc.c<0)
@@ -158,24 +163,18 @@ display_curr_screen(Cave * cave, Game *g){
     if(end_loc.r>(cave->dim_row))
         end_loc.r=cave->dim_row;
 
-     // fprintf(stderr, "after:start_loc %d %d , end_loc %d %d\n",start_loc.r, start_loc.c ,end_loc.r, end_loc.c);
-
-
     /*  WATER DISCHARGE OPERATION                                           */
     curr_time=al_get_timer_count(panel_timer);
     if( g->status == CONTINUE &&                                //if status is active.
-        (curr_time % (cave->water_discharge_period) == 0) &&    //when it comes to
-        (cave->last_water_discharge_time) < curr_time         //if water discharged at this time
-        && (count_empty_cell_in_screen(start_loc, end_loc, cave) > 0 || count_soil_cell_in_screen(start_loc, end_loc, cave) > 0)//if there is any available cell for water
+        (curr_time % (cave->water_discharge_period) == 0) &&    //in time
+        (cave->last_water_discharge_time) < curr_time &&        //if water doesn't discharged at this time
+        //if there is any available cell for water(empty cell or soil)
+        (count_empty_cell_in_screen(start_loc, end_loc, cave) > 0 || count_soil_cell_in_screen(start_loc, end_loc, cave) > 0)
     ){
-        /*It is tried to be found an available location in the current screen as random.    */
+        /*It is tried to find an available location in the current screen as random.    */
         do{
             water_cell.r=(start_loc.r) + rand()%( (end_loc.r)-(start_loc.r)-1);
             water_cell.c=(start_loc.c) + rand()%( (end_loc.c)-(start_loc.c)-1);
-            // fprintf(stderr, "I am in do while.\n");
-            // fprintf(stderr, "in loop :start_loc %d %d , end_loc %d %d\n",start_loc.r, start_loc.c ,end_loc.r, end_loc.c);
-            // fprintf(stderr, "tar wat loc {%d %d} target %c\n",water_cell.r, water_cell.c, cave->content[water_cell.r][water_cell.c]);
-
         }
         while(cave->content[water_cell.r][water_cell.c]!=EMPTY_CELL &&
                         cave->content[water_cell.r][water_cell.c]!=SOIL);
@@ -187,7 +186,6 @@ display_curr_screen(Cave * cave, Game *g){
     /*In current screen, the cells are displayed.                           */
     for(curr_cell.c=start_loc.c; curr_cell.c<end_loc.c; ++curr_cell.c){
         for(curr_cell.r=start_loc.r; curr_cell.r<end_loc.r+1; ++curr_cell.r){
-            // fprintf(stderr, "it is displayed.\n");
             display_cell(curr_cell, cave);
         }
     }
@@ -331,6 +329,7 @@ restart_cave(Game *g,Cave *curr_cave){
     g->miner.duration_of_death=MINER_DEATH_DURATION;
     g->status=CONTINUE;
     g->miner.alive=true;
+
     return;
 }
 
@@ -339,23 +338,23 @@ go_next_cave(Game *g, Cave *curr_cave){
     Cave *temp_cave;
     Status status;
 
-    // temp_cave and curr_cave are made equal
+    /* temp_cave and curr_cave are made equal                               */
     for(temp_cave=g->head_cave; temp_cave->cave_number!=curr_cave->cave_number; temp_cave=temp_cave->next);
 
-    // fprintf(stderr, "no:%d\n",curr_cave->cave_number);
-    temp_cave=temp_cave->next;// next cave is reached.
+    temp_cave=temp_cave->next;/* next cave is reached.                      */
     if(temp_cave==NULL){
-        // fprintf(stderr, "END\n");
         status=END;
     }
     else{
-        // fprintf(stderr, "next\n");
         copy_cave(curr_cave, temp_cave);
         find_miner_loc(curr_cave, &(g->miner));
-        // fprintf(stderr, "miner's loc [%d %d]\n",g->miner.pos.r, g->miner.pos.c);
-        ++(g->miner.life);
+
+        ++(g->miner.life);/*miner's life increment by one as reward for next level   */
+
+        /*values about current level                                        */
         g->miner.curr_cave_score=0;
         g->miner.collected_dia=0;
+
         status=CONTINUE;
     }
 
@@ -364,15 +363,19 @@ go_next_cave(Game *g, Cave *curr_cave){
 
 void
 free_caves(Cave *head_cave){
+
     Cave *curr_cave,*temp_cave;
     int i;
+
     curr_cave=head_cave;
     while(curr_cave!=NULL){
         if(curr_cave->content!=NULL){
             for(i=0;i<(curr_cave->dim_row);++i){
                 free(curr_cave->content[i]);
+                curr_cave->content[i]=NULL;
             }
             free(curr_cave->content);
+            curr_cave->content=NULL;
         }
         temp_cave=curr_cave;
         curr_cave=curr_cave->next;

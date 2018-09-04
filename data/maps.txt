@@ -22,33 +22,33 @@ d#Converted using Tim Stridmann's X2BDCFF converter.
 no:1
 Cave 1
 dim:40x22
-time:100
-dia_req:1
-dia_val: 1500 ex_dia_val:1500
+time:120
+dia_req:18
+dia_val: 15 ex_dia_val:20
 water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WrPd.....d.dlll..........d.d     ..d..dW
-W.X...rrrr...r...... .......     . ....W
-W. .. ...d..........       ....r. .. drW
-W.       .... .........  . ............W
-W.      M....S....rr...........r..r... W
-Wr. .. ...........  ...  ...  ..r.. r..W
-Wr. ......wwwwwwwwwwwwwwwwwwwwwwwww...rW
-Wr. . .r.... ....r.. .. ..r.... .......W
-Wr. ......r...... .....r...drr..d.r.r..W
-Wr. r.... r.rr.d. ...r..r......r.r..d..W
-Wr. r ....r.rr..r .r......... ..r......W
-Wr. ..d......... ..... ..d...r.....r...W
-Wr. ..r.r..r.......r.... ... .r........W
-Wr. wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
-Wr. . . ...r...r.... .. .r......... ..rW
-Wr. ....r .......r....... ..r...r ...rrW
-Wr. ...r......r. rr.....d..............W
-Wr. . .. .. ...r....r.r...r..r.r.. ...rW
-Wdd r. ...dd. ............r.....r... d W
-W.d ...d.ddd.......... ..d. .......d..dW
+W..d...r.rdr.......... ..r. .......r..rW
+Wr....r... . ......r r....r... ... ....W
+W.r.. r..d.r. ...r... .r.... ..r. .. drW
+W. ... ..r.  ..... ....r....d..........W
+W...r....rr .r... . d.. ...rd..r..r... W
+W.r.... .....r ..r......  .... ..r.. r.W
+W...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
+W.... .r.... ....r.. .. ..r.... .......W
+W.........r............r...drr..d.r.r..W
+WPd.r.... r.rr.d.....r..r......r.r..drXW
+W..rr ....r.rr..r..r......... ..r......W
+W.....d......... ..... ..d...r.....r...W
+Wd....r.r..r.......r.... ...  r.... ...W
+W. .wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
+W.... . ...r...r.... .. .r......... ..rW
+W.......r .......r....... ..r...r ...rrW
+W .d...r .....r. rr.....d..............W
+Wr... .. .. ...r....r.r...r..r.r......rW
+Wr..r. ...dd. ........ ...r.....r... d W
+W..rr..dr.........r...rr.... ...r ....rW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
@@ -58,25 +58,25 @@ no:2
 Cave 2
 dim:40x22
 time:100
-dia_req:1
+dia_req:8
 dia_val:35 ex_dia_val:40
 water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WX.. .r.... rr.r......r ..r.. ..rr..r..W
-WPd   .                         Mr.....W
-W.....................r ....r.r.r... . W
-W...     ....     .....r..r....r.......W
-Wrrr S   ...r     ..... ..rr....r......W
-W..r.r...r..r.r...rr....r..........r ..W
+WXP. ...... rr.r......r ..r.. ..rr..r..W
+W.....rr......  r.r. .r...r......r.....W
+W...r..........r .....r ....r.r.r... . W
+W......r...............r..r....r.......W
+Wrr.........rr rrr..... ..rr....r......W
+W....r..r ..r.r...rr....r..........r ..W
 W. ....r...r.rrr.r....... ........ .r..W
 W.... ....rr...r.r....r..r..r...r....r.W
-W....r.... .........r.....r...r....rr.rW
-W..... ..................r..r....... ..W
-W.... .............r.. r....r.....r....W
-W.................. .... r.r....r......W
-W.rr......r.....r........r....M....r...W
+W....r.... .........r..............rr.rW
+W..... ..................      ..... ..W
+W.... .............r.. r.      ...r....W
+W.................. ....       .r......W
+W.rr......r.....r........  S   ....r...W
 W.r....rr. ...r...rr...r........ ......W
 W.... ........ r... .rr.........rr....rW
 W...r.r..... .............r....r.......W
@@ -89,49 +89,31 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-no:61
-Cave 6
-dim:8x5
-time:20
-dia_req:1
-dia_val:14 ex_dia_val:20
-water_period:1
-
-[map]
-WWWWWWWW
-W.r...XW
-W.....PW
-WddddddW
-WWWWWWWW
-[/map]
-[/cave]
-
-[cave]
-no:33
+no:3
 Cave 3
 dim:40x22
 time:180
-dia_req:10
+dia_req:25
 dia_val:10 ex_dia_val:12
 water_period:5
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W...r..dr.....rrr. .r..r...r.....rr..rrW
+W...r..dr.....rrr. .r..r...r.....rr...XW
 W.r.r..d..................r.....r.....rW
 Wr. P..dr...r......r..  ..... .r.r...rrW
 Wr.....d.r.......rrr... ....r.r ...r...W
 W..r ..d..r....rr. .rr.r....r ..rrr.r rW
 W...r.rd.. rr..r..rr..r.. .r. r.rrr....W
 W..rr..d..rrrrd.......r......r r.r.....W
-W......X.rr r.d.rr........r.... r..r...W
+W......d.rr r.d.rr........r.... r..r...W
 Wr..r. d.r....d...........r...r.r.....rW
 W... ..d...rrrd..r...rr.r..r......r..r.W
 W. r...d.rrrr.d.r....r.....r..... r.r..W
 W..rr..d..rrr.d r..........r........r..W
 W....r.d.r..r.dr.rr....rr.... r...r ...W
 W....r.d.r....dr...rr.r....r...rrr.r.r.W
-Wr..... ... ..d.r.r ...................W
+Wr......... ..d.r.r ...................W
 Wrr. . .rr....d......r.rr........r.r...W
 W.r. r...rr...dr.......r...r.....r.r..rW
 W. ... ....r..d..r....r.. .r...........W
@@ -142,29 +124,11 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-no:1400
-Cave 6
-dim:8x5
-time:20
-dia_req:1
-dia_val:14 ex_dia_val:20
-water_period:1
-
-[map]
-WWWWWWWW
-W.....XW
-W.....PW
-WddddddW
-WWWWWWWW
-[/map]
-[/cave]
-
-[cave]
-no:1444
+no:4
 Cave 4
 dim:40x22
-time:100
-dia_req:1
+time:200
+dia_req:80
 dia_val:4 ex_dia_val:5
 water_period:4
 
@@ -183,8 +147,8 @@ Wrrddddddddddddrrdrdrdddrrrw        wrrW
 Wdddddddrdrdrrrdddrdrd.rdrdw        wddW
 Wdrdrwwwwww.wwwwwwdddddrdrrw        wrrW
 Wddddw           wrdddrdrdrw        wrdW
-Wrrddw           wddddddrrdw    X   wrdW
-Wdddd.           .drddddrddw    d   wrdW
+Wrrddw           wddddddrrdw        wrdW
+Wdddd.           .drddddrddw        wrdW
 Wddrrw           wddddddddrw        wrrW
 Wrdrrw           wrrdrdddrdw    P   wrrW
 Wdrdrw           wddrdddrdrwwwwwwwwwwrrW
@@ -195,29 +159,11 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-no:63
-Cave 6
-dim:8x5
-time:20
-dia_req:1
-dia_val:14 ex_dia_val:20
-water_period:1
-
-[map]
-WWWWWWWW
-W.....XW
-W.....PW
-WddddddW
-WWWWWWWW
-[/map]
-[/cave]
-
-[cave]
 no:5
 Cave 5
 dim:40x22
-time:50
-dia_req:2
+time:200
+dia_req:28
 dia_val:18 ex_dia_val:90
 water_period:4
 
@@ -226,57 +172,40 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W.......w.d........r.r...r.w...........W
 W.rrrrr.w...............d..w.......d...W
 W.rrrrr.w...........w .w...w....r.....wW
-W.......ww.....d....  .....w.d.......w.W
+W.......ww.....d...w  w....w.d.......w.W
 W.MMMMM.w.w.r.....w  w.....w........w..W
-W.     .wr........  ...............w...W
-W.     .w........  ..............rw...rW
-Wwwwwwwww......w  w.....r..w.....w.....W
-W..d...........  ..r.......w..w.w..r...W
-W.........r..w  w..........w....Xdd...PW
+W.     .wr.w.....w  w......w.......w...W
+W.     .w...w...w  w.......w.....rw...rW
+Wwwwwwwww....w.w  w.....r..w.....w.....W
+W..d..........w  w.r.......w..w.w..r...W
+W.........r..w  w..........w...M......PW
 W...........w  ww.....r.......w.w......W
 Wr.........w  w..w......d....w...wd....W
 W.........w  w..r.w.........w.....w....W
 W....r....w w......w...............w..rW
 W.......d.w w.....d.w...........r...w..W
-W.......... ..d......w...............w.W
-W.......... ..........w...............wW
-W..r....... w.r........w.............d.W
+W.........w w.d......w...............w.W
+W.........w w.........w...............wW
+W..r......w w.r........w.............d.W
 W.....d...wMw.....r.....w.r....d....r..W
-W.......... w.........d..w.............W
+WX......... w.........d..w.............W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
 
-[cave]
-no:64
-Cave 6
-dim:8x5
-time:20
-dia_req:1
-dia_val:14 ex_dia_val:20
-water_period:1
-
-[map]
-WWWWWWWW
-W.....XW
-W.....PW
-WddddddW
-WWWWWWWW
-[/map]
-[/cave]
 
 [cave]
 no:6
 Cave 6
 dim:20x12
-time:200
+time:20
 dia_req:36
-dia_val:14 ex_dia_val:20
+dia_val:14 ex_dia_val:14
 water_period:3
 
 [map]
 WWWWWWWWWWWWWWWWWWWW
-WX.................W
+X..................W
 WddddddddddddddddddW
 WrrrrrrrrrrrrrrrrrrW
 W..................W
@@ -291,29 +220,11 @@ WWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-no:65
-Cave 6
-dim:8x5
-time:20
-dia_req:1
-dia_val:14 ex_dia_val:20
-water_period:1
-
-[map]
-WWWWWWWW
-W.....XW
-W.....PW
-WddddddW
-WWWWWWWW
-[/map]
-[/cave]
-
-[cave]
 no:7
 Cave 7
 dim:20x12
-time:200
-dia_req:6
+time:60
+dia_req:80
 dia_val:14 ex_dia_val:25
 water_period:3
 
@@ -326,7 +237,7 @@ Wddddddddrrr...rrr.W
 Wdrrdddddddd...rr..W
 WddddrdddddddddddMdW
 Wdrrdddddddr...rrr.W
-WMdddddddddr...ddr.W
+Wddddddddddr...ddr.W
 Wddddddddrrr...rrr.W
 WP.................W
 WWWWWWWWWWWWWWWWWWWW
@@ -334,22 +245,73 @@ WWWWWWWWWWWWWWWWWWWW
 [/cave]
 
 [cave]
-no:66
-Cave 6
-dim:8x5
-time:20
-dia_req:1
-dia_val:14 ex_dia_val:20
-water_period:1
+no:8
+Cave 8
+dim:40x22
+time:30
+dia_req:6
+dia_val:80 ex_dia_val:80
+water_period:3
 
 [map]
-WWWWWWWW
-W.....XW
-W.....PW
-WddddddW
-WWWWWWWW
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwW
+Ww.w...w...w........w...w.....w...w...wW
+Ww.......w......w...w......ww...w..ww.wW
+Wwww..w.w.w........w...w.....w.ww.....wW
+Www....w.........w.ww.w...ww..w..w..w.wW
+Ww..w.w..ww.....w...........w.....w..wwW
+Ww.w....w........w.w.ww.....w....w.w.wwW
+Ww.w...w..w.....ww.....w...w.....ww...wW
+Ww..ww..w........w.wP............w..w.wW
+Www...w..w..........w.....ww.......w..wW
+Www..w..w........w..........w....ww.w.wW
+Www.w..w..........ww...w..w.w....w....wW
+Ww..............w...w............w.w..wW
+Www......w.........w................w  W
+Www......w.........w...w............XwwW
+Ww.w............w.w.w....ww.........wwwW
+Ww..w....w....w.....w...ww........wdddwW
+Www...w.w..w.w....www....w........wdddwW
+Ww..w..ww.ww..w.w......w......w...    wW
+WwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwW
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
 
+[cave]
+no:10
+Cave 10
+dim:80x22
+time:200
+dia_req:63
+dia_val:20 ex_dia_val:30
+water_period:3
+
+[map]
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WXP. ...... rr.r....w.r ..r.. ..wr..r....... ...... rr.r......r ..r.. ...r..r..W
+W.....rr......  r.r.w.r...r.....wr............rr......  r.r...r...r......r.....W
+W...r...ddd.........wdddddddddddw... . .....r...ddd......................... . W
+W......r.............rrrrrrrrrrrww.............r.............S          .w.....W
+Wrr......................................rr..........r rrr...S          .r.....W
+W....r..r ........rr....r.......w.rr.........r.............................r...W
+W. .d..r................. ..........r..... .d..r............................r..W
+W.... ................r..r..r...r....r....... ...............................r.W
+W....r.... .........r.....r...r....rr.r......r.............................rr.rW
+W..... ..............r.........................r............................ ..W
+W.... .........r.. r...... ...r..........r.. r....r. ...r.......... ...........W
+W.............. .... ..r.. .r...d........ .... ..r.. .r.................d......W
+W.rr........r.............M.....r.....r.............M....r......rr......r..r...W
+W.r.............................d...r...rr...r........ .........r....rr.d......W
+W.... .............................. r... .rr.........rr....r...... ..........rW
+W...r............................. .............r....r............r.r..... ....W
+W...........rrr. .......r.....r.......rrr. .......r.....r...r.................rW
+W.........r......r.... r......r.r...r......r.... r......r...............r......W
+W..r..d........r.S         .r..r.........r..........r.r...r. ....r..d..r....r. W
+W....... ........          ..rrr.......................rr............. r.......W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+[/map]
+[/cave]
 
 [/game]
