@@ -10,4 +10,4 @@ all: $(HEADER) $(SOURCE)
 	$(CC) $(SOURCE) $(FLAGS) -o $(BIN)
 
 clean :
-	rm all
+	rm boulder_dash

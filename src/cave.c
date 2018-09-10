@@ -296,7 +296,7 @@ display_score_panel(Cave *curr_cave, Game *g){
     else
         al_draw_text(font, al_map_rgb(0, 155, 0), g->cam_pos.c+(11*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_left_time);
 
-    al_draw_text(font, al_map_rgb(155, 155, 0), g->cam_pos.c+(14*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);
+    al_draw_text(font, al_map_rgb(0, 150, 200), g->cam_pos.c+(14*CELL_SIZE), g->cam_pos.r, ALLEGRO_ALIGN_CENTRE, str_score);
 
     int_to_str(str_life, g->miner.life);
     al_draw_bitmap(miner_symbol, g->cam_pos.c+(16*CELL_SIZE)-15, g->cam_pos.r, 0);
