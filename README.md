@@ -1,10 +1,10 @@
 # BOULDER DASH
 
-Second term summer project in the scope of CSE-102 course.
+* Second term summer project in the scope of CSE-102 course.
+* The game is designed according to [this](guide/Summer_Project-BoulderDash.pdf) instructions.
 
 ## NOTES
 
-### [RELATED MAP FILE]
 * If maps.txt file changes, do not overshoot 240 character per line.
 	Limit variable is defined in 'base.h' as constant, named LINE_SIZE.
 * Cave numbers are unique properties of caves.
@@ -30,5 +30,5 @@ Second term summer project in the scope of CSE-102 course.
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-
-![One of game scenario](data/img/preview.gif?raw=true "A preview from the game")
+## A preview from the game
+![One of game scenario](data/img/preview.gif?raw=true "Boulder Dash")
