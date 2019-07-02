@@ -31,7 +31,7 @@ Second term summer project in the scope of CSE-102 course.
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 
-## A preview from the game*
+## A preview from the game
 	+<img 	src ="data/img/preview.gif" 
 			alt ="one of game scenario"
 			style ="float : left; margin-right: 10px;"
